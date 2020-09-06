@@ -1,9 +1,6 @@
 {
-  "demo.js": {
-    "name": "Plugin Demo",
-    "description": "A InPageEdit Plugin Demo"
-  },
   "toolbox.js": {
+    "_force": true,
     "name": "InPageEdit Toolbox",
     "author": "Dragon-Fish",
     "description": "Add a toolbox in the bottom-right corner of your screen. Let you quickly access frequently used IPE functions."
@@ -15,5 +12,13 @@
     "dependency": [
       "toobox.js"
     ]
+  },
+  "demo.js": {
+    "name": "Plugin Demo",
+    "description": "A InPageEdit Plugin Demo"
+  },
+  "language-pack_demo.js": {
+    "name": "Language pack demo",
+    "description": "A language pack demo"
   }
 }
