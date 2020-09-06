@@ -1,0 +1,19 @@
+{
+  "demo.js": {
+    "name": "Plugin Demo",
+    "description": "A InPageEdit Plugin Demo"
+  },
+  "toolbox.js": {
+    "name": "InPageEdit Toolbox",
+    "author": "Dragon-Fish",
+    "description": "Add a toolbox in the bottom-right corner of your screen. Let you quickly access frequently used IPE functions."
+  },
+  "edit-any-page.js": {
+    "name": "Edit any page",
+    "author": "Dragon-Fish",
+    "description": "Add a button into IPE Toolbox that let you edit any page any where",
+    "dependency": [
+      "toobox.js"
+    ]
+  }
+}
