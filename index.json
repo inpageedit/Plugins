@@ -13,6 +13,11 @@
       "toobox.js"
     ]
   },
+  "color-preview.js": {
+    "name": "Color preview",
+    "author": "Dragon-Fish",
+    "description": "Add a box above the edit textarea to quickly preview the hexadecimal color"
+  },
   "demo.js": {
     "name": "Plugin Demo",
     "description": "A InPageEdit Plugin Demo"
