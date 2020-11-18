@@ -5,27 +5,16 @@
 !(async function () {
   const libs = {
     css: 'https://cdn.jsdelivr.net/npm/codemirror@5.58.2/mode/css/css.min.js',
-    javascript:
-      'https://cdn.jsdelivr.net/npm/codemirror@5.58.2/mode/javascript/javascript.min.js',
+    javascript: 'https://cdn.jsdelivr.net/npm/codemirror@5.58.2/mode/javascript/javascript.min.js',
     lua: 'https://cdn.jsdelivr.net/npm/codemirror@5.58.2/mode/lua/lua.min.js',
-    mediawiki:
-      'https://cdn.jsdelivr.net/gh/wjghj-project/inpageedit-plugins@master/plugins/code-mirror/wikitext.min.js',
+    mediawiki: 'https://cdn.jsdelivr.net/gh/wjghj-project/inpageedit-plugins@master/plugins/code-mirror/wikitext.min.js',
   }
   // Cache loaded libs
   var loadedLibs = {}
 
-  mw.loader.load(
-    'https://cdn.jsdelivr.net/npm/codemirror@5.58.2/lib/codemirror.min.css',
-    'text/css'
-  )
-  mw.loader.load(
-    'https://cdn.jsdelivr.net/npm/codemirror@5.58.2/theme/solarized.min.css',
-    'text/css'
-  )
-  mw.loader.load(
-    'https://cdn.jsdelivr.net/gh/wjghj-project/inpageedit-plugins@master/plugins/code-mirror/style.css',
-    'text/css'
-  )
+  mw.loader.load('https://cdn.jsdelivr.net/npm/codemirror@5.58.2/lib/codemirror.min.css', 'text/css')
+  mw.loader.load('https://cdn.jsdelivr.net/npm/codemirror@5.58.2/theme/solarized.min.css', 'text/css')
+  mw.loader.load('https://cdn.jsdelivr.net/gh/wjghj-project/inpageedit-plugins@master/plugins/code-mirror/style.css', 'text/css')
 
   function loadScript(url) {
     return $.ajax({
@@ -219,16 +208,7 @@
               cm.doc.replaceSelection(insertText)
 
               if (selectPeri) {
-                cm.doc.setSelection(
-                  cm.doc.posFromIndex(
-                    cm.doc.indexFromPos(startCursor) + pre.length
-                  ),
-                  cm.doc.posFromIndex(
-                    cm.doc.indexFromPos(startCursor) +
-                    pre.length +
-                    selText.length
-                  )
-                )
+                cm.doc.setSelection(cm.doc.posFromIndex(cm.doc.indexFromPos(startCursor) + pre.length), cm.doc.posFromIndex(cm.doc.indexFromPos(startCursor) + pre.length + selText.length))
               }
             })
           },
@@ -248,10 +228,7 @@
 
           setSelection: function (options) {
             return this.each(function () {
-              cm.doc.setSelection(
-                cm.doc.posFromIndex(options.start),
-                cm.doc.posFromIndex(options.end)
-              )
+              cm.doc.setSelection(cm.doc.posFromIndex(options.start), cm.doc.posFromIndex(options.end))
             })
           },
 

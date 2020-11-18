@@ -16,4 +16,4 @@ mw.hook('InPageEdit.quickEdit')
     editNotice += '<div>Hello world!</div>'
     // Set edit notice
     $modalContent.data('editNotice', editNotice)
-  });
+  })

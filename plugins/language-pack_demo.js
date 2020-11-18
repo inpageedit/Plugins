@@ -11,11 +11,11 @@ mw.hook('InPageEdit.init.before').add(() => {
   // Set language pack
   const myLanguagePack = {
     'zh-hans': {
-      mypack_editCount: '你编辑了$1次'
+      mypack_editCount: '你编辑了$1次',
     },
     en: {
-      mypack_editCount: 'You have $1 {{PLURAL:$1|edit|edits}}'
-    }
+      mypack_editCount: 'You have $1 {{PLURAL:$1|edit|edits}}',
+    },
   }
 
   // Extend data
