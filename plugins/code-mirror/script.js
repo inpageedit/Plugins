@@ -69,7 +69,8 @@
 
   /**
    * 渲染编辑器
-   * @param {Object} target
+   * @param {Object} target 目标编辑框
+   * @param {String} page 页面名
    */
   async function renderEditor(target, page) {
     target = $(target)
