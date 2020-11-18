@@ -51,6 +51,7 @@
       crossDomain: true,
       cache: true,
     })
+    loadedLibs.push(type)
     return true
   }
 
@@ -220,8 +221,8 @@
                   ),
                   cm.doc.posFromIndex(
                     cm.doc.indexFromPos(startCursor) +
-                      pre.length +
-                      selText.length
+                    pre.length +
+                    selText.length
                   )
                 )
               }
