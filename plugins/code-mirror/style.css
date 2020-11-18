@@ -13,10 +13,10 @@
 /* MediaWiki */
 /* Classes for large group of texts */
 .cm-mw-link-text {
-  color: #3060b0;
+  color: #36b;
 }
 .cm-mw-link-trail {
-  color: #3060b0;
+  color: #36b;
 }
 .cm-mw-template-arg {
   color: darkred;
@@ -38,11 +38,11 @@
   font-weight: bold;
 }
 .cm-mw-table-start {
-  color: #e302e3;
+  color: #e0e;
   font-weight: bold;
 }
 .cm-mw-ident {
-  color: #d50000;
+  color: #219;
   font-weight: bold;
 }
 .cm-mw-magic-word {
@@ -63,7 +63,7 @@
   color: #36b;
 }
 .cm-mw-section {
-  color: #231299;
+  color: #219;
   font-weight: bold;
 }
 .cm-mw-section-1 {
@@ -95,13 +95,13 @@
   color: green;
 }
 .cm-mw-tag-open {
-  color: #b900b9;
+  color: purple;
 }
 .cm-mw-tag-close {
-  color: #b900b9;
+  color: purple;
 }
 .cm-mw-tag-attr {
-  color: #cc3b3b;
+  color: brown;
 }
 .cm-mw-entity {
   color: purple;
@@ -113,7 +113,7 @@
   font-weight: bold;
 }
 .cm-mw-link-target {
-  color: #3060b0;
+  color: #36b;
   font-weight: bold;
   text-decoration: underline;
 }
@@ -147,7 +147,9 @@
   z-index: 10;
 }
 
-/* Theme */
+
+/* Solarized theme for code-mirror */
+
 .inpageedit.base03 {
   color: #002b36;
 }

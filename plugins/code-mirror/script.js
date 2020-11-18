@@ -89,7 +89,8 @@
       var cm = CodeMirror.fromTextArea(target[0], {
         lineNumbers: true,
         lineWrapping: true,
-        theme: 'inpageedit',
+        styleActiveLine: true,
+        theme: 'inpageedit light',
         mode,
       })
       cm.on('change', function () {
