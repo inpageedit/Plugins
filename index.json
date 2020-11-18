@@ -15,7 +15,8 @@
   },
   "code-mirror/script.js": {
     "name": "Code Mirror",
-    "description": "Syntaxhighlight editor for InPageEdit"
+    "description": "[BETA] Syntaxhighlight editor for InPageEdit",
+    "author": "Dragon-Fish"
   },
   "color-preview.js": {
     "name": "Color preview",
