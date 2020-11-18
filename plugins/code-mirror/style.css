@@ -1,131 +1,146 @@
+.in-page-edit.ipe-editor .editTools {
+  pointer-events: none;
+  opacity: 0.24;
+  cursor: not-allowed;
+}
+
 .CodeMirror {
-	font-family: Microsoft YaHei, monospace;
-	font-size: 14px;
-	height: 500px;
+  font-family: Microsoft YaHei, monospace;
+  font-size: 14px;
+  height: 500px;
 }
 /* Classes for large group of texts */
 .cm-mw-link-text {
-	color: #3060b0;
+  color: #3060b0;
 }
 .cm-mw-link-trail {
-	color: #3060b0;
+  color: #3060b0;
 }
 .cm-mw-template-arg {
-	color: darkred;
+  color: darkred;
 }
 .cm-mw-template-argname {
-	color: darkgoldenrod;
+  color: darkgoldenrod;
 }
-.cm-mw-pre, .CodeMirror pre.cm-mw-pre {
-	color: #555;
-    background-color: rgba(0, 0, 0, 0.05);
+.cm-mw-pre,
+.CodeMirror pre.cm-mw-pre {
+  color: #555;
+  background-color: rgba(0, 0, 0, 0.05);
 }
 /* Classes for symbols */
 .cm-mw-extlink {
-	color: #36b;
+  color: #36b;
 }
 .cm-mw-hr {
-	color: #08f;
-	font-weight: bold;
+  color: #08f;
+  font-weight: bold;
 }
 .cm-mw-table-start {
-	color: #e302e3;
-	font-weight: bold;
+  color: #e302e3;
+  font-weight: bold;
 }
 .cm-mw-ident {
-	color: #d50000;
-	font-weight: bold;
+  color: #d50000;
+  font-weight: bold;
 }
 .cm-mw-magic-word {
-	color: #666;
-    font-weight: bold;
+  color: #666;
+  font-weight: bold;
 }
 .cm-mw-signature {
-	color: #f00;
-	font-weight: bold;
+  color: #f00;
+  font-weight: bold;
 }
 .cm-mw-isbn {
-	color: #36b;
+  color: #36b;
 }
 .cm-mw-rfc {
-	color: #36b;
+  color: #36b;
 }
 .cm-mw-pmid {
-	color: #36b;
+  color: #36b;
 }
 .cm-mw-section {
-	color: #231299;
-	font-weight: bold;
+  color: #231299;
+  font-weight: bold;
 }
 .cm-mw-section-1 {
-   	font-size: 1.8em !important;
+  font-size: 1.8em !important;
 }
 .cm-mw-section-2 {
-   	font-size: 1.5em !important;
+  font-size: 1.5em !important;
 }
 .cm-mw-section-3 {
-   	font-size: 1.2em !important;
+  font-size: 1.2em !important;
 }
-.cm-mw-bold-start, .cm-mw-bold-end {
-	color: #219;
-	font-weight: bold;
+.cm-mw-bold-start,
+.cm-mw-bold-end {
+  color: #219;
+  font-weight: bold;
 }
-.cm-mw-italic-start, .cm-mw-italic-end {
-	color: #219;
-	font-style: italic;
+.cm-mw-italic-start,
+.cm-mw-italic-end {
+  color: #219;
+  font-style: italic;
 }
-.cm-mw-bolditalic-start, .cm-mw-bolditalic-end {
-	color: #219;
-	font-style: italic;
-	font-weight: bold;
+.cm-mw-bolditalic-start,
+.cm-mw-bolditalic-end {
+  color: #219;
+  font-style: italic;
+  font-weight: bold;
 }
 .cm-mw-comment {
-	color: green;
+  color: green;
 }
 .cm-mw-tag-open {
-	color: #b900b9;
+  color: #b900b9;
 }
 .cm-mw-tag-close {
-	color: #b900b9;
+  color: #b900b9;
 }
 .cm-mw-tag-attr {
-	color: #cc3b3b;
+  color: #cc3b3b;
 }
 .cm-mw-entity {
-	color: purple;
+  color: purple;
 }
-.cm-mw-link-start, .cm-mw-link-pipe, .cm-mw-link-end {
-	color: #36b;
-	font-weight: bold;
+.cm-mw-link-start,
+.cm-mw-link-pipe,
+.cm-mw-link-end {
+  color: #36b;
+  font-weight: bold;
 }
 .cm-mw-link-target {
-	color: #3060b0;
-	font-weight: bold;
-	text-decoration: underline;
+  color: #3060b0;
+  font-weight: bold;
+  text-decoration: underline;
 }
-.cm-mw-extlink-start, .cm-mw-extlink-end {
-	color: #36b;
-	font-weight: bold;
+.cm-mw-extlink-start,
+.cm-mw-extlink-end {
+  color: #36b;
+  font-weight: bold;
 }
 .cm-mw-extlink-target {
-	color: #36b;
-	font-weight: bold;
-	text-decoration: underline;
+  color: #36b;
+  font-weight: bold;
+  text-decoration: underline;
 }
-.cm-mw-template-start, .cm-mw-template-pipe, .cm-mw-template-end {
-	color: darkred;
-	font-weight: bold;
+.cm-mw-template-start,
+.cm-mw-template-pipe,
+.cm-mw-template-end {
+  color: darkred;
+  font-weight: bold;
 }
 .cm-mw-template-assign {
-	color: darkgoldenrod;
-	font-weight: bold;
+  color: darkgoldenrod;
+  font-weight: bold;
 }
 .cm-mw-template-name {
-	color: darkred;
-	font-weight: bold;
-	text-decoration: underline;
+  color: darkred;
+  font-weight: bold;
+  text-decoration: underline;
 }
 /* Fix WikiEditor popup */
 .wikiEditor-ui-toolbar {
-	z-index: 10;
+  z-index: 10;
 }
