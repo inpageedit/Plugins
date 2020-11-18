@@ -15,7 +15,7 @@
   },
   "code-mirror/script.js": {
     "name": "[BETA] Code Mirror",
-    "description": "Syntaxhighlight editor for InPageEdit",
+    "description": "Syntaxhighlight editor for InPageEdit. Currently supported languages: Wikitext, CSS, JavaScript, JSON, Lua.",
     "author": "Dragon-Fish"
   },
   "color-preview.js": {
