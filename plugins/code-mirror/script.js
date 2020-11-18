@@ -12,7 +12,7 @@
       'https://cdn.jsdelivr.net/gh/wjghj-project/inpageedit-plugins@master/plugins/code-mirror/wikitext.min.js',
   }
   // Cache loaded libs
-  var loadedLibs = []
+  var loadedLibs = {}
 
   mw.loader.load(
     'https://cdn.jsdelivr.net/npm/codemirror@5.58.2/lib/codemirror.min.css',
@@ -51,7 +51,7 @@
       crossDomain: true,
       cache: true,
     })
-    loadedLibs.push(type)
+    loadedLibs[type] = true
     return true
   }
 
