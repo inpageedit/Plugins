@@ -13,6 +13,10 @@
       "toobox.js"
     ]
   },
+  "code-mirror/script.js": {
+    "name": "Code Mirror",
+    "description": "Syntaxhighlight editor for InPageEdit"
+  },
   "color-preview.js": {
     "name": "Color preview",
     "author": "Dragon-Fish",
