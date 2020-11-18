@@ -27,12 +27,20 @@
     'text/css'
   )
 
-  await $.ajax({
-    url: 'https://cdn.jsdelivr.net/npm/codemirror@5.58.2/lib/codemirror.min.js',
-    dataType: 'script',
-    crossDomain: true,
-    cache: true,
-  })
+  function loadScript(url) {
+    return $.ajax({
+      url,
+      dataType: 'script',
+      crossDomain: true,
+      cache: true,
+    })
+  }
+
+  // Load Code Mirror
+  await loadScript('https://cdn.jsdelivr.net/npm/codemirror@5.58.2/lib/codemirror.min.js')
+
+  // Get addons
+  await loadScript('https://cdn.jsdelivr.net/npm/codemirror@5.58.2/addon/selection/active-line.min.js')
 
   /**
    * 加载渲染器
@@ -45,12 +53,7 @@
     }
     // 加载渲染器
     if (libs[type] === undefined) return false
-    await $.ajax({
-      url: libs[type],
-      dataType: 'script',
-      crossDomain: true,
-      cache: true,
-    })
+    await loadScript(libs[type])
     loadedLibs[type] = true
     return true
   }
