@@ -3,14 +3,14 @@
   opacity: 0.24;
   cursor: not-allowed;
 }
+
 .CodeMirror {
   font-family: Microsoft YaHei, monospace;
   font-size: 14px;
-  height: 500px;
+  min-height: 400px;
 }
 
 /* MediaWiki */
-
 /* Classes for large group of texts */
 .cm-mw-link-text {
   color: #3060b0;
