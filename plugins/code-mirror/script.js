@@ -13,7 +13,6 @@
   var loadedLibs = {}
 
   mw.loader.load('https://cdn.jsdelivr.net/npm/codemirror@5.58.2/lib/codemirror.min.css', 'text/css')
-  mw.loader.load('https://cdn.jsdelivr.net/npm/codemirror@5.58.2/theme/solarized.min.css', 'text/css')
   mw.loader.load('https://cdn.jsdelivr.net/gh/wjghj-project/inpageedit-plugins@master/plugins/code-mirror/style.css', 'text/css')
 
   function loadScript(url) {
@@ -52,11 +51,11 @@
    * @param {String} page PageName
    */
   function checkType(page) {
-    var moduleNS = mw.config.get('wgFormattedNamespaces')[828] || 'Module',
-      isModule = new RegExp('^(' + moduleNS + ':|Module:).+?(?<!/doc)$', 'i')
+    var moduleNS = mw.config.get('wgFormattedNamespaces')[828] || 'Module'
+    // var isModule = new RegExp('^(' + moduleNS + ':|Module:).+?(?<!/doc)$', 'i')
     if (/\.css$/i.test(page)) return 'css'
     if (/\.js$/i.test(page) || /\.json$/i.test(page)) return 'javascript' // js 以及 json 均使用 javascript 渲染器
-    if (isModule.test(page)) return 'lua' // 以 Module 名字空间开头，不以 /doc 结尾，判定为 Lua
+    if (new RegExp('^(' + moduleNS + ':|Module:)', 'i').test(page) && !/\/doc$/.test(page)) return 'lua' // 以 Module 名字空间开头，不以 /doc 结尾，判定为 Lua
     return 'mediawiki' // 否则返回 wikitext 格式
   }
 
