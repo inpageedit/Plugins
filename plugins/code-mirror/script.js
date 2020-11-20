@@ -29,6 +29,7 @@
 
   // Get addons
   await loadScript('https://cdn.jsdelivr.net/npm/codemirror@5.58.2/addon/selection/active-line.min.js')
+  await loadScript('https://cdn.jsdelivr.net/npm/codemirror@5.58.2/addon/display/autorefresh.min.js')
 
   /**
    * 加载渲染器
@@ -81,6 +82,7 @@
         lineNumbers: true,
         lineWrapping: true,
         styleActiveLine: true,
+        autoRefresh: true,
         theme: 'inpageedit light',
         mode,
       })
