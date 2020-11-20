@@ -1,13 +1,24 @@
+/* Disable editTools */
 .in-page-edit.ipe-editor .editTools {
   pointer-events: none;
   opacity: 0.24;
   cursor: not-allowed;
 }
 
+/* Minor fix */
 .CodeMirror {
   font-family: Microsoft YaHei, monospace;
   font-size: 14px;
   min-height: 400px;
+}
+.in-page-edit .CodeMirror-sizer {
+  margin-left: 30px !important;
+}
+.in-page-edit .CodeMirror-gutters {
+  left: 0 !important;
+}
+.in-page-edit .CodeMirror-linenumbers {
+  width: 30px !important;
 }
 
 /* MediaWiki */
