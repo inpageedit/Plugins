@@ -1,3 +1,11 @@
-title: InPageEdit Plugins
-description: InPageEdit Official Plugins Store
+## 主题
 theme: jekyll-theme-slate
+
+## 预设标头
+defaults:
+  # 全站
+  - scope:
+      path: '' # 一个空的字符串代表项目中所有的文件
+    values:
+      title: InPageEdit Plugins
+      description: InPageEdit Official Plugins Store
