@@ -29,6 +29,7 @@
 
   // Get addons
   await loadScript('https://cdn.jsdelivr.net/npm/codemirror@5.58.2/addon/selection/active-line.min.js')
+  // await loadScript('https://cdn.jsdelivr.net/npm/codemirror@5.58.2/addon/display/autorefresh.min.js')
 
   /**
    * 加载渲染器
@@ -61,7 +62,7 @@
 
   /**
    * 渲染编辑器
-   * @param {Object} target 目标编辑框
+   * @param {String|Element|jQuery<Element>} target 目标编辑框
    * @param {String} page 页面名
    */
   async function renderEditor(target, page) {
@@ -81,6 +82,7 @@
         lineNumbers: true,
         lineWrapping: true,
         styleActiveLine: true,
+        // autoRefresh: true,
         theme: 'inpageedit light',
         mode,
       })
