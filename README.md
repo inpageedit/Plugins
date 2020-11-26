@@ -4,8 +4,6 @@ InPageEdit Official Plugins Store
 
 ## How to use
 
-Find plugin list in `index.json`
-
 ### Via InPageEdit preference
 
 Check mark the plugin you want.
@@ -13,5 +11,30 @@ Check mark the plugin you want.
 ### Via JS code
 
 ```js
-InPageEdit.pluginStore.load(["<puginKey>"]);
+/**
+ * @variable InPageEdit.myPreference.plugins {Array}
+ */
+InPageEdit = window.InPageEdit || {} // Keep these line
+InPageEdit.myPreference = {
+  // ...
+  plugins: [
+    /* pluginKey here */
+  ],
+  // ...
+}
 ```
+
+## Plugins list
+
+<div id="pluginsList">Loading...</div>
+
+<script>
+!(() => {
+  var div = document.getElementById('pluginsList')
+  fetch('/index.json').then(r => {
+    return r.json()
+  }).then(json => {
+    div.innerHTML = `<pre>${JSON.stringify(json, null, 4)}</pre>`
+  })
+})()
+</script>
