@@ -1,7 +1,4 @@
----
-title: InPageEdit Plugins
-description: InPageEdit Official Plugins Store
----
+# Home
 
 [InPageEdit](https://ipe.js.org) is a powerful frontend JavaScript Plugin for MediaWiki written with jQuery.
 
