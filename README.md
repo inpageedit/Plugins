@@ -28,13 +28,4 @@ InPageEdit.myPreference = {
 
 <div id="pluginsList">Loading...</div>
 
-<script>
-!(() => {
-  var div = document.getElementById('pluginsList')
-  fetch('/index.json').then(r => {
-    return r.json()
-  }).then(json => {
-    div.innerHTML = `<pre>${JSON.stringify(json, null, 4)}</pre>`
-  })
-})()
-</script>
+<script src="/static/home.js"></script>
