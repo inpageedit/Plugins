@@ -1,0 +1,14 @@
+{
+  "name": "inpageedit-plugins",
+  "version": "0.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/InPageEdit/Plugins.git",
+  "author": "Dragon-Fish <824399619@qq.com>",
+  "private": true,
+  "scripts": {
+    "prettier": "prettier --write ./plugins/*.js ./plugins/**/*.js"
+  },
+  "devDependencies": {
+    "prettier": "^2.2.1"
+  }
+}
