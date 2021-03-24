@@ -18,7 +18,7 @@ mw.hook('InPageEdit').add(({ _msg }) => {
     },
     'zh-hans': {
       anypage_btn: '编辑任意页面',
-      anypage_title: '快速编辑编辑任意页面',
+      anypage_title: '快速编辑任意页面',
       anypage_label: '请指定页面名',
     },
   }
