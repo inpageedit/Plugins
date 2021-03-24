@@ -8,5 +8,5 @@ module.exports = {
   trailingComma: 'es5',
   bracketSpacing: true,
   arrowParens: 'avoid',
-  printWidth: 200
+  printWidth: 200,
 }

@@ -3,12 +3,12 @@
     "_force": true,
     "name": "InPageEdit Toolbox",
     "author": "Dragon-Fish",
-    "description": "Add a toolbox in the bottom-right corner of your screen. Let you quickly access frequently used IPE functions."
+    "description": "Adds a toolbox in the bottom-right corner of your screen. Lets you quickly access frequently used IPE functions."
   },
   "edit-any-page.js": {
     "name": "Edit any page",
     "author": "Dragon-Fish",
-    "description": "Add a button into IPE Toolbox that let you edit any page any where",
+    "description": "Adds a button into IPE Toolbox that lets you edit any page anywhere",
     "dependency": [
       "toobox.js"
     ]
@@ -21,11 +21,19 @@
   "color-preview.js": {
     "name": "Color preview",
     "author": "Dragon-Fish",
-    "description": "Add a box above the edit textarea to quickly preview the hexadecimal color"
+    "description": "Adds a box above the edit textarea to quickly preview the hexadecimal color"
+  },
+  "quick-thank.js": {
+    "name": "Quick thank",
+    "author": "Leranjun",
+    "description": "Adds a button into IPE Toolbox that lets you thank any page anywhere",
+    "dependency": [
+      "toobox.js"
+    ]
   },
   "demo.js": {
     "name": "Plugin Demo",
-    "description": "A InPageEdit Plugin Demo"
+    "description": "An InPageEdit Plugin Demo"
   },
   "language-pack_demo.js": {
     "name": "Language pack demo",
