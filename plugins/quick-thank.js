@@ -43,7 +43,7 @@ mw.hook('InPageEdit').add(({ _msg }) => {
               $('<label>').append(
                 $('<b>', { text: _msg('thank_label') }),
                 $('<br>'),
-                $('<input>', { id: 'thank-rev-id', style: 'width: 96%', value: mw.config.get('wgCurRevisionId') }).click(function () {
+                $('<input>', { id: 'thank-rev-id', style: 'width: 96%', value: mw.config.get('wgRevisionId') }).click(function () {
                   $(this).css('box-shadow', '')
                 })
               )
