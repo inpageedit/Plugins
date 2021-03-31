@@ -24,7 +24,7 @@
     )
   } else if (
     now.getFullYear() === 2021 &&
-    now.getMonth() === 4 &&
+    now.getMonth() + 1 === 4 &&
     now.getDate() === 1
   ) {
     showModal()
