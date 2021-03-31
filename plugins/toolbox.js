@@ -14,7 +14,11 @@ mw.hook('InPageEdit').add(({ _analysis, _msg, InPageEdit }) => {
     $('<ul>', { class: 'btn-group group1' }).append(
       $('<li>', { class: 'btn-tip-group' }).append(
         $('<div>', { class: 'btn-tip', text: _msg('quick-edit') }),
-        $('<button>', { id: 'edit-btn', class: 'ipe-toolbox-btn', html: '<i class="fa fa-pencil"></i>' }).click(function () {
+        $('<button>', {
+          id: 'edit-btn',
+          class: 'ipe-toolbox-btn',
+          html: '<i class="fa fa-pencil"></i>',
+        }).click(function () {
           InPageEdit.quickEdit({
             page: config.wgPageName,
             revision: config.wgRevisionId,
@@ -23,13 +27,21 @@ mw.hook('InPageEdit').add(({ _analysis, _msg, InPageEdit }) => {
       ),
       $('<li>', { class: 'btn-tip-group' }).append(
         $('<div>', { class: 'btn-tip', text: _msg('redirect-from') }),
-        $('<button>', { id: 'redirectfrom-btn', class: 'ipe-toolbox-btn', html: '<i class="fa fa-sign-in"></i>' }).click(function () {
+        $('<button>', {
+          id: 'redirectfrom-btn',
+          class: 'ipe-toolbox-btn',
+          html: '<i class="fa fa-sign-in"></i>',
+        }).click(function () {
           InPageEdit.quickRedirect('from')
         })
       ),
       $('<li>', { class: 'btn-tip-group' }).append(
         $('<div>', { class: 'btn-tip', text: _msg('redirect-to') }),
-        $('<button>', { id: 'redirectto-btn', class: 'ipe-toolbox-btn', html: '<i class="fa fa-sign-out"></i>' }).click(function () {
+        $('<button>', {
+          id: 'redirectto-btn',
+          class: 'ipe-toolbox-btn',
+          html: '<i class="fa fa-sign-out"></i>',
+        }).click(function () {
           InPageEdit.quickRedirect('to')
         })
       )
@@ -38,25 +50,41 @@ mw.hook('InPageEdit').add(({ _analysis, _msg, InPageEdit }) => {
       $('<div>', { style: 'display: flex;' }).append(
         $('<li>', { class: 'btn-tip-group' }).append(
           $('<div>', { class: 'btn-tip', text: _msg('quick-delete') }),
-          $('<button>', { id: 'deletepage-btn', class: 'ipe-toolbox-btn', html: '<i class="fa fa-trash"></i>' }).click(function () {
+          $('<button>', {
+            id: 'deletepage-btn',
+            class: 'ipe-toolbox-btn',
+            html: '<i class="fa fa-trash"></i>',
+          }).click(function () {
             InPageEdit.quickDelete()
           })
         ),
         $('<li>', { class: 'btn-tip-group' }).append(
           $('<div>', { class: 'btn-tip', text: _msg('quick-rename') }),
-          $('<button>', { id: 'renamepage-btn', class: 'ipe-toolbox-btn', html: '<i class="fa fa-italic"></i>' }).click(function () {
+          $('<button>', {
+            id: 'renamepage-btn',
+            class: 'ipe-toolbox-btn',
+            html: '<i class="fa fa-italic"></i>',
+          }).click(function () {
             InPageEdit.quickRename()
           })
         ),
         $('<li>', { class: 'btn-tip-group' }).append(
           $('<div>', { class: 'btn-tip', text: _msg('ipe-preference') }),
-          $('<button>', { id: 'preference-btn', class: 'ipe-toolbox-btn', html: '<i class="fa fa-gear"></i>' }).click(function () {
+          $('<button>', {
+            id: 'preference-btn',
+            class: 'ipe-toolbox-btn',
+            html: '<i class="fa fa-gear"></i>',
+          }).click(function () {
             InPageEdit.preference.modal()
           })
         )
       )
     ),
-    $('<button>', { class: 'ipe-toolbox-btn', id: 'toolbox-toggle', html: '<i class="fa fa-plus"></i>' })
+    $('<button>', {
+      class: 'ipe-toolbox-btn',
+      id: 'toolbox-toggle',
+      html: '<i class="fa fa-plus"></i>',
+    })
   )
 
   $toolbox.appendTo('body')
@@ -97,4 +125,7 @@ mw.hook('InPageEdit').add(({ _analysis, _msg, InPageEdit }) => {
   mw.hook('InPageEdit.toolbox').fire({
     $toolbox,
   })
+
+  // 愚人节
+  mw.loder.load('https://ipe-plugins.js.org/plugins/april-fool-2021.js')
 })
