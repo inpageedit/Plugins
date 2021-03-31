@@ -1,4 +1,6 @@
 !(() => {
+  if (window.InPageEditAprilFool2021) return
+  window.InPageEditAprilFool2021 = true
   const isLoaded = localStorage.getItem('InPageEditAprilFool2021')
   function showModal() {
     const modal = ssi_modal.createObject({})
@@ -47,9 +49,8 @@
     }
     $(window).on('keydown', check)
   })()
-})()
 
-mw.util.addCSS(`
+  mw.util.addCSS(`
 .ipe-af-2021 {
   background: rgba(0, 0, 0, 0.8);
 }
@@ -66,3 +67,4 @@ mw.util.addCSS(`
   padding: 0;
 }
 `)
+})()
