@@ -29,8 +29,8 @@
     now.getMonth() + 1 === 4 &&
     now.getDate() === 1
   ) {
+    localStorage.setItem('InPageEditAprilFool2021', 'true')
     showModal()
-    localStorage.getItem('InPageEditAprilFool2021', 'true')
   } else {
     console.log(
       '[InPageEdit] 今天不是 2021 愚人节，想要查看，可以在页面内按顺序输入“ipeaprilfool2021”~'
