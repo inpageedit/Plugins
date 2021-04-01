@@ -125,7 +125,4 @@ mw.hook('InPageEdit').add(({ _analysis, _msg, InPageEdit }) => {
   mw.hook('InPageEdit.toolbox').fire({
     $toolbox,
   })
-
-  // 愚人节
-  mw.loader.load('https://ipe-plugins.js.org/plugins/april-fool-2021.js')
 })

@@ -35,8 +35,13 @@ mw.hook('InPageEdit').add(({ _msg }) => {
       thank_all: '我特么谢谢宁！',
     },
   }
-  ipe.i18n = $.extend({}, ipe.i18n, langPack)
-  window.InPageEdit = ipe
+  $.each(langPack, (lang, str) => {
+    ipe.i18n[lang] = ipe.i18n[lang] || {}
+    ipe.i18n[lang] = {
+      ...ipe.i18n[lang],
+      ...str,
+    }
+  })
 
   // 处理是否感谢过
   function getThanked() {
@@ -151,14 +156,14 @@ mw.hook('InPageEdit').add(({ _msg }) => {
           text: _msg('quick-diff'),
         }).on('click', async function () {
           InPageEdit.quickDiff({
-            fromrev: revid,
-            torev: parentid,
+            fromrev: parentid,
+            torev: revid,
           })
         })
 
         $list.append(
           $('<li>').append(
-            $('<strong>', { text: revid }),
+            $('<strong>', { text: revid, title: timestamp }),
             ' ',
             $('<a>', {
               text: user,
@@ -166,11 +171,8 @@ mw.hook('InPageEdit').add(({ _msg }) => {
               href: mw.util.getUrl(`User:${user}`),
             }),
             ' ',
-            $('<span>', { text: comment }),
-            ' ',
-            $('<i>', { text: timestamp }),
-            ' ',
-            '[',
+            $('<span>', { text: comment ? `(${comment})` : '' }),
+            ' [',
             $diffBtn,
             ' | ',
             $thankBtn,
@@ -232,5 +234,5 @@ mw.hook('InPageEdit').add(({ _msg }) => {
     cursor: not-allowed;
   }
   `)
-  window.InPageEdit.quickThank = quickThank
+  ipe.quickThank = quickThank
 })

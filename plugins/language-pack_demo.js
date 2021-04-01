@@ -4,12 +4,11 @@
  */
 /** Let's define a custom language pack */
 mw.hook('InPageEdit.init.before').add(() => {
-  // Get InPageEdit variable
-  var ipe = window.InPageEdit || {}
+  // Get InPageEdit data
+  const ipe = window.InPageEdit || {}
   ipe.i18n = ipe.i18n || {}
-
-  // Set language pack
-  const myLanguagePack = {
+  // Make language pack
+  const langPack = {
     'zh-hans': {
       mypack_editCount: '你编辑了$1次',
     },
@@ -17,12 +16,14 @@ mw.hook('InPageEdit.init.before').add(() => {
       mypack_editCount: 'You have $1 {{PLURAL:$1|edit|edits}}',
     },
   }
-
-  // Extend data
-  ipe.i18n = $.extend({}, ipe.i18n, myLanguagePack)
-
-  // Save variable
-  window.InPageEdit = ipe
+  // Insert strings
+  $.each(langPack, (lang, str) => {
+    ipe.i18n[lang] = ipe.i18n[lang] || {}
+    ipe.i18n[lang] = {
+      ...ipe.i18n[lang],
+      ...str,
+    }
+  })
 })
 
 // We can test it
