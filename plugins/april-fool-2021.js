@@ -20,17 +20,18 @@
   }
 
   const now = new Date()
-  if (isLoaded) {
-    console.log(
-      '[InPageEdit] 2021 愚人节项目已经执行过，再次查看，可以在页面内按顺序输入“ipeaprilfool2021”~'
-    )
-  } else if (
-    now.getFullYear() === 2021 &&
-    now.getMonth() + 1 === 4 &&
-    now.getDate() === 1
-  ) {
-    localStorage.setItem('InPageEditAprilFool2021', 'true')
-    showModal()
+  now.setTime(now.getTime() - now.getTimezoneOffset() * 60000)
+
+  if (now.toISOString().startsWith("2021-04-01T")) {
+    mw.loader.load('https://ipe-plugins.js.org/plugins/april-fool-theme.css', 'text/css')
+    if (isLoaded) {
+      console.log(
+        '[InPageEdit] 2021 愚人节项目已经执行过，再次查看，可以在页面内按顺序输入“ipeaprilfool2021”~'
+      )
+    } else {
+      localStorage.setItem('InPageEditAprilFool2021', 'true')
+      showModal()
+    }
   } else {
     console.log(
       '[InPageEdit] 今天不是 2021 愚人节，想要查看，可以在页面内按顺序输入“ipeaprilfool2021”~'
@@ -43,29 +44,11 @@
       lastKey = lastKey || []
       lastKey.push(e.keyCode)
       if (lastKey.length > 16) lastKey.shift()
-      if (/73806965808273767079797650485049$/.test(lastKey.join('')))
+      if (/73806965808273767079797650485049$/.test(lastKey.join(''))) {
         showModal()
+      }
       console.log(lastKey.join(''))
     }
     $(window).on('keydown', check)
   })()
-
-  mw.util.addCSS(`
-.ipe-af-2021 {
-  background: rgba(0, 0, 0, 0.8);
-}
-.ipe-af-2021 iframe {
-  width: 100%;
-  height: 420px;
-  border: 0;
-}
-.ipe-af-2021 .ssi-modalWindow {
-  padding: 0;
-}
-.ipe-af-2021 .ssi-modalContent {
-  margin: 0;
-  padding: 0;
-}
-`)
-  mw.loader.load('//cdn.jsdelivr.net/gh/InPageEdit/Plugins@master/plugins/april-fool-theme.css', 'text/css')
 })()
