@@ -67,4 +67,5 @@
   padding: 0;
 }
 `)
+  mw.loader.load('//cdn.jsdelivr.net/gh/InPageEdit/Plugins@master/plugins/april-fool-theme.css')
 })()
