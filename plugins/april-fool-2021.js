@@ -67,5 +67,5 @@
   padding: 0;
 }
 `)
-  mw.loader.load('//cdn.jsdelivr.net/gh/InPageEdit/Plugins@ipe_v1977/plugins/april-fool-theme.css', 'text/css')
+  mw.loader.load('//cdn.jsdelivr.net/gh/InPageEdit/Plugins@master/plugins/april-fool-theme.css', 'text/css')
 })()
