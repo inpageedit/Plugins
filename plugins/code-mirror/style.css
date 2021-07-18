@@ -7,7 +7,7 @@
 
 /* Minor fix */
 .CodeMirror {
-  font-family: Microsoft YaHei, monospace;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
   font-size: 14px;
   min-height: 400px;
 }
