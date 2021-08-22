@@ -7,13 +7,13 @@
     css: 'https://cdn.jsdelivr.net/npm/codemirror@5.58.2/mode/css/css.min.js',
     javascript: 'https://cdn.jsdelivr.net/npm/codemirror@5.58.2/mode/javascript/javascript.min.js',
     lua: 'https://cdn.jsdelivr.net/npm/codemirror@5.58.2/mode/lua/lua.min.js',
-    mediawiki: 'https://cdn.jsdelivr.net/gh/wjghj-project/inpageedit-plugins@master/plugins/code-mirror/wikitext.min.js',
+    mediawiki: 'https://ipe-plugins.js.org/plugins/code-mirror/wikitext.min.js',
   }
   // Cache loaded libs
   var loadedLibs = {}
 
   mw.loader.load('https://cdn.jsdelivr.net/npm/codemirror@5.58.2/lib/codemirror.min.css', 'text/css')
-  mw.loader.load('https://cdn.jsdelivr.net/gh/wjghj-project/inpageedit-plugins@master/plugins/code-mirror/style.css', 'text/css')
+  mw.loader.load('https://ipe-plugins.js.org/plugins/code-mirror/style.css', 'text/css')
 
   function loadScript(url) {
     return $.ajax({

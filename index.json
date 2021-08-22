@@ -31,6 +31,10 @@
       "toobox.js"
     ]
   },
+  "fix-double-entrance.js": {
+    "name": "Fix double entrance",
+    "description": "Fix the bug that two Quick Edit link appear in section edit area when the Visual Editor is enabled"
+  },
   "demo.js": {
     "name": "Plugin Demo",
     "description": "An InPageEdit Plugin Demo"
@@ -38,9 +42,5 @@
   "language-pack_demo.js": {
     "name": "Language pack demo",
     "description": "A language pack demo"
-  },
-  "fix-double-entrance.js": {
-    "name": "Fix double entrance",
-    "description": "Fix the bug that two Quick Edit link appear in section edit area when the Visual Editor is enabled"
   }
 }
