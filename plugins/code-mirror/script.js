@@ -7,7 +7,7 @@
     css: 'https://cdn.jsdelivr.net/npm/codemirror@5.58.2/mode/css/css.min.js',
     javascript: 'https://cdn.jsdelivr.net/npm/codemirror@5.58.2/mode/javascript/javascript.min.js',
     lua: 'https://cdn.jsdelivr.net/npm/codemirror@5.58.2/mode/lua/lua.min.js',
-    mediawiki: 'https://ipe-plugins.js.org/plugins/code-mirror/wikitext.min.js',
+    mediawiki: 'https://ipe-plugins.js.org/plugins/code-mirror/wikitext.js',
   }
   // Cache loaded libs
   var loadedLibs = {}
