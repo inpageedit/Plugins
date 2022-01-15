@@ -7,7 +7,7 @@
     css: 'https://cdn.jsdelivr.net/npm/codemirror@5.58.2/mode/css/css.min.js',
     javascript: 'https://cdn.jsdelivr.net/npm/codemirror@5.58.2/mode/javascript/javascript.min.js',
     lua: 'https://cdn.jsdelivr.net/npm/codemirror@5.58.2/mode/lua/lua.min.js',
-    mediawiki: 'https://ipe-plugins.js.org/plugins/code-mirror/wikitext.js',
+    mediawiki: 'https://cdn.jsdelivr.net/gh/wikimedia/mediawiki-extensions-CodeMirror@REL1_37/resources/mode/mediawiki/mediawiki.min.js'
   }
   // Cache loaded libs
   var loadedLibs = {}
@@ -42,9 +42,50 @@
     }
     // 加载渲染器
     if (libs[type] === undefined) return false
-    await loadScript(libs[type])
+    const config = {};
+    if (type === 'mediawiki') {
+      mw.loader.load('https://cdn.jsdelivr.net/gh/wikimedia/mediawiki-extensions-CodeMirror@REL1_37/resources/mode/mediawiki/mediawiki.min.css', 'text/css');
+      await Promise.all([
+        loadScript(libs[type]),
+        loadConfig(config)
+      ]);
+      return config
+    } else {
+     await loadScript(libs[type])
+    }
     loadedLibs[type] = true
     return true
+  }
+
+  /**
+   * 加载codemirror的mediawiki模块需要的设置数据
+   */
+  async function loadConfig(config) {
+    const {query: {magicwords, extensiontags, protocols}} = await new mw.Api().get({
+      action: 'query',
+      meta: 'siteinfo',
+      siprop: 'magicwords|extensiontags',
+      format: 'json',
+      formatversion: 2
+    });
+    const getAliases = (words) => words.map(({aliases}) => aliases).flat(),
+      getConfig = (aliases) => Object.fromEntries(aliases.map(alias => [alias, true]));
+    config.tagModes = {
+      'pre': 'mw-tag-pre',
+      'nowiki': 'mw-tag-nowiki'
+    };
+    config.tags = Object.fromEntries(extensiontags.map(tag => [tag.slice(1, -1), true]));
+    const sensitive = getAliases(magicwords.filter(word => word['case-sensitive'])),
+      insensitive = getAliases(magicwords.filter(word => !word['case-sensitive']));
+    config.doubleUnderscore = [
+      getConfig(insensitive.filter(alias => /^__.+__$/.test(alias))),
+      getConfig(sensitive.filter(alias => /^__.+__$/.test(alias)))
+    ];
+    config.functionSynonyms = [
+      getConfig(insensitive.filter(alias => !/^__.+__$/.test(alias))),
+      getConfig(sensitive.filter(alias => !/^__.+__$/.test(alias)))
+    ];
+    config.urlProtocols = mw.config.get('wgUrlProtocols');
   }
 
   /**
@@ -75,7 +116,7 @@
 
     var mode = checkType(page)
 
-    await getLib(mode)
+    const mwConfig = await getLib(mode);
 
     if (target.length) {
       var cm = CodeMirror.fromTextArea(target[0], {
@@ -85,6 +126,7 @@
         // autoRefresh: true,
         theme: 'inpageedit light',
         mode,
+        mwConfig
       })
       cm.on('change', function () {
         target.trigger('input')
