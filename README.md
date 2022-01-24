@@ -36,4 +36,4 @@ InPageEdit.myPreference = {
 
 <div id="pluginsList">Loading...</div>
 
-<script src="/static/home.js"></script>
+<script src="/assets/scripts/home.js"></script>
