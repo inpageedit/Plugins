@@ -15,6 +15,12 @@
   font-size: 16px;
 }
 
+/* @FIX For WikiEditor dialogs */
+.ssi-backdrop.in-page-edit,
+.ssi-modalOuter.in-page-edit {
+  z-index: 800;
+}
+
 .in-page-edit .ssi-modalWindow {
   padding: 0;
   border-radius: 0;
