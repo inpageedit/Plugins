@@ -16,7 +16,7 @@
 }
 
 /* @FIX For WikiEditor dialogs */
-.ssi-backdrop.in-page-edit,
+.ssi-backdrop,
 .ssi-modalOuter.in-page-edit {
   z-index: 800;
 }
