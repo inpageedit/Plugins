@@ -13,6 +13,11 @@
       "toobox.js"
     ]
   },
+  "wiki-editor.js": {
+    "name": "WikiEditor",
+    "description": "Make InPageEdit use native WikiEditor (2010 editor) instead of IPE's custom editTools.",
+    "author": "Dragon-Fish"
+  },
   "code-mirror/script.js": {
     "name": "[BETA] Code Mirror",
     "description": "Syntaxhighlight editor for InPageEdit. Currently supported languages: Wikitext, CSS, JavaScript, JSON, Lua.",
