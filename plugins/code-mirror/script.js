@@ -1,21 +1,28 @@
 /**
  * @name code-mirror 语法高亮编辑器
- * @author 机智的小鱼君
+ * @author 机智的小鱼君 <https://github.com/Dragon-Fish>
+ * @author Bhsd <https://github.com/bhsd-harry>
  */
-!(async function () {
-  const libs = {
-    css: 'https://cdn.jsdelivr.net/npm/codemirror@5.58.2/mode/css/css.min.js',
-    javascript: 'https://cdn.jsdelivr.net/npm/codemirror@5.58.2/mode/javascript/javascript.min.js',
-    lua: 'https://cdn.jsdelivr.net/npm/codemirror@5.58.2/mode/lua/lua.min.js',
-    mediawiki: 'https://ipe-plugins.js.org/plugins/code-mirror/wikitext.js',
+;(async () => {
+  const MODE_LIST = {
+    css: 'https://cdn.jsdelivr.net/npm/codemirror@5.65.1/mode/css/css.min.js',
+    javascript:
+      'https://cdn.jsdelivr.net/npm/codemirror@5.65.1/mode/javascript/javascript.min.js',
+    lua: 'https://cdn.jsdelivr.net/npm/codemirror@5.65.1/mode/lua/lua.min.js',
+    mediawiki:
+      'https://cdn.jsdelivr.net/gh/wikimedia/mediawiki-extensions-CodeMirror@REL1_37/resources/mode/mediawiki/mediawiki.min.js',
   }
-  // Cache loaded libs
-  var loadedLibs = {}
 
-  mw.loader.load('https://cdn.jsdelivr.net/npm/codemirror@5.58.2/lib/codemirror.min.css', 'text/css')
-  mw.loader.load('https://ipe-plugins.js.org/plugins/code-mirror/style.css', 'text/css')
+  mw.loader.load(
+    'https://cdn.jsdelivr.net/npm/codemirror@5.65.1/lib/codemirror.min.css',
+    'text/css'
+  )
+  mw.loader.load(
+    'https://cdn.jsdelivr.net/npm/codemirror@5.65.1/addon/dialog/dialog.css',
+    'text/css'
+  )
 
-  function loadScript(url) {
+  function getScript(url) {
     return $.ajax({
       url,
       dataType: 'script',
@@ -25,71 +32,147 @@
   }
 
   // Load Code Mirror
-  await loadScript('https://cdn.jsdelivr.net/npm/codemirror@5.58.2/lib/codemirror.min.js')
+  await getScript(
+    'https://cdn.jsdelivr.net/npm/codemirror@5.65.1/lib/codemirror.min.js'
+  )
+  // Load addons
+  const ADDON_LIST = [
+    'selection/active-line.min.js',
+    // 'fold/xml-fold.js',
+    // 'edit/matchtags.min.js',
+    'dialog/dialog.js',
+    'search/searchcursor.js',
+    'search/search.js',
+  ]
+  await Promise.all(
+    ADDON_LIST.map(i =>
+      getScript(`https://cdn.jsdelivr.net/npm/codemirror@5.65.1/addon/${i}`)
+    )
+  )
 
-  // Get addons
-  await loadScript('https://cdn.jsdelivr.net/npm/codemirror@5.58.2/addon/selection/active-line.min.js')
-  // await loadScript('https://cdn.jsdelivr.net/npm/codemirror@5.58.2/addon/display/autorefresh.min.js')
-
+  /** @type {Record<string, boolean>} */
+  const LOADED_MODE = {}
   /**
    * 加载渲染器
    * @param {String} type
    */
-  async function getLib(type) {
+  async function initMode(type) {
     // 已经加载过的渲染器
-    if (loadedLibs[type] === true) {
+    if (LOADED_MODE[type] === true) {
       return true
     }
     // 加载渲染器
-    if (libs[type] === undefined) return false
-    await loadScript(libs[type])
-    loadedLibs[type] = true
+    if (MODE_LIST[type] === undefined) return false
+    if (type === 'mediawiki') {
+      mw.loader.load(
+        'https://cdn.jsdelivr.net/gh/wikimedia/mediawiki-extensions-CodeMirror@REL1_37/resources/mode/mediawiki/mediawiki.min.css',
+        'text/css'
+      )
+    }
+    await getScript(MODE_LIST[type])
+    LOADED_MODE[type] = true
     return true
   }
 
   /**
-   * 检查页面语言类型
-   * @param {String} page PageName
+   * 加载codemirror的mediawiki模块需要的设置数据
    */
-  function checkType(page) {
-    var moduleNS = mw.config.get('wgFormattedNamespaces')[828] || 'Module'
-    // var isModule = new RegExp('^(' + moduleNS + ':|Module:).+?(?<!/doc)$', 'i')
-    if (/\.css$/i.test(page)) return 'css'
-    if (/\.js$/i.test(page) || /\.json$/i.test(page)) return 'javascript' // js 以及 json 均使用 javascript 渲染器
-    if (new RegExp('^(' + moduleNS + ':|Module:)', 'i').test(page) && !/\/doc$/.test(page)) return 'lua' // 以 Module 名字空间开头，不以 /doc 结尾，判定为 Lua
-    return 'mediawiki' // 否则返回 wikitext 格式
+  const getMwConfig = (() => {
+    /** @type {{ tagModes: { pre: string, nowiki:string }, tags: Record<string, boolean>, doubleUnderscore: Record<string, boolean>[], functionSynonyms: Record<string, boolean>[], urlProtocols: string }} */
+    const config = {}
+    let _already = false
+    return async () => {
+      if (_already) {
+        return config
+      }
+
+      const {
+        query: { magicwords, extensiontags },
+      } = await new mw.Api().get({
+        action: 'query',
+        meta: 'siteinfo',
+        siprop: 'magicwords|extensiontags',
+        format: 'json',
+        formatversion: 2,
+      })
+      const getAliases = words => words.map(({ aliases }) => aliases).flat(),
+        getConfig = aliases =>
+          Object.fromEntries(aliases.map(alias => [alias, true]))
+      config.tagModes = {
+        pre: 'mw-tag-pre',
+        nowiki: 'mw-tag-nowiki',
+      }
+      config.tags = Object.fromEntries(
+        extensiontags.map(tag => [tag.slice(1, -1), true])
+      )
+      const sensitive = getAliases(
+          magicwords.filter(word => word['case-sensitive'])
+        ),
+        insensitive = getAliases(
+          magicwords.filter(word => !word['case-sensitive'])
+        )
+      config.doubleUnderscore = [
+        getConfig(insensitive.filter(alias => /^__.+__$/.test(alias))),
+        getConfig(sensitive.filter(alias => /^__.+__$/.test(alias))),
+      ]
+      config.functionSynonyms = [
+        getConfig(insensitive.filter(alias => !/^__.+__$/.test(alias))),
+        getConfig(sensitive.filter(alias => !/^__.+__$/.test(alias))),
+      ]
+      config.urlProtocols = mw.config.get('wgUrlProtocols')
+      _already = true
+      mw.config.set('extCodeMirrorConfig', config)
+      return config
+    }
+  })()
+
+  /**
+   * 检查页面语言类型
+   * @param {string} page Page name
+   */
+  function getPageMode(page) {
+    const NS_MODULE = mw.config.get('wgFormattedNamespaces')[828] || 'Module'
+    if (page.endsWith('.css')) {
+      return 'css'
+    } else if (page.endsWith('.js') || page.endsWith('.json')) {
+      return 'javascript'
+    } else if (page.startsWith(`${NS_MODULE}:`) && !page.endsWith('/doc')) {
+      return 'lua'
+    } else {
+      return 'mediawiki'
+    }
   }
 
   /**
    * 渲染编辑器
-   * @param {String|Element|jQuery<Element>} target 目标编辑框
-   * @param {String} page 页面名
+   * @param {JQuery<HTMLTextAreaElement>} target 目标编辑框
+   * @param {string} page 页面名
    */
   async function renderEditor(target, page) {
-    target = $(target)
-
     // 防止抑郁
-    var clearDiv = '<div style="clear: both"></div>'
+    const clearDiv = '<div style="clear: both"></div>'
     target.before(clearDiv)
     target.after(clearDiv)
 
-    var mode = checkType(page)
-
-    await getLib(mode)
+    const mode = getPageMode(page)
+    const [mwConfig] = await Promise.all([getMwConfig(), initMode(mode)])
 
     if (target.length) {
-      var cm = CodeMirror.fromTextArea(target[0], {
+      const cm = CodeMirror.fromTextArea(target[0], {
         lineNumbers: true,
         lineWrapping: true,
         styleActiveLine: true,
-        // autoRefresh: true,
-        theme: 'inpageedit light',
+        matchTags: { bothTags: true },
+        extraKeys: { 'Alt-F': 'findPersistent' },
+        theme: 'inpageedit',
         mode,
+        mwConfig,
       })
       cm.on('change', function () {
         target.trigger('input')
+        target.trigger('change')
       })
-      $.valHooks['textarea'] = {
+      $.valHooks.textarea = {
         get: function (elem) {
           if (elem === target[0]) return cm.getValue()
           else return elem.value
@@ -209,7 +292,16 @@
               cm.doc.replaceSelection(insertText)
 
               if (selectPeri) {
-                cm.doc.setSelection(cm.doc.posFromIndex(cm.doc.indexFromPos(startCursor) + pre.length), cm.doc.posFromIndex(cm.doc.indexFromPos(startCursor) + pre.length + selText.length))
+                cm.doc.setSelection(
+                  cm.doc.posFromIndex(
+                    cm.doc.indexFromPos(startCursor) + pre.length
+                  ),
+                  cm.doc.posFromIndex(
+                    cm.doc.indexFromPos(startCursor) +
+                      pre.length +
+                      selText.length
+                  )
+                )
               }
             })
           },
@@ -229,7 +321,10 @@
 
           setSelection: function (options) {
             return this.each(function () {
-              cm.doc.setSelection(cm.doc.posFromIndex(options.start), cm.doc.posFromIndex(options.end))
+              cm.doc.setSelection(
+                cm.doc.posFromIndex(options.start),
+                cm.doc.posFromIndex(options.end)
+              )
             })
           },
 
@@ -311,6 +406,7 @@
 
         return retval
       }
+      return cm
     }
   }
 
@@ -319,6 +415,7 @@
    */
   mw.hook('InPageEdit.quickEdit').add(({ $editArea, $modalTitle }) => {
     const page = $modalTitle.find('.editPage').text()
-    renderEditor($editArea, page)
+    const cm = renderEditor($editArea, page)
+    mw.hook('InPageEdit.quickEdit.codemirror').fire({ $editArea, cm })
   })
 })()
