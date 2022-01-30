@@ -17,10 +17,10 @@
     'https://cdn.jsdelivr.net/npm/codemirror@5.65.1/lib/codemirror.min.css',
     'text/css'
   )
-  // mw.loader.load(
-  //   'https://ipe-plugins.js.org/plugins/code-mirror/style.css',
-  //   'text/css'
-  // )
+  mw.loader.load(
+    'https://cdn.jsdelivr.net/npm/codemirror@5.65.1/addon/dialog/dialog.css',
+    'text/css'
+  )
 
   function getScript(url) {
     return $.ajax({
@@ -36,11 +36,19 @@
     'https://cdn.jsdelivr.net/npm/codemirror@5.65.1/lib/codemirror.min.js'
   )
   // Load addons
-  await Promise.all([
-    getScript(
-      'https://cdn.jsdelivr.net/npm/codemirror@5.65.1/addon/selection/active-line.min.js'
-    ),
-  ])
+  const ADDON_LIST = [
+    'selection/active-line.min.js',
+    // 'fold/xml-fold.js',
+    // 'edit/matchtags.min.js',
+    'dialog/dialog.js',
+    'search/searchcursor.js',
+    'search/search.js',
+  ]
+  await Promise.all(
+    ADDON_LIST.map(i =>
+      getScript(`https://cdn.jsdelivr.net/npm/codemirror@5.65.1/addon/${i}`)
+    )
+  )
 
   /** @type {Record<string, boolean>} */
   const LOADED_MODE = {}
@@ -72,7 +80,7 @@
   const getMwConfig = (() => {
     /** @type {{ tagModes: { pre: string, nowiki:string }, tags: Record<string, boolean>, doubleUnderscore: Record<string, boolean>[], functionSynonyms: Record<string, boolean>[], urlProtocols: string }} */
     const config = {}
-    const _already = false
+    let _already = false
     return async () => {
       if (_already) {
         return config
@@ -154,8 +162,9 @@
         lineNumbers: true,
         lineWrapping: true,
         styleActiveLine: true,
-        // autoRefresh: true,
-        theme: 'inpageedit light',
+        matchTags: { bothTags: true },
+        extraKeys: { 'Alt-F': 'findPersistent' },
+        theme: 'inpageedit',
         mode,
         mwConfig,
       })
