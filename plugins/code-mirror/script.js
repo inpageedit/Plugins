@@ -42,12 +42,12 @@
     }
     // 加载渲染器
     if (libs[type] === undefined) return false
-    const config = {};
+    let config;
     if (type === 'mediawiki') {
       mw.loader.load('https://cdn.jsdelivr.net/gh/wikimedia/mediawiki-extensions-CodeMirror@REL1_37/resources/mode/mediawiki/mediawiki.min.css', 'text/css');
-      await Promise.all([
+      [, config] = await Promise.all([
         loadScript(libs[type]),
-        loadConfig(config)
+        loadConfig()
       ]);
       return config
     } else {
@@ -60,32 +60,46 @@
   /**
    * 加载codemirror的mediawiki模块需要的设置数据
    */
-  async function loadConfig(config) {
-    const {query: {magicwords, extensiontags, protocols}} = await new mw.Api().get({
+  async function loadConfig() {
+    let config = mw.config.get('extCodeMirrorConfig');
+    if (config) {
+      return config;
+    }
+    config = {};
+    const {query: {magicwords, extensiontags, protocols, functionhooks, variables}} = await new mw.Api().get({
       action: 'query',
       meta: 'siteinfo',
-      siprop: 'magicwords|extensiontags',
+      siprop: 'magicwords|extensiontags|functionhooks|variables',
       format: 'json',
       formatversion: 2
     });
-    const getAliases = (words) => words.map(({aliases}) => aliases).flat(),
-      getConfig = (aliases) => Object.fromEntries(aliases.map(alias => [alias, true]));
+    const getAliases = (words) => words.flatMap(({aliases}) => aliases),
+      getConfig = (aliases) => Object.fromEntries(aliases.map(alias => [alias.replace(/:$/, ''), true]));
     config.tagModes = {
       'pre': 'mw-tag-pre',
       'nowiki': 'mw-tag-nowiki'
     };
     config.tags = Object.fromEntries(extensiontags.map(tag => [tag.slice(1, -1), true]));
-    const sensitive = getAliases(magicwords.filter(word => word['case-sensitive'])),
-      insensitive = getAliases(magicwords.filter(word => !word['case-sensitive']));
+    const realMagicwords = new Set([...functionhooks, ...variables]),
+      allMagicwords = magicwords.filter(({name, aliases}) =>
+      aliases.some(alias => /^__.+__$/.test(alias)) || realMagicwords.has(name)
+    ),
+      sensitive = getAliases(allMagicwords.filter(word => word['case-sensitive'])),
+      insensitive = [
+      ...getAliases(allMagicwords.filter(word => !word['case-sensitive'])).map(alias => alias.toLowerCase()),
+      'msg', 'raw', 'msgnw', 'subst', 'safesubst'
+    ];
     config.doubleUnderscore = [
       getConfig(insensitive.filter(alias => /^__.+__$/.test(alias))),
       getConfig(sensitive.filter(alias => /^__.+__$/.test(alias)))
     ];
     config.functionSynonyms = [
-      getConfig(insensitive.filter(alias => !/^__.+__$/.test(alias))),
-      getConfig(sensitive.filter(alias => !/^__.+__$/.test(alias)))
+      getConfig(insensitive.filter(alias => !/(^__.+__$|^#)/.test(alias))),
+      getConfig(sensitive.filter(alias => !/(^__.+__$|^#)/.test(alias)))
     ];
     config.urlProtocols = mw.config.get('wgUrlProtocols');
+    mw.config.set('extCodeMirrorConfig', config);
+    return config;
   }
 
   /**
