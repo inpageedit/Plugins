@@ -32,10 +32,11 @@
   }
 
   // Load Code Mirror
+  await getScript(
+    'https://cdn.jsdelivr.net/npm/codemirror@5.65.1/lib/codemirror.min.js'
+  )
+  // Load addons
   await Promise.all([
-    getScript(
-      'https://cdn.jsdelivr.net/npm/codemirror@5.65.1/lib/codemirror.min.js'
-    ),
     getScript(
       'https://cdn.jsdelivr.net/npm/codemirror@5.65.1/addon/selection/active-line.min.js'
     ),
@@ -396,6 +397,7 @@
 
         return retval
       }
+      return cm
     }
   }
 
@@ -404,6 +406,7 @@
    */
   mw.hook('InPageEdit.quickEdit').add(({ $editArea, $modalTitle }) => {
     const page = $modalTitle.find('.editPage').text()
-    renderEditor($editArea, page)
+    const cm = renderEditor($editArea, page)
+    mw.hook('InPageEdit.quickEdit.codemirror').fire({ $editArea, cm })
   })
 })()
