@@ -18,7 +18,7 @@
     'text/css'
   )
   mw.loader.load(
-    'https://cdn.jsdelivr.net/npm/codemirror@5.65.1/addon/dialog/dialog.css',
+    'https://ipe-plugins.js.org/plugins/code-mirror/style.css',
     'text/css'
   )
 
