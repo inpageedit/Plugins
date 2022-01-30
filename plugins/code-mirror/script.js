@@ -77,54 +77,61 @@
   /**
    * 加载codemirror的mediawiki模块需要的设置数据
    */
-  const getMwConfig = (() => {
+  const getMwConfig = async (type) => {
     /** @type {{ tagModes: { pre: string, nowiki:string }, tags: Record<string, boolean>, doubleUnderscore: Record<string, boolean>[], functionSynonyms: Record<string, boolean>[], urlProtocols: string }} */
-    const config = {}
-    let _already = false
-    return async () => {
-      if (_already) {
-        return config
-      }
-
-      const {
-        query: { magicwords, extensiontags },
-      } = await new mw.Api().get({
-        action: 'query',
-        meta: 'siteinfo',
-        siprop: 'magicwords|extensiontags',
-        format: 'json',
-        formatversion: 2,
-      })
-      const getAliases = words => words.map(({ aliases }) => aliases).flat(),
-        getConfig = aliases =>
-          Object.fromEntries(aliases.map(alias => [alias, true]))
-      config.tagModes = {
-        pre: 'mw-tag-pre',
-        nowiki: 'mw-tag-nowiki',
-      }
-      config.tags = Object.fromEntries(
-        extensiontags.map(tag => [tag.slice(1, -1), true])
-      )
-      const sensitive = getAliases(
-          magicwords.filter(word => word['case-sensitive'])
-        ),
-        insensitive = getAliases(
-          magicwords.filter(word => !word['case-sensitive'])
-        )
-      config.doubleUnderscore = [
-        getConfig(insensitive.filter(alias => /^__.+__$/.test(alias))),
-        getConfig(sensitive.filter(alias => /^__.+__$/.test(alias))),
-      ]
-      config.functionSynonyms = [
-        getConfig(insensitive.filter(alias => !/^__.+__$/.test(alias))),
-        getConfig(sensitive.filter(alias => !/^__.+__$/.test(alias))),
-      ]
-      config.urlProtocols = mw.config.get('wgUrlProtocols')
-      _already = true
-      mw.config.set('extCodeMirrorConfig', config)
+    if (type !== 'mediawiki') {
+      return
+    }
+    let config = mw.config.get('extCodeMirrorConfig')
+    if (config) {
       return config
     }
-  })()
+    config = {}
+
+    const {
+      query: { magicwords, extensiontags, functionhooks, variables },
+    } = await new mw.Api().get({
+      action: 'query',
+      meta: 'siteinfo',
+      siprop: 'magicwords|extensiontags|functionhooks|variables',
+      format: 'json',
+      formatversion: 2,
+    })
+    const getAliases = words => words.flatMap(({ aliases }) => aliases),
+      getConfig = aliases =>
+        Object.fromEntries(aliases.map(alias => [alias.replace(/:$/, ''), true]))
+    config.tagModes = {
+      pre: 'mw-tag-pre',
+      nowiki: 'mw-tag-nowiki',
+    }
+    config.tags = Object.fromEntries(
+      extensiontags.map(tag => [tag.slice(1, -1), true])
+    )
+    const realMagicwords = new Set([...functionhooks, ...variables]),
+      allMagicwords = magicwords.filter(({name, aliases}) =>
+        aliases.some(alias => /^__.+__$/.test(alias)) || realMagicwords.has(name)
+      ),
+      sensitive = getAliases(
+        allMagicwords.filter(word => word['case-sensitive'])
+      ),
+      insensitive = [
+        ...getAliases(
+          allMagicwords.filter(word => !word['case-sensitive'])
+        ).map(alias => alias.toLowerCase()),
+        'msg', 'raw', 'msgnw', 'subst', 'safesubst'
+      ]
+    config.doubleUnderscore = [
+      getConfig(insensitive.filter(alias => /^__.+__$/.test(alias))),
+      getConfig(sensitive.filter(alias => /^__.+__$/.test(alias))),
+    ]
+    config.functionSynonyms = [
+      getConfig(insensitive.filter(alias => !/^__.+__|^#$/.test(alias))),
+      getConfig(sensitive.filter(alias => !/^__.+__|^#$/.test(alias))),
+    ]
+    config.urlProtocols = mw.config.get('wgUrlProtocols')
+    mw.config.set('extCodeMirrorConfig', config)
+    return config
+  }
 
   /**
    * 检查页面语言类型
@@ -155,7 +162,7 @@
     target.after(clearDiv)
 
     const mode = getPageMode(page)
-    const [mwConfig] = await Promise.all([getMwConfig(), initMode(mode)])
+    const [mwConfig] = await Promise.all([getMwConfig(mode), initMode(mode)])
 
     if (target.length) {
       const cm = CodeMirror.fromTextArea(target[0], {
