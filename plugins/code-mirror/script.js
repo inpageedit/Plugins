@@ -5,6 +5,9 @@
  */
 ;(async () => {
   const codemirrorInstalled = mw.loader.getState('ext.CodeMirror')
+  const settings = JSON.parse(localStorage.getItem('InPageEditMwConfig')) || {}
+  const serverName = mw.config.get('wgServerName')
+  const localSetting = settings[serverName]
   const MODE_LIST = codemirrorInstalled ? {
     css: ['ext.CodeMirror.lib.mode.css'],
     javascript: ['ext.CodeMirror.lib.mode.javascript'],
@@ -94,6 +97,11 @@
     if (config) {
       return config
     }
+    if (localSetting?.time > Date.now() - 86400 * 1000 * 3) {
+      config = localSetting.config;
+      mw.config.set('extCodeMirrorConfig', config)
+      return config
+    }
     config = {}
 
     const {
@@ -138,6 +146,11 @@
     ]
     config.urlProtocols = mw.config.get('wgUrlProtocols')
     mw.config.set('extCodeMirrorConfig', config)
+    settings[serverName] = {
+      config,
+      time: Date.now()
+    }
+    localStorage.setItem('InPageEditMwConfig', JSON.stringify(settings))
     return config
   }
 
