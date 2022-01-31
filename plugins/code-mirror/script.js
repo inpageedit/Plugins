@@ -4,7 +4,13 @@
  * @author Bhsd <https://github.com/bhsd-harry>
  */
 ;(async () => {
-  const MODE_LIST = {
+  const codemirrorInstalled = mw.loader.getState('ext.CodeMirror')
+  const MODE_LIST = codemirrorInstalled ? {
+    css: ['ext.CodeMirror.lib.mode.css'],
+    javascript: ['ext.CodeMirror.lib.mode.javascript'],
+    lua: 'https://cdn.jsdelivr.net/npm/codemirror@5.65.1/mode/lua/lua.min.js',
+    mediawiki: ['ext.CodeMirror.mode.mediawiki', 'ext.CodeMirror.data']
+  } : {
     css: 'https://cdn.jsdelivr.net/npm/codemirror@5.65.1/mode/css/css.min.js',
     javascript:
       'https://cdn.jsdelivr.net/npm/codemirror@5.65.1/mode/javascript/javascript.min.js',
@@ -13,26 +19,28 @@
       'https://cdn.jsdelivr.net/gh/wikimedia/mediawiki-extensions-CodeMirror@REL1_37/resources/mode/mediawiki/mediawiki.min.js',
   }
 
-  mw.loader.load(
-    'https://cdn.jsdelivr.net/npm/codemirror@5.65.1/lib/codemirror.min.css',
-    'text/css'
-  )
+  if (!codemirrorInstalled) {
+    mw.loader.load(
+      'https://cdn.jsdelivr.net/npm/codemirror@5.65.1/lib/codemirror.min.css',
+      'text/css'
+    )
+  }
   mw.loader.load(
     'https://ipe-plugins.js.org/plugins/code-mirror/style.css',
     'text/css'
   )
 
   function getScript(url) {
-    return $.ajax({
+    return typeof url === 'string' ? $.ajax({
       url,
       dataType: 'script',
       crossDomain: true,
       cache: true,
-    })
+    }) : mw.loader.using(url.flat())
   }
 
   // Load Code Mirror
-  await getScript(
+  await codemirrorInstalled ? mw.loader.using('ext.CodeMirror.lib') : getScript(
     'https://cdn.jsdelivr.net/npm/codemirror@5.65.1/lib/codemirror.min.js'
   )
   // Load addons
@@ -63,7 +71,7 @@
     }
     // 加载渲染器
     if (MODE_LIST[type] === undefined) return false
-    if (type === 'mediawiki') {
+    if (type === 'mediawiki' && !codemirrorInstalled) {
       mw.loader.load(
         'https://cdn.jsdelivr.net/gh/wikimedia/mediawiki-extensions-CodeMirror@REL1_37/resources/mode/mediawiki/mediawiki.min.css',
         'text/css'
@@ -139,12 +147,15 @@
    */
   function getPageMode(page) {
     const NS_MODULE = mw.config.get('wgFormattedNamespaces')[828] || 'Module'
+    const NS_WIDGET = mw.config.get('wgFormattedNamespaces')[214] || 'Widget'
     if (page.endsWith('.css')) {
       return 'css'
     } else if (page.endsWith('.js') || page.endsWith('.json')) {
       return 'javascript'
     } else if (page.startsWith(`${NS_MODULE}:`) && !page.endsWith('/doc')) {
       return 'lua'
+    } else if (page.startsWith(`${NS_WIDGET}`) && !page.endsWith('/doc')) {
+      return 'widget'
     } else {
       return 'mediawiki'
     }
@@ -161,8 +172,24 @@
     target.before(clearDiv)
     target.after(clearDiv)
 
-    const mode = getPageMode(page)
-    const [mwConfig] = await Promise.all([getMwConfig(mode), initMode(mode)])
+    let mode = getPageMode(page)
+    let mwConfig
+    if (mode !== 'widget') {
+      [mwConfig] = await Promise.all([getMwConfig(mode), initMode(mode)])
+    } else if (codemirrorInstalled) {
+      await getScript([MODE_LIST.css, MODE_LIST.javascript, MODE_LIST.mediawiki]);
+      LOADED_MODE.css = true;
+      LOADED_MODE.javascript = true;
+      LOADED_MODE.mediawiki = true;
+      mwConfig = await getMwConfig('mediawiki')
+    } else {
+      [mwConfig] = await Promise.all([getMwConfig('mediawiki'), initMode('css'), initMode('javascript'), initMode('mediawiki')])
+    }
+    if (mode === 'widget') {
+      $.extend(mwConfig.tags, {script: true, style: true})
+      $.extend(mwConfig.tagModes, {script: 'javascript', style: 'css'})
+      mode = 'mediawiki'
+    }
 
     if (target.length) {
       const cm = CodeMirror.fromTextArea(target[0], {
