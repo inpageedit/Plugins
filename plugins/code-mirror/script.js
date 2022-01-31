@@ -6,7 +6,7 @@
 ;(async () => {
   const codemirrorInstalled = mw.loader.getState('ext.CodeMirror')
   const settings = JSON.parse(localStorage.getItem('InPageEditMwConfig')) || {}
-  const serverName = mw.config.get('wgServerName')
+  const serverName = mw.config.get('wgServerName') + mw.config.get('wgScriptPath')
   const localSetting = settings[serverName]
   const MODE_LIST = codemirrorInstalled ? {
     css: ['ext.CodeMirror.lib.mode.css'],
@@ -167,7 +167,7 @@
       return 'javascript'
     } else if (page.startsWith(`${NS_MODULE}:`) && !page.endsWith('/doc')) {
       return 'lua'
-    } else if (page.startsWith(`${NS_WIDGET}`) && !page.endsWith('/doc')) {
+    } else if (page.startsWith(`${NS_WIDGET}:`) && !page.endsWith('/doc')) {
       return 'widget'
     } else {
       return 'mediawiki'
