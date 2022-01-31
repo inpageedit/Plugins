@@ -461,8 +461,10 @@
    * 为 quickEdit 钩子添加函数
    */
   mw.hook('InPageEdit.quickEdit').add(({ $editArea, $modalTitle }) => {
-    const page = $modalTitle.find('.editPage').text()
-    const cm = renderEditor($editArea, page)
-    mw.hook('InPageEdit.quickEdit.codemirror').fire({ $editArea, cm })
+    (async () => {
+      const page = $modalTitle.find('.editPage').text()
+      const cm = await renderEditor($editArea, page)
+      mw.hook('InPageEdit.quickEdit.codemirror').fire({ $editArea, cm })
+    })()
   })
 })()
