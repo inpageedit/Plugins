@@ -12,7 +12,8 @@
     css: ['ext.CodeMirror.lib.mode.css'],
     javascript: ['ext.CodeMirror.lib.mode.javascript'],
     lua: 'https://cdn.jsdelivr.net/npm/codemirror@5.65.1/mode/lua/lua.min.js',
-    mediawiki: ['ext.CodeMirror.mode.mediawiki', 'ext.CodeMirror.data']
+    mediawiki: ['ext.CodeMirror.mode.mediawiki', 'ext.CodeMirror.data'],
+    widget: ['ext.CodeMirror.lib.mode.htmlmixed', 'ext.CodeMirror.mode.mediawiki', 'ext.CodeMirror.data']
   } : {
     css: 'https://cdn.jsdelivr.net/npm/codemirror@5.65.1/mode/css/css.min.js',
     javascript:
@@ -20,6 +21,9 @@
     lua: 'https://cdn.jsdelivr.net/npm/codemirror@5.65.1/mode/lua/lua.min.js',
     mediawiki:
       'https://cdn.jsdelivr.net/gh/wikimedia/mediawiki-extensions-CodeMirror@REL1_37/resources/mode/mediawiki/mediawiki.min.js',
+    htmlmixed: 'https://cdn.jsdelivr.net/npm/codemirror@5.65.1/mode/htmlmixed/htmlmixed.min.js',
+    xml: 'https://cdn.jsdelivr.net/npm/codemirror@5.65.1/mode/xml/xml.min.js',
+    widget: null
   }
 
   if (!codemirrorInstalled) {
@@ -49,8 +53,6 @@
   // Load addons
   const ADDON_LIST = [
     'selection/active-line.min.js',
-    // 'fold/xml-fold.js',
-    // 'edit/matchtags.min.js',
     'dialog/dialog.js',
     'search/searchcursor.js',
     'search/search.js',
@@ -74,13 +76,27 @@
     }
     // 加载渲染器
     if (MODE_LIST[type] === undefined) return false
-    if (type === 'mediawiki' && !codemirrorInstalled) {
-      mw.loader.load(
-        'https://cdn.jsdelivr.net/gh/wikimedia/mediawiki-extensions-CodeMirror@REL1_37/resources/mode/mediawiki/mediawiki.min.css',
-        'text/css'
-      )
+    if (type === 'widget') {
+      if (codemirrorInstalled) {
+        await getScript(MODE_LIST[type])
+        LOADED_MODE.css = true
+        LOADED_MODE.javascript = true
+        LOADED_MODE.mediawiki = true
+      } else {
+        await Promise.all(['css', 'javascript', 'mediawiki', 'htmlmixed', 'xml'].map(initMode))
+      }
+      CodeMirror.defineMIME('widget', {name: 'htmlmixed', tags: {
+        noinclude: [[null, null, 'mediawiki']]
+      }})
+    } else {
+      if (type === 'mediawiki' && !codemirrorInstalled) {
+        mw.loader.load(
+          'https://cdn.jsdelivr.net/gh/wikimedia/mediawiki-extensions-CodeMirror@REL1_37/resources/mode/mediawiki/mediawiki.min.css',
+          'text/css'
+        )
+      }
+      await getScript(MODE_LIST[type])
     }
-    await getScript(MODE_LIST[type])
     LOADED_MODE[type] = true
     return true
   }
@@ -90,7 +106,7 @@
    */
   const getMwConfig = async (type) => {
     /** @type {{ tagModes: { pre: string, nowiki:string }, tags: Record<string, boolean>, doubleUnderscore: Record<string, boolean>[], functionSynonyms: Record<string, boolean>[], urlProtocols: string }} */
-    if (type !== 'mediawiki') {
+    if (!['mediawiki', 'widget'].includes(type)) {
       return
     }
     let config = mw.config.get('extCodeMirrorConfig')
@@ -98,7 +114,7 @@
       return config
     }
     if (localSetting?.time > Date.now() - 86400 * 1000 * 3) {
-      config = localSetting.config;
+      config = localSetting.config
       mw.config.set('extCodeMirrorConfig', config)
       return config
     }
@@ -186,32 +202,16 @@
     target.after(clearDiv)
 
     let mode = getPageMode(page)
-    let mwConfig
-    if (mode !== 'widget') {
-      [mwConfig] = await Promise.all([getMwConfig(mode), initMode(mode)])
-    } else if (codemirrorInstalled) {
-      await getScript([MODE_LIST.css, MODE_LIST.javascript, MODE_LIST.mediawiki]);
-      LOADED_MODE.css = true;
-      LOADED_MODE.javascript = true;
-      LOADED_MODE.mediawiki = true;
-      mwConfig = await getMwConfig('mediawiki')
-    } else {
-      [mwConfig] = await Promise.all([getMwConfig('mediawiki'), initMode('css'), initMode('javascript'), initMode('mediawiki')])
-    }
-    if (mode === 'widget') {
-      $.extend(mwConfig.tags, {script: true, style: true})
-      $.extend(mwConfig.tagModes, {script: 'javascript', style: 'css'})
-      mode = 'mediawiki'
-    }
+    const [mwConfig] = await Promise.all([getMwConfig(mode), initMode(mode)])
 
     if (target.length) {
       const cm = CodeMirror.fromTextArea(target[0], {
         lineNumbers: true,
         lineWrapping: true,
         styleActiveLine: true,
-        matchTags: { bothTags: true },
         extraKeys: { 'Alt-F': 'findPersistent' },
         theme: 'inpageedit',
+        json: page.endsWith('.json'),
         mode,
         mwConfig,
       })
