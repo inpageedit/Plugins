@@ -215,7 +215,10 @@
         mode,
         mwConfig,
       })
-      cm.on('change', function () {
+      cm.on('change', function (_, {origin}) {
+        if (origin == 'setValue') {
+          return
+        }
         target.trigger('input')
         target.trigger('change')
       })
