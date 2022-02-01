@@ -4,7 +4,7 @@
 }
 
 /* Minor fix */
-.CodeMirror {
+.in-page-edit .CodeMirror {
   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro',
     monospace;
   min-height: 400px;
