@@ -164,7 +164,9 @@
         styleActiveLine: true,
         matchTags: { bothTags: true },
         extraKeys: { 'Alt-F': 'findPersistent' },
-        theme: 'inpageedit',
+        theme: `inpageedit ${
+          globalThis.InPageEditCodeMirrorTheme === 'dark' ? 'dark' : 'light'
+        }`,
         mode,
         mwConfig,
       })

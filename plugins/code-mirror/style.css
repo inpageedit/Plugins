@@ -9,15 +9,6 @@
     monospace;
   min-height: 400px;
 }
-.in-page-edit .CodeMirror-sizer {
-  margin-left: 30px !important;
-}
-.in-page-edit .CodeMirror-gutters {
-  left: 0 !important;
-}
-.in-page-edit .CodeMirror-linenumbers {
-  width: 30px !important;
-}
 
 /* Dialog */
 .CodeMirror-dialog {
