@@ -7,7 +7,7 @@
   // Variables
   const CM_CDN = 'https://cdn.jsdelivr.net/npm/codemirror@5.65.1'
   const USING_LOCAL = mw.loader.getState('ext.CodeMirror') !== null
-  const THEME = '' + globalThis.InPageEditCodeMirrorTheme || 'solarized light'
+  const THEME = '' + (globalThis.InPageEditCodeMirrorTheme || 'solarized light')
   const conf = mw.config.get()
 
   // Local settings cache
