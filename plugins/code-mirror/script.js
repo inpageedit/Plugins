@@ -4,17 +4,23 @@
  * @author Bhsd <https://github.com/bhsd-harry>
  */
 ;(async () => {
-  const codemirrorInstalled = mw.loader.getState('ext.CodeMirror')
-  const settings = JSON.parse(localStorage.getItem('InPageEditMwConfig')) || {}
-  const serverName =
-    mw.config.get('wgServerName') + mw.config.get('wgScriptPath')
-  const localSetting = settings[serverName]
-  const MODE_LIST = codemirrorInstalled
+  // Variables
+  const CM_CDN = 'https://cdn.jsdelivr.net/npm/codemirror@5.65.1'
+  const USING_LOCAL = mw.loader.getState('ext.CodeMirror') !== null
+  const conf = mw.config.get()
+
+  // Local settings cache
+  const SETTINGS_CACHE = JSON.parse(
+    localStorage.getItem('InPageEditMwConfig') || '{}'
+  )
+  const SITE_ID = `${conf.wgServerName}${conf.wgScriptPath}`
+  const LOCAL_SETTINGS = SETTINGS_CACHE[SITE_ID]
+
+  const MODE_LIST = USING_LOCAL
     ? {
         css: ['ext.CodeMirror.lib.mode.css'],
         javascript: ['ext.CodeMirror.lib.mode.javascript'],
-        lua:
-          'https://cdn.jsdelivr.net/npm/codemirror@5.65.1/mode/lua/lua.min.js',
+        lua: `${CM_CDN}/mode/lua/lua.min.js`,
         mediawiki: ['ext.CodeMirror.mode.mediawiki', 'ext.CodeMirror.data'],
         widget: [
           'ext.CodeMirror.lib.mode.htmlmixed',
@@ -23,26 +29,17 @@
         ],
       }
     : {
-        css:
-          'https://cdn.jsdelivr.net/npm/codemirror@5.65.1/mode/css/css.min.js',
-        javascript:
-          'https://cdn.jsdelivr.net/npm/codemirror@5.65.1/mode/javascript/javascript.min.js',
-        lua:
-          'https://cdn.jsdelivr.net/npm/codemirror@5.65.1/mode/lua/lua.min.js',
-        mediawiki:
-          'https://cdn.jsdelivr.net/gh/wikimedia/mediawiki-extensions-CodeMirror@REL1_37/resources/mode/mediawiki/mediawiki.min.js',
-        htmlmixed:
-          'https://cdn.jsdelivr.net/npm/codemirror@5.65.1/mode/htmlmixed/htmlmixed.min.js',
-        xml:
-          'https://cdn.jsdelivr.net/npm/codemirror@5.65.1/mode/xml/xml.min.js',
+        css: `${CM_CDN}/mode/css/css.min.js`,
+        javascript: `${CM_CDN}/mode/javascript/javascript.min.js`,
+        lua: `${CM_CDN}/mode/lua/lua.min.js`,
+        mediawiki: `https://cdn.jsdelivr.net/gh/wikimedia/mediawiki-extensions-CodeMirror@REL1_37/resources/mode/mediawiki/mediawiki.min.js`,
+        htmlmixed: `${CM_CDN}/mode/htmlmixed/htmlmixed.min.js`,
+        xml: `${CM_CDN}/mode/xml/xml.min.js`,
         widget: null,
       }
 
-  if (!codemirrorInstalled) {
-    mw.loader.load(
-      'https://cdn.jsdelivr.net/npm/codemirror@5.65.1/lib/codemirror.min.css',
-      'text/css'
-    )
+  if (!USING_LOCAL) {
+    mw.loader.load(`${CM_CDN}/lib/codemirror.min.css`, 'text/css')
   }
   mw.loader.load(
     'https://ipe-plugins.js.org/plugins/code-mirror/style.css',
@@ -61,11 +58,9 @@
   }
 
   // Load Code Mirror
-  ;(await codemirrorInstalled)
-    ? mw.loader.using('ext.CodeMirror.lib')
-    : getScript(
-        'https://cdn.jsdelivr.net/npm/codemirror@5.65.1/lib/codemirror.min.js'
-      )
+  USING_LOCAL
+    ? await mw.loader.using('ext.CodeMirror.lib')
+    : await getScript(`${CM_CDN}/lib/codemirror.min.js`)
   // Load addons
   const ADDON_LIST = [
     'selection/active-line.min.js',
@@ -73,11 +68,7 @@
     'search/searchcursor.js',
     'search/search.js',
   ]
-  await Promise.all(
-    ADDON_LIST.map(i =>
-      getScript(`https://cdn.jsdelivr.net/npm/codemirror@5.65.1/addon/${i}`)
-    )
-  )
+  await Promise.all(ADDON_LIST.map(i => getScript(`${CM_CDN}/addon/${i}`)))
 
   /** @type {Record<string, boolean>} */
   const LOADED_MODE = {}
@@ -93,7 +84,7 @@
     // 加载渲染器
     if (MODE_LIST[type] === undefined) return false
     if (type === 'widget') {
-      if (codemirrorInstalled) {
+      if (USING_LOCAL) {
         await getScript(MODE_LIST[type])
         LOADED_MODE.css = true
         LOADED_MODE.javascript = true
@@ -110,7 +101,7 @@
         },
       })
     } else {
-      if (type === 'mediawiki' && !codemirrorInstalled) {
+      if (type === 'mediawiki' && !USING_LOCAL) {
         mw.loader.load(
           'https://cdn.jsdelivr.net/gh/wikimedia/mediawiki-extensions-CodeMirror@REL1_37/resources/mode/mediawiki/mediawiki.min.css',
           'text/css'
@@ -134,8 +125,8 @@
     if (config) {
       return config
     }
-    if (localSetting?.time > Date.now() - 86400 * 1000 * 3) {
-      config = localSetting.config
+    if (LOCAL_SETTINGS?.time > Date.now() - 86400 * 1000 * 3) {
+      config = LOCAL_SETTINGS.config
       mw.config.set('extCodeMirrorConfig', config)
       return config
     }
@@ -189,13 +180,13 @@
       getConfig(insensitive.filter(alias => !/^__.+__|^#$/.test(alias))),
       getConfig(sensitive.filter(alias => !/^__.+__|^#$/.test(alias))),
     ]
-    config.urlProtocols = mw.config.get('wgUrlProtocols')
+    config.urlProtocols = conf.wgUrlProtocols
     mw.config.set('extCodeMirrorConfig', config)
-    settings[serverName] = {
+    SETTINGS_CACHE[SITE_ID] = {
       config,
       time: Date.now(),
     }
-    localStorage.setItem('InPageEditMwConfig', JSON.stringify(settings))
+    localStorage.setItem('InPageEditMwConfig', JSON.stringify(SETTINGS_CACHE))
     return config
   }
 
@@ -204,8 +195,8 @@
    * @param {string} page Page name
    */
   function getPageMode(page) {
-    const NS_MODULE = mw.config.get('wgFormattedNamespaces')[828] || 'Module'
-    const NS_WIDGET = mw.config.get('wgFormattedNamespaces')[214] || 'Widget'
+    const NS_MODULE = conf.wgFormattedNamespaces[828] || 'Module'
+    const NS_WIDGET = conf.wgFormattedNamespaces[214] || 'Widget'
     if (page.endsWith('.css')) {
       return 'css'
     } else if (page.endsWith('.js') || page.endsWith('.json')) {
