@@ -4,20 +4,44 @@
  * @author Bhsd <https://github.com/bhsd-harry>
  */
 ;(async () => {
-  const MODE_LIST = {
-    css: 'https://cdn.jsdelivr.net/npm/codemirror@5.65.1/mode/css/css.min.js',
-    javascript:
-      'https://cdn.jsdelivr.net/npm/codemirror@5.65.1/mode/javascript/javascript.min.js',
-    lua: 'https://cdn.jsdelivr.net/npm/codemirror@5.65.1/mode/lua/lua.min.js',
-    mediawiki:
-      'https://cdn.jsdelivr.net/gh/wikimedia/mediawiki-extensions-CodeMirror@REL1_37/resources/mode/mediawiki/mediawiki.min.js',
-  }
+  // Variables
+  const CM_CDN = 'https://cdn.jsdelivr.net/npm/codemirror@5.65.1'
+  const USING_LOCAL = mw.loader.getState('ext.CodeMirror') !== null
   const THEME = '' + globalThis.InPageEditCodeMirrorTheme || 'solarized light'
+  const conf = mw.config.get()
 
-  mw.loader.load(
-    'https://cdn.jsdelivr.net/npm/codemirror@5.65.1/lib/codemirror.min.css',
-    'text/css'
+  // Local settings cache
+  const SETTINGS_CACHE = JSON.parse(
+    localStorage.getItem('InPageEditMwConfig') || '{}'
   )
+  const SITE_ID = `${conf.wgServerName}${conf.wgScriptPath}`
+  const LOCAL_SETTINGS = SETTINGS_CACHE[SITE_ID]
+
+  const MODE_LIST = USING_LOCAL
+    ? {
+        css: ['ext.CodeMirror.lib.mode.css'],
+        javascript: ['ext.CodeMirror.lib.mode.javascript'],
+        lua: `${CM_CDN}/mode/lua/lua.min.js`,
+        mediawiki: ['ext.CodeMirror.mode.mediawiki', 'ext.CodeMirror.data'],
+        widget: [
+          'ext.CodeMirror.lib.mode.htmlmixed',
+          'ext.CodeMirror.mode.mediawiki',
+          'ext.CodeMirror.data',
+        ],
+      }
+    : {
+        css: `${CM_CDN}/mode/css/css.min.js`,
+        javascript: `${CM_CDN}/mode/javascript/javascript.min.js`,
+        lua: `${CM_CDN}/mode/lua/lua.min.js`,
+        mediawiki: `https://cdn.jsdelivr.net/gh/wikimedia/mediawiki-extensions-CodeMirror@REL1_37/resources/mode/mediawiki/mediawiki.min.js`,
+        htmlmixed: `${CM_CDN}/mode/htmlmixed/htmlmixed.min.js`,
+        xml: `${CM_CDN}/mode/xml/xml.min.js`,
+        widget: null,
+      }
+
+  if (!USING_LOCAL) {
+    mw.loader.load(`${CM_CDN}/lib/codemirror.min.css`, 'text/css')
+  }
   mw.loader.load(
     'https://ipe-plugins.js.org/plugins/code-mirror/style.css',
     'text/css'
@@ -30,32 +54,28 @@
   )
 
   function getScript(url) {
-    return $.ajax({
-      url,
-      dataType: 'script',
-      crossDomain: true,
-      cache: true,
-    })
+    return typeof url === 'string'
+      ? $.ajax({
+          url,
+          dataType: 'script',
+          crossDomain: true,
+          cache: true,
+        })
+      : mw.loader.using(url.flat())
   }
 
   // Load Code Mirror
-  await getScript(
-    'https://cdn.jsdelivr.net/npm/codemirror@5.65.1/lib/codemirror.min.js'
-  )
+  USING_LOCAL
+    ? await mw.loader.using('ext.CodeMirror.lib')
+    : await getScript(`${CM_CDN}/lib/codemirror.min.js`)
   // Load addons
   const ADDON_LIST = [
     'selection/active-line.min.js',
-    // 'fold/xml-fold.js',
-    // 'edit/matchtags.min.js',
     'dialog/dialog.js',
     'search/searchcursor.js',
     'search/search.js',
   ]
-  await Promise.all(
-    ADDON_LIST.map(i =>
-      getScript(`https://cdn.jsdelivr.net/npm/codemirror@5.65.1/addon/${i}`)
-    )
-  )
+  await Promise.all(ADDON_LIST.map(i => getScript(`${CM_CDN}/addon/${i}`)))
 
   /** @type {Record<string, boolean>} */
   const LOADED_MODE = {}
@@ -70,13 +90,32 @@
     }
     // 加载渲染器
     if (MODE_LIST[type] === undefined) return false
-    if (type === 'mediawiki') {
-      mw.loader.load(
-        'https://cdn.jsdelivr.net/gh/wikimedia/mediawiki-extensions-CodeMirror@REL1_37/resources/mode/mediawiki/mediawiki.min.css',
-        'text/css'
-      )
+    if (type === 'widget') {
+      if (USING_LOCAL) {
+        await getScript(MODE_LIST[type])
+        LOADED_MODE.css = true
+        LOADED_MODE.javascript = true
+        LOADED_MODE.mediawiki = true
+      } else {
+        await Promise.all(
+          ['css', 'javascript', 'mediawiki', 'htmlmixed', 'xml'].map(initMode)
+        )
+      }
+      CodeMirror.defineMIME('widget', {
+        name: 'htmlmixed',
+        tags: {
+          noinclude: [[null, null, 'mediawiki']],
+        },
+      })
+    } else {
+      if (type === 'mediawiki' && !USING_LOCAL) {
+        mw.loader.load(
+          'https://cdn.jsdelivr.net/gh/wikimedia/mediawiki-extensions-CodeMirror@REL1_37/resources/mode/mediawiki/mediawiki.min.css',
+          'text/css'
+        )
+      }
+      await getScript(MODE_LIST[type])
     }
-    await getScript(MODE_LIST[type])
     LOADED_MODE[type] = true
     return true
   }
@@ -84,67 +123,95 @@
   /**
    * 加载codemirror的mediawiki模块需要的设置数据
    */
-  const getMwConfig = (() => {
+  const getMwConfig = async type => {
+    if (!['mediawiki', 'widget'].includes(type)) {
+      return
+    }
     /** @type {{ tagModes: { pre: string, nowiki:string }, tags: Record<string, boolean>, doubleUnderscore: Record<string, boolean>[], functionSynonyms: Record<string, boolean>[], urlProtocols: string }} */
-    const config = {}
-    let _already = false
-    return async () => {
-      if (_already) {
-        return config
-      }
-
-      const {
-        query: { magicwords, extensiontags },
-      } = await new mw.Api().get({
-        action: 'query',
-        meta: 'siteinfo',
-        siprop: 'magicwords|extensiontags',
-        format: 'json',
-        formatversion: 2,
-      })
-      const getAliases = words => words.map(({ aliases }) => aliases).flat(),
-        getConfig = aliases =>
-          Object.fromEntries(aliases.map(alias => [alias, true]))
-      config.tagModes = {
-        pre: 'mw-tag-pre',
-        nowiki: 'mw-tag-nowiki',
-      }
-      config.tags = Object.fromEntries(
-        extensiontags.map(tag => [tag.slice(1, -1), true])
-      )
-      const sensitive = getAliases(
-          magicwords.filter(word => word['case-sensitive'])
-        ),
-        insensitive = getAliases(
-          magicwords.filter(word => !word['case-sensitive'])
-        )
-      config.doubleUnderscore = [
-        getConfig(insensitive.filter(alias => /^__.+__$/.test(alias))),
-        getConfig(sensitive.filter(alias => /^__.+__$/.test(alias))),
-      ]
-      config.functionSynonyms = [
-        getConfig(insensitive.filter(alias => !/^__.+__$/.test(alias))),
-        getConfig(sensitive.filter(alias => !/^__.+__$/.test(alias))),
-      ]
-      config.urlProtocols = mw.config.get('wgUrlProtocols')
-      _already = true
+    let config = mw.config.get('extCodeMirrorConfig')
+    if (config) {
+      return config
+    }
+    if (LOCAL_SETTINGS?.time > Date.now() - 86400 * 1000 * 3) {
+      config = LOCAL_SETTINGS.config
       mw.config.set('extCodeMirrorConfig', config)
       return config
     }
-  })()
+    config = {}
+
+    const {
+      query: { magicwords, extensiontags, functionhooks, variables },
+    } = await new mw.Api().get({
+      action: 'query',
+      meta: 'siteinfo',
+      siprop: 'magicwords|extensiontags|functionhooks|variables',
+      format: 'json',
+      formatversion: 2,
+    })
+    const getAliases = words => words.flatMap(({ aliases }) => aliases),
+      getConfig = aliases =>
+        Object.fromEntries(
+          aliases.map(alias => [alias.replace(/:$/, ''), true])
+        )
+    config.tagModes = {
+      pre: 'mw-tag-pre',
+      nowiki: 'mw-tag-nowiki',
+    }
+    config.tags = Object.fromEntries(
+      extensiontags.map(tag => [tag.slice(1, -1), true])
+    )
+    const realMagicwords = new Set([...functionhooks, ...variables]),
+      allMagicwords = magicwords.filter(
+        ({ name, aliases }) =>
+          aliases.some(alias => /^__.+__$/.test(alias)) ||
+          realMagicwords.has(name)
+      ),
+      sensitive = getAliases(
+        allMagicwords.filter(word => word['case-sensitive'])
+      ),
+      insensitive = [
+        ...getAliases(
+          allMagicwords.filter(word => !word['case-sensitive'])
+        ).map(alias => alias.toLowerCase()),
+        'msg',
+        'raw',
+        'msgnw',
+        'subst',
+        'safesubst',
+      ]
+    config.doubleUnderscore = [
+      getConfig(insensitive.filter(alias => /^__.+__$/.test(alias))),
+      getConfig(sensitive.filter(alias => /^__.+__$/.test(alias))),
+    ]
+    config.functionSynonyms = [
+      getConfig(insensitive.filter(alias => !/^__.+__|^#$/.test(alias))),
+      getConfig(sensitive.filter(alias => !/^__.+__|^#$/.test(alias))),
+    ]
+    config.urlProtocols = conf.wgUrlProtocols
+    mw.config.set('extCodeMirrorConfig', config)
+    SETTINGS_CACHE[SITE_ID] = {
+      config,
+      time: Date.now(),
+    }
+    localStorage.setItem('InPageEditMwConfig', JSON.stringify(SETTINGS_CACHE))
+    return config
+  }
 
   /**
    * 检查页面语言类型
    * @param {string} page Page name
    */
   function getPageMode(page) {
-    const NS_MODULE = mw.config.get('wgFormattedNamespaces')[828] || 'Module'
+    const NS_MODULE = conf.wgFormattedNamespaces[828] || 'Module'
+    const NS_WIDGET = conf.wgFormattedNamespaces[214] || 'Widget'
     if (page.endsWith('.css')) {
       return 'css'
     } else if (page.endsWith('.js') || page.endsWith('.json')) {
       return 'javascript'
     } else if (page.startsWith(`${NS_MODULE}:`) && !page.endsWith('/doc')) {
       return 'lua'
+    } else if (page.startsWith(`${NS_WIDGET}:`) && !page.endsWith('/doc')) {
+      return 'widget'
     } else {
       return 'mediawiki'
     }
@@ -161,21 +228,23 @@
     target.before(clearDiv)
     target.after(clearDiv)
 
-    const mode = getPageMode(page)
-    const [mwConfig] = await Promise.all([getMwConfig(), initMode(mode)])
+    let mode = getPageMode(page)
+    const [mwConfig] = await Promise.all([getMwConfig(mode), initMode(mode)])
 
     if (target.length) {
       const cm = CodeMirror.fromTextArea(target[0], {
         lineNumbers: true,
         lineWrapping: true,
         styleActiveLine: true,
-        matchTags: { bothTags: true },
         extraKeys: { 'Alt-F': 'findPersistent' },
         theme: THEME,
         mode,
         mwConfig,
       })
-      cm.on('change', function () {
+      cm.on('change', function (_, { origin }) {
+        if (origin == 'setValue') {
+          return
+        }
         target.trigger('input')
         target.trigger('change')
       })
@@ -420,9 +489,11 @@
   /**
    * 为 quickEdit 钩子添加函数
    */
-  mw.hook('InPageEdit.quickEdit').add(({ $editArea, $modalTitle }) => {
-    const page = $modalTitle.find('.editPage').text()
-    const cm = renderEditor($editArea, page)
-    mw.hook('InPageEdit.quickEdit.codemirror').fire({ $editArea, cm })
-  })
+  mw.hook('InPageEdit.quickEdit').add(({ $editArea, $modalTitle }) =>
+    (async () => {
+      const page = $modalTitle.find('.editPage').text()
+      const cm = await renderEditor($editArea, page)
+      mw.hook('InPageEdit.quickEdit.codemirror').fire({ $editArea, cm })
+    })()
+  )
 })()

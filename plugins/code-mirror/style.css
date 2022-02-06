@@ -41,3 +41,8 @@
 .in-page-edit .CodeMirror-dialog button {
   font-size: 70%;
 }
+
+/* Fix WikiEditor popup */
+.wikiEditor-ui-toolbar {
+  z-index: 10;
+}

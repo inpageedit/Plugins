@@ -17,7 +17,7 @@ mw.hook('InPageEdit').add(({ _analysis, _msg, InPageEdit }) => {
         $('<button>', {
           id: 'edit-btn',
           class: 'ipe-toolbox-btn',
-          html: '<i class="fa fa-pencil"></i>',
+          html: '<i class="fa fa-pencil fa-pencil-alt"></i>',
         }).click(function () {
           InPageEdit.quickEdit({
             page: config.wgPageName,
@@ -30,7 +30,7 @@ mw.hook('InPageEdit').add(({ _analysis, _msg, InPageEdit }) => {
         $('<button>', {
           id: 'redirectfrom-btn',
           class: 'ipe-toolbox-btn',
-          html: '<i class="fa fa-sign-in"></i>',
+          html: '<i class="fa fa-sign-in fa-sign-in-alt"></i>',
         }).click(function () {
           InPageEdit.quickRedirect('from')
         })
@@ -40,7 +40,7 @@ mw.hook('InPageEdit').add(({ _analysis, _msg, InPageEdit }) => {
         $('<button>', {
           id: 'redirectto-btn',
           class: 'ipe-toolbox-btn',
-          html: '<i class="fa fa-sign-out"></i>',
+          html: '<i class="fa fa-sign-out fa-sign-out-alt"></i>',
         }).click(function () {
           InPageEdit.quickRedirect('to')
         })
