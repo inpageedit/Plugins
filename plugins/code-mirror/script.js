@@ -12,6 +12,7 @@
     mediawiki:
       'https://cdn.jsdelivr.net/gh/wikimedia/mediawiki-extensions-CodeMirror@REL1_37/resources/mode/mediawiki/mediawiki.min.js',
   }
+  const THEME = '' + globalThis.InPageEditCodeMirrorTheme || 'solarized light'
 
   mw.loader.load(
     'https://cdn.jsdelivr.net/npm/codemirror@5.65.1/lib/codemirror.min.css',
@@ -19,6 +20,12 @@
   )
   mw.loader.load(
     'https://ipe-plugins.js.org/plugins/code-mirror/style.css',
+    'text/css'
+  )
+  mw.loader.load(
+    `https://cdn.jsdelivr.net/npm/codemirror@5.65.1/theme/${
+      THEME.split(' ')[0]
+    }.min.css`,
     'text/css'
   )
 
@@ -164,9 +171,7 @@
         styleActiveLine: true,
         matchTags: { bothTags: true },
         extraKeys: { 'Alt-F': 'findPersistent' },
-        theme: `inpageedit ${
-          globalThis.InPageEditCodeMirrorTheme === 'dark' ? 'dark' : 'light'
-        }`,
+        theme: THEME,
         mode,
         mwConfig,
       })
