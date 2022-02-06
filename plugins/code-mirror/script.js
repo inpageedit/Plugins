@@ -105,10 +105,10 @@
    * 加载codemirror的mediawiki模块需要的设置数据
    */
   const getMwConfig = async (type) => {
-    /** @type {{ tagModes: { pre: string, nowiki:string }, tags: Record<string, boolean>, doubleUnderscore: Record<string, boolean>[], functionSynonyms: Record<string, boolean>[], urlProtocols: string }} */
     if (!['mediawiki', 'widget'].includes(type)) {
       return
     }
+    /** @type {{ tagModes: { pre: string, nowiki:string }, tags: Record<string, boolean>, doubleUnderscore: Record<string, boolean>[], functionSynonyms: Record<string, boolean>[], urlProtocols: string }} */
     let config = mw.config.get('extCodeMirrorConfig')
     if (config) {
       return config
