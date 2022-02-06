@@ -213,6 +213,7 @@
         theme: `inpageedit ${
           globalThis.InPageEditCodeMirrorTheme === 'dark' ? 'dark' : 'light'
         }`,
+        json: page.endsWith('.json'),
         mode,
         mwConfig,
       })
