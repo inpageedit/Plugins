@@ -210,8 +210,9 @@
         lineWrapping: true,
         styleActiveLine: true,
         extraKeys: { 'Alt-F': 'findPersistent' },
-        theme: 'inpageedit',
-        json: page.endsWith('.json'),
+        theme: `inpageedit ${
+          globalThis.InPageEditCodeMirrorTheme === 'dark' ? 'dark' : 'light'
+        }`,
         mode,
         mwConfig,
       })
