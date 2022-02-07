@@ -4,18 +4,22 @@
  * @author Bhsd <https://github.com/bhsd-harry>
  */
 ;(async () => {
-  // Variables
+  // Constants
   const CM_CDN = 'https://cdn.jsdelivr.net/npm/codemirror@5.65.1'
+  const WMGH_CDN =
+    'https://cdn.jsdelivr.net/gh/wikimedia/mediawiki-extensions-CodeMirror@REL1_37'
+  const PLUGIN_CDN = InPageEdit.api.pluginCDN
   const USING_LOCAL = mw.loader.getState('ext.CodeMirror') !== null
-  const THEME = '' + (globalThis.InPageEditCodeMirrorTheme || 'solarized light')
+  const THEME =
+    InPageEdit.preference.get('codeMirrorTheme') || 'solarized light'
   const conf = mw.config.get()
 
   // Local settings cache
-  const SETTINGS_CACHE = JSON.parse(
+  const ALL_SETTINGS_CACHE = JSON.parse(
     localStorage.getItem('InPageEditMwConfig') || '{}'
   )
   const SITE_ID = `${conf.wgServerName}${conf.wgScriptPath}`
-  const LOCAL_SETTINGS = SETTINGS_CACHE[SITE_ID]
+  const SITE_SETTINGS = ALL_SETTINGS_CACHE[SITE_ID]
 
   const MODE_LIST = USING_LOCAL
     ? {
@@ -33,7 +37,7 @@
         css: `${CM_CDN}/mode/css/css.min.js`,
         javascript: `${CM_CDN}/mode/javascript/javascript.min.js`,
         lua: `${CM_CDN}/mode/lua/lua.min.js`,
-        mediawiki: `https://cdn.jsdelivr.net/gh/wikimedia/mediawiki-extensions-CodeMirror@REL1_37/resources/mode/mediawiki/mediawiki.min.js`,
+        mediawiki: `${WMGH_CDN}/resources/mode/mediawiki/mediawiki.min.js`,
         htmlmixed: `${CM_CDN}/mode/htmlmixed/htmlmixed.min.js`,
         xml: `${CM_CDN}/mode/xml/xml.min.js`,
         widget: null,
@@ -42,16 +46,10 @@
   if (!USING_LOCAL) {
     mw.loader.load(`${CM_CDN}/lib/codemirror.min.css`, 'text/css')
   }
-  mw.loader.load(
-    'https://ipe-plugins.js.org/plugins/code-mirror/style.css',
-    'text/css'
-  )
-  mw.loader.load(
-    `https://cdn.jsdelivr.net/npm/codemirror@5.65.1/theme/${
-      THEME.split(' ')[0]
-    }.min.css`,
-    'text/css'
-  )
+  mw.loader.load(`${PLUGIN_CDN}/plugins/code-mirror/style.css`, 'text/css')
+  if (!InPageEdit.preference.get('codeMirrorThemeNoCSS')) {
+    mw.loader.load(`${CM_CDN}/theme/${THEME.split(' ')[0]}.min.css`, 'text/css')
+  }
 
   function getScript(url) {
     return typeof url === 'string'
@@ -110,7 +108,7 @@
     } else {
       if (type === 'mediawiki' && !USING_LOCAL) {
         mw.loader.load(
-          'https://cdn.jsdelivr.net/gh/wikimedia/mediawiki-extensions-CodeMirror@REL1_37/resources/mode/mediawiki/mediawiki.min.css',
+          `${WMGH_CDN}/resources/mode/mediawiki/mediawiki.min.css`,
           'text/css'
         )
       }
@@ -132,8 +130,8 @@
     if (config) {
       return config
     }
-    if (LOCAL_SETTINGS?.time > Date.now() - 86400 * 1000 * 3) {
-      config = LOCAL_SETTINGS.config
+    if (SITE_SETTINGS?.time > Date.now() - 86400 * 1000 * 3) {
+      config = SITE_SETTINGS.config
       mw.config.set('extCodeMirrorConfig', config)
       return config
     }
@@ -189,11 +187,11 @@
     ]
     config.urlProtocols = conf.wgUrlProtocols
     mw.config.set('extCodeMirrorConfig', config)
-    SETTINGS_CACHE[SITE_ID] = {
+    ALL_SETTINGS_CACHE[SITE_ID] = {
       config,
       time: Date.now(),
     }
-    localStorage.setItem('InPageEditMwConfig', JSON.stringify(SETTINGS_CACHE))
+    localStorage.setItem('InPageEditMwConfig', JSON.stringify(ALL_SETTINGS_CACHE))
     return config
   }
 
