@@ -239,6 +239,7 @@
         mode,
         mwConfig,
       })
+      cm.refresh()
       cm.on('change', function (_, { origin }) {
         if (origin == 'setValue') {
           return
