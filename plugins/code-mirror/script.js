@@ -73,7 +73,7 @@
     'search/searchcursor.js',
     'search/search.js',
   ]
-  await Promise.all(ADDON_LIST.map(i => getScript(`${CM_CDN}/addon/${i}`)))
+  await Promise.all(ADDON_LIST.map((i) => getScript(`${CM_CDN}/addon/${i}`)))
 
   /** @type {Record<string, boolean>} */
   const LOADED_MODE = {}
@@ -121,7 +121,7 @@
   /**
    * 加载codemirror的mediawiki模块需要的设置数据
    */
-  const getMwConfig = async type => {
+  const getMwConfig = async (type) => {
     if (!['mediawiki', 'widget'].includes(type)) {
       return
     }
@@ -146,31 +146,31 @@
       format: 'json',
       formatversion: 2,
     })
-    const getAliases = words => words.flatMap(({ aliases }) => aliases),
-      getConfig = aliases =>
+    const getAliases = (words) => words.flatMap(({ aliases }) => aliases),
+      getConfig = (aliases) =>
         Object.fromEntries(
-          aliases.map(alias => [alias.replace(/:$/, ''), true])
+          aliases.map((alias) => [alias.replace(/:$/, ''), true])
         )
     config.tagModes = {
       pre: 'mw-tag-pre',
       nowiki: 'mw-tag-nowiki',
     }
     config.tags = Object.fromEntries(
-      extensiontags.map(tag => [tag.slice(1, -1), true])
+      extensiontags.map((tag) => [tag.slice(1, -1), true])
     )
     const realMagicwords = new Set([...functionhooks, ...variables]),
       allMagicwords = magicwords.filter(
         ({ name, aliases }) =>
-          aliases.some(alias => /^__.+__$/.test(alias)) ||
+          aliases.some((alias) => /^__.+__$/.test(alias)) ||
           realMagicwords.has(name)
       ),
       sensitive = getAliases(
-        allMagicwords.filter(word => word['case-sensitive'])
+        allMagicwords.filter((word) => word['case-sensitive'])
       ),
       insensitive = [
         ...getAliases(
-          allMagicwords.filter(word => !word['case-sensitive'])
-        ).map(alias => alias.toLowerCase()),
+          allMagicwords.filter((word) => !word['case-sensitive'])
+        ).map((alias) => alias.toLowerCase()),
         'msg',
         'raw',
         'msgnw',
@@ -178,12 +178,12 @@
         'safesubst',
       ]
     config.doubleUnderscore = [
-      getConfig(insensitive.filter(alias => /^__.+__$/.test(alias))),
-      getConfig(sensitive.filter(alias => /^__.+__$/.test(alias))),
+      getConfig(insensitive.filter((alias) => /^__.+__$/.test(alias))),
+      getConfig(sensitive.filter((alias) => /^__.+__$/.test(alias))),
     ]
     config.functionSynonyms = [
-      getConfig(insensitive.filter(alias => !/^__.+__|^#$/.test(alias))),
-      getConfig(sensitive.filter(alias => !/^__.+__|^#$/.test(alias))),
+      getConfig(insensitive.filter((alias) => !/^__.+__|^#$/.test(alias))),
+      getConfig(sensitive.filter((alias) => !/^__.+__|^#$/.test(alias))),
     ]
     config.urlProtocols = conf.wgUrlProtocols
     mw.config.set('extCodeMirrorConfig', config)
@@ -191,7 +191,10 @@
       config,
       time: Date.now(),
     }
-    localStorage.setItem('InPageEditMwConfig', JSON.stringify(ALL_SETTINGS_CACHE))
+    localStorage.setItem(
+      'InPageEditMwConfig',
+      JSON.stringify(ALL_SETTINGS_CACHE)
+    )
     return config
   }
 
@@ -200,11 +203,21 @@
    * @param {string} page Page name
    */
   function getPageMode(page) {
+    const escapeRegExp = mw.util.escapeRegExp || mw.RegExp.escape
     const NS_MODULE = conf.wgFormattedNamespaces[828] || 'Module'
     const NS_WIDGET = conf.wgFormattedNamespaces[214] || 'Widget'
-    if (page.endsWith('.css')) {
+    const NS_ANYSUBJECT = new RegExp(
+      `^(?:${Object.entries(conf.wgFormattedNamespaces)
+        .filter(([ns]) => ns % 2 === 0)
+        .map(([, text]) => escapeRegExp(text))
+        .join('|')}):`
+    )
+    if (page.endsWith('.css') && NS_ANYSUBJECT.test(page)) {
       return 'css'
-    } else if (page.endsWith('.js') || page.endsWith('.json')) {
+    } else if (
+      (page.endsWith('.js') || page.endsWith('.json')) &&
+      NS_ANYSUBJECT.test(page)
+    ) {
       return 'javascript'
     } else if (page.startsWith(`${NS_MODULE}:`) && !page.endsWith('/doc')) {
       return 'lua'
