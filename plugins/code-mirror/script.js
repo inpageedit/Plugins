@@ -40,7 +40,7 @@
         mediawiki: `${WMGH_CDN}/resources/mode/mediawiki/mediawiki.min.js`,
         htmlmixed: `${CM_CDN}/mode/htmlmixed/htmlmixed.min.js`,
         xml: `${CM_CDN}/mode/xml/xml.min.js`,
-        widget: null,
+        widget: [],
       }
 
   if (!USING_LOCAL) {
