@@ -7,6 +7,6 @@ module.exports = {
   quoteProps: 'as-needed',
   trailingComma: 'es5',
   bracketSpacing: true,
-  arrowParens: 'avoid',
+  arrowParens: 'always',
   printWidth: 80,
 }
