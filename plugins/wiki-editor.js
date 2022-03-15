@@ -10,6 +10,9 @@ mw.hook('InPageEdit.quickEdit').add(({ $editArea, $editTools }) =>
       await mw.loader.using('ext.wikiEditor')
     }
 
+    const escapeRegExp = (str) =>
+      str.replace(/([\\{}()|.?*+\-^$\[\]])/g, '\\$1')
+
     // Hide original toolbar
     $editTools?.hide()
 
@@ -730,7 +733,7 @@ mw.hook('InPageEdit.quickEdit').add(({ $editArea, $editTools }) =>
             }
             isRegex = $('#wikieditor-toolbar-replace-regex').is(':checked')
             if (!isRegex) {
-              searchStr = mw.util.escapeRegExp(searchStr)
+              searchStr = escapeRegExp(searchStr)
             }
             matchWord = $('#wikieditor-toolbar-replace-word').is(':checked')
             if (matchWord) {
@@ -929,7 +932,7 @@ mw.hook('InPageEdit.quickEdit').add(({ $editArea, $editTools }) =>
               }
               isRegex = $('#wikieditor-toolbar-replace-regex').is(':checked')
               if (!isRegex) {
-                searchStr = mw.util.escapeRegExp(searchStr)
+                searchStr = escapeRegExp(searchStr)
               }
               matchWord = $('#wikieditor-toolbar-replace-word').is(':checked')
               if (matchWord) {
@@ -1145,7 +1148,9 @@ mw.hook('InPageEdit.quickEdit').add(({ $editArea, $editTools }) =>
 
 // @TODO 一个兼容问题，必须保证 wikiEditor 在 CodeMirror 之前加载
 mw.hook('InPageEdit').add(({ InPageEdit }) => {
-  if (InPageEdit.preference.get('plugins').find(i => /code-mirror/i.test(i))) {
+  if (
+    InPageEdit.preference.get('plugins').find((i) => /code-mirror/i.test(i))
+  ) {
     mw.loader.using('ext.wikiEditor')
   }
 })
