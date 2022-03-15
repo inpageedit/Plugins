@@ -1149,7 +1149,7 @@ mw.hook('InPageEdit.quickEdit').add(({ $editArea, $editTools }) =>
 // @TODO 一个兼容问题，必须保证 wikiEditor 在 CodeMirror 之前加载
 mw.hook('InPageEdit').add(({ InPageEdit }) => {
   if (
-    InPageEdit.preference.get('plugins').find((i) => /code-mirror/i.test(i))
+    InPageEdit.preference.get('plugins').some((i) => /code-mirror/i.test(i))
   ) {
     mw.loader.using('ext.wikiEditor')
   }
