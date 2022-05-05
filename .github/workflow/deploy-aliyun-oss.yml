@@ -1,0 +1,61 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Deploy Aliyun oss
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches:
+      - master
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Build Jekyll Pages
+        run: |
+          jekyll build --trace --baseurl /plugins
+
+      - name: Upload to Aliyun oss
+        uses: Menci/upload-to-oss@beta-v3
+        with:
+          # Use Access Key
+          access-key-id: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
+          access-key-secret: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
+          # Or use STS Token
+          # security-token: ${{ secrets.ALIYUN_SECURITY_TOKEN }}
+
+          # Bucket Settings
+          bucket: inpageedit-prod
+          endpoint: https://app.ipe.wiki
+
+          # Upload the built website files in "dist" directory to remote "my-website/" prefix
+          local-path: _site
+          remote-path: plugins
+
+          # Include HTML files only
+          # include-regex: \.html$
+          # Exclude some files
+          # excluce-regex: dont-upload-this\.html$
+
+          # Set some headers (JS function or just in JSON)
+          # headers:
+
+          # Upload ALL other files before uploading HTML files
+          delay-html-file-upload: true
+
+          # Prevent deleting missing remote files compared to local (defaults to `false`)
+          no-delete-remote-files: false
