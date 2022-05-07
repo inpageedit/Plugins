@@ -33,30 +33,26 @@ jobs:
     needs: build
     steps:
       - name: Upload Canary
-        uses: Menci/upload-to-oss@beta-v3
+        uses: yinlinyang/ali-oss-utils@1.0.1
         with:
           access-key-id: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
           access-key-secret: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
+          region: oss-cn-hongkong
           bucket: inpageedit-dev
-          endpoint: https://canary.ipe.wiki
-          local-path: ./_site
-          remote-path: plugins/${{ github.ref_name }}
-          delay-html-file-upload: true
-          no-delete-remote-files: false
+          source: /_site
+          target: /plugins/${{ github.ref_name }}
 
   deploy-aliyun-oss-prod:
     runs-on: ubuntu-latest
     if: ${{ github.ref == 'refs/heads/master' }}
     needs: build
     steps:
-      - name: Upload Production
-        uses: Menci/upload-to-oss@beta-v3
+      - name: Upload Canary
+        uses: yinlinyang/ali-oss-utils@1.0.1
         with:
           access-key-id: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
           access-key-secret: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
+          region: oss-cn-hongkong
           bucket: inpageedit-prod
-          endpoint: https://app.ipe.wiki
-          local-path: ./_site
-          remote-path: plugins
-          delay-html-file-upload: true
-          no-delete-remote-files: false
+          source: /_site
+          target: /plugins
