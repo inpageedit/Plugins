@@ -5,8 +5,6 @@ on:
   push:
     branches:
       - master
-    tags:
-      - '*'
   pull_request:
     branches:
       - master
@@ -44,7 +42,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.ref == 'refs/heads/master' }}
     needs: build
-      - name: Upload Canary
+      - name: Upload Production
         uses: Menci/upload-to-oss@beta-v3
         with:
           access-key-id: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
