@@ -26,6 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.ref != 'refs/heads/master' }}
     needs: build
+    steps:
       - name: Upload Canary
         uses: Menci/upload-to-oss@beta-v3
         with:
@@ -42,6 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.ref == 'refs/heads/master' }}
     needs: build
+    steps:
       - name: Upload Production
         uses: Menci/upload-to-oss@beta-v3
         with:
