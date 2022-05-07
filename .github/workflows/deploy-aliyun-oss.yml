@@ -39,7 +39,7 @@ jobs:
           access-key-secret: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
           bucket: inpageedit-dev
           endpoint: https://canary.ipe.wiki
-          local-path: _site
+          local-path: ./_site
           remote-path: plugins/${{ github.ref_name }}
           delay-html-file-upload: true
           no-delete-remote-files: false
@@ -56,7 +56,7 @@ jobs:
           access-key-secret: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
           bucket: inpageedit-prod
           endpoint: https://app.ipe.wiki
-          local-path: _site
+          local-path: ./_site
           remote-path: plugins
           delay-html-file-upload: true
           no-delete-remote-files: false
