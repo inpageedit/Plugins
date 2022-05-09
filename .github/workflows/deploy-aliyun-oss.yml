@@ -24,12 +24,16 @@ jobs:
     steps:
       - name: Install aliyun ossutil CLI
         run: |
+          echo pwd `pwd`
           wget https://gosspublic.alicdn.com/ossutil/1.7.11/ossutil64
           chmod 755 ossutil64
+          cp ./ossutil64 /usr/local/bin/
       # https://help.aliyun.com/document_detail/120072.htm
       - name: Save Config
         run: |
-          ./ossutil64 config -e https://oss-cn-hongkong.aliyuncs.com -i ${{ secrets.ALIYUN_ACCESS_KEY_ID }} -k ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
+          ossutil64 config -e https://oss-cn-hongkong.aliyuncs.com -i ${{ secrets.ALIYUN_ACCESS_KEY_ID }} -k ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
+          echo pwd `pwd`
+          echo list files `ls`
 
   build:
     runs-on: ubuntu-latest
@@ -38,7 +42,10 @@ jobs:
       - name: Build Jekyll Pages
         uses: vivi90/jekyll-minimal-action@v1.1.0
         with:
-          command: jekyll build --trace --baseurl /plugins
+          command: |
+            echo pwd `pwd`
+            echo list files `ls`
+            jekyll build --trace --baseurl /plugins
 
   deploy-aliyun-oss-canary:
     runs-on: ubuntu-latest
@@ -47,6 +54,8 @@ jobs:
     steps:
       - name: Upload Canary
         run: |
+          echo pwd `pwd`
+          echo list files `ls`
           ./ossutil64 cp -r -u _site/ oss://inoageedit-dev/plugins/${{ github.ref_name }}/
 
   deploy-aliyun-oss-prod:
