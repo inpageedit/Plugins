@@ -8,11 +8,10 @@ on:
   pull_request:
     branches:
       - master
-
   workflow_dispatch:
 
 jobs:
-  buold:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -31,7 +30,6 @@ jobs:
 
       - name: Setup Aliyun OSS CLI
         run: |
-          echo pwd `pwd`
           wget https://gosspublic.alicdn.com/ossutil/1.7.11/ossutil64
           chmod 755 ossutil64
           cp ./ossutil64 /usr/local/bin/
@@ -48,8 +46,6 @@ jobs:
       - name: Upload Canary
         if: ${{ github.ref != 'refs/heads/master' }}
         run: |
-          echo pwd `pwd`
-          echo list files `ls`
           ossutil64 cp -r -u _site/ oss://inoageedit-dev/plugins/${{ github.ref_name }}/
 
       - name: Upload Production
