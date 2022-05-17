@@ -21,7 +21,7 @@
     if (author !== '-') author = `<a href="https://github.com/${author}" target="_blank">@${author}</a>`
 
     listEl.innerHTML = `
-    <th>${name}</th>
+    <th><a href="plugins/${key}" target="_blank">${name}</a></th>
     <td><code>${key}</code></td>
     <td>${author}</td>
     <td>${description || ''}</td>
@@ -30,7 +30,7 @@
     tbody.appendChild(listEl)
   }
 
-  fetch('/index.json')
+  fetch('/plugins/index.json')
     .then(r => {
       return r.json()
     })

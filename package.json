@@ -5,8 +5,25 @@
   "repository": "https://github.com/InPageEdit/Plugins.git",
   "author": "Dragon-Fish <824399619@qq.com>",
   "private": true,
+  "hexo": {
+    "version": "6.2.0"
+  },
   "scripts": {
-    "prettier": "prettier --write ./plugins/*.js ./plugins/**/*.js"
+    "prettier": "prettier --write ./plugins/*.js ./plugins/**/*.js",
+    "dev": "hexo clean && hexo serve",
+    "build": "hexo clean && hexo generate"
+  },
+  "dependencies": {
+    "hexo": "^6.2.0",
+    "hexo-generator-archive": "^1.0.0",
+    "hexo-generator-category": "^1.0.0",
+    "hexo-generator-index": "^2.0.0",
+    "hexo-generator-tag": "^1.0.0",
+    "hexo-renderer-ejs": "^2.0.0",
+    "hexo-renderer-marked": "^5.0.0",
+    "hexo-renderer-stylus": "^2.0.0",
+    "hexo-server": "^3.0.0",
+    "hexo-theme-landscape": "^0.0.3"
   },
   "devDependencies": {
     "prettier": "^2.2.1"
