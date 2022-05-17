@@ -75,7 +75,7 @@ jobs:
           publish_branch: ghpage
           force_orphan: true
 
-      - name: Notify the build step is finished
+      - name: Notify that the build was successful
         if: ${{ github.ref != 'refs/heads/master' }}
         uses: hasura/comment-progress@v2.1.0
         env:
@@ -89,10 +89,16 @@ jobs:
           message: |
             Successfully deployed to the following URLs:
 
+            ## Live preview
+
             - https://canary.ipe.wiki/${{ env.dist_path }}
             - https://dev.ipe.wiki/${{ env.dist_path }}
 
-      - name: Notify the build has failed
+            ## OSS Management Panel
+
+            - https://oss.console.aliyun.com/bucket/oss-cn-hongkong/inpageedit-dev/object?path=${{ env.dist_path }}
+
+      - name: Notify that the build was failed
         if: ${{ failure() }}
         uses: hasura/comment-progress@v2.1.0
         with:
