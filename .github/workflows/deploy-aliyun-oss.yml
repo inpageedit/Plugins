@@ -46,12 +46,12 @@ jobs:
       - name: Upload Canary
         if: ${{ github.ref != 'refs/heads/master' }}
         run: |
-          ossutil64 cp -r -u _site/ oss://inoageedit-dev/plugins/${{ github.ref_name }}/
+          ossutil64 cp -r -u dist/ oss://inpageedit-dev/plugins/${{ github.ref_name }}/
 
       - name: Upload Production
         if: ${{ github.ref == 'refs/heads/master' }}
         run: |
-          ossutil64 cp -r -u _site/ oss://inoageedit-prod/plugins/
+          ossutil64 cp -r -u dist/ oss://inpageedit-prod/plugins/
 
       - name: Publish GitHub Pages
         if: ${{ github.ref == 'refs/heads/master' }}
