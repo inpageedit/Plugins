@@ -25,6 +25,7 @@ jobs:
           repository: ${{ github.repository }}
           number: ${{ github.event.number }}
           id: comment-progress
+          recreate: true
           message: 'Starting deployment of this pull request...'
 
       - name: Checkout
