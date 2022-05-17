@@ -9,11 +9,24 @@ on:
     branches:
       - master
   workflow_dispatch:
+    inputs:
+      number:
+        description: 'Related pull request number'
+        required: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Notify the build step is starting
+        uses: hasura/comment-progress@v2.2.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          number: ${{ github.event.number }}
+          id: comment-progress
+          message: 'Starting deployment of this pull request.'
+
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -55,11 +68,26 @@ jobs:
 
       - name: Publish GitHub Pages
         if: ${{ github.ref == 'refs/heads/master' }}
-        uses: peaceiris/actions-gh-pages@v2
-        env:
-          ACTIONS_DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
-          PUBLISH_BRANCH: ghpage
-          PUBLISH_DIR: ./dist
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          emptyCommits: false
-          forceOrphan: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: ghpage
+          force_orphan: true
+
+      - name: Notify the build step is finished
+        if: ${{ github.ref != 'refs/heads/master' }}
+        uses: hasura/comment-progress@v2.2.0
+        env:
+          dist_path: plugins/${{ github.ref_name }}/
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          number: ${{ github.event.number }}
+          id: comment-progress
+          recreate: true
+          message: |
+            Successfully deployed to the following URLs:
+
+            - https://canary.ipe.wiki/${{ env.dist_path }}
+            - https://dev.ipe.wiki/${{ env.dist_path }}
