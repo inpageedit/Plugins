@@ -30,7 +30,7 @@
     tbody.appendChild(listEl)
   }
 
-  fetch('/plugins/index.json')
+  fetch('/index.json')
     .then(r => {
       return r.json()
     })
