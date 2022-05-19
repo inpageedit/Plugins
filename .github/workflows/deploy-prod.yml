@@ -62,6 +62,7 @@ jobs:
           publish_dir: ./dist
           publish_branch: ghpage
           force_orphan: true
+          cname: ipe-plugins.js.org
 
       - name: Notify that the build was successful
         uses: hasura/comment-progress@v2.2.0
