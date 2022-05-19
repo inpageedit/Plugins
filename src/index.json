@@ -10,7 +10,7 @@
     "author": "Dragon-Fish",
     "description": "Adds a button into IPE Toolbox that lets you edit any page anywhere",
     "dependency": [
-      "toobox.js"
+      "toolbox.js"
     ]
   },
   "wiki-editor.js": {
@@ -33,7 +33,7 @@
     "author": "Leranjun",
     "description": "Adds a button into IPE Toolbox that lets you thank any page anywhere",
     "dependency": [
-      "toobox.js"
+      "toolbox.js"
     ]
   },
   "fix-double-entrance.js": {
