@@ -4,4 +4,4 @@
 
 It also has many plugins that make it more powerful.
 
-See <https://app.ipe.wiki/plugins/>
+See <https://ipe-plugins.js.org/>

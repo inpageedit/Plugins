@@ -62,7 +62,6 @@ jobs:
           publish_dir: ./dist
           publish_branch: ghpage
           force_orphan: true
-          cname: ipe-plugins.js.org
 
       - name: Notify that the build was successful
         uses: hasura/comment-progress@v2.2.0
@@ -78,11 +77,11 @@ jobs:
             ## Live URLs
 
             - https://app.ipe.wiki/plugins/
-            - https://dev.ipe.wiki/${{ env.dist_path }}
+            - https://ipe-plugins.js.org/
 
             ## OSS Management Panel
 
-            - https://oss.console.aliyun.com/bucket/oss-cn-hongkong/inpageedit-dev/object?path=${{ env.dist_path }}
+            - https://oss.console.aliyun.com/bucket/oss-cn-hongkong/inpageedit-prod/object?path=plugins/
 
       - name: Notify that the build was failed
         if: ${{ failure() }}
