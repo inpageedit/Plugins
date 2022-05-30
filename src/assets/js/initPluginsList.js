@@ -1,9 +1,9 @@
-!(() => {
-  var div = document.getElementById('pluginsList')
+;(() => {
+  const container = document.getElementById('plugins-list')
 
-  var table = document.createElement('table')
-  var thead = document.createElement('thead')
-  var tbody = document.createElement('tbody')
+  const table = document.createElement('table')
+  const thead = document.createElement('thead')
+  const tbody = document.createElement('tbody')
 
   thead.innerHTML = `
   <tr>
@@ -15,10 +15,11 @@
   `
 
   function add(key, { name, author, description }) {
-    var listEl = document.createElement('tr')
+    let listEl = document.createElement('tr')
 
     author = author || '-'
-    if (author !== '-') author = `<a href="https://github.com/${author}" target="_blank">@${author}</a>`
+    if (author !== '-')
+      author = `<a href="https://github.com/${author}" target="_blank">@${author}</a>`
 
     listEl.innerHTML = `
     <th><a href="plugins/${key}" target="_blank">${name}</a></th>
@@ -31,11 +32,11 @@
   }
 
   fetch('/index.json')
-    .then(r => {
+    .then((r) => {
       return r.json()
     })
-    .then(json => {
-      Object.keys(json).forEach(k => {
+    .then((json) => {
+      Object.keys(json).forEach((k) => {
         add(k, json[k])
       })
     })
@@ -43,6 +44,7 @@
   table.appendChild(thead)
   table.appendChild(tbody)
 
-  div.innerHTML = ''
-  div.appendChild(table)
+  container.innerHTML = ''
+  container.appendChild(table)
+  return table
 })()
