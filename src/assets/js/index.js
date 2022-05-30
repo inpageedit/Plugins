@@ -7,8 +7,8 @@
 
   thead.innerHTML = `
   <tr>
-    <th>Plugin name</th>
-    <th>pluginKey</th>
+    <th>Plugin Name</th>
+    <th>Plugin ID</th>
     <th>Author</th>
     <th>Description</th>
   </tr>
