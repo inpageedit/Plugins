@@ -5,17 +5,17 @@
 # Site
 title: InPageEdit Plugins
 subtitle: InPageEdit Plugins Store
-description: InPageEdit Plugins Store
+description: InPageEdit-v2 Official Plugins Store
 keywords: 'InPageEdit,InPageEdit Plugins,InPageEdit Plugins Store'
 author: InPageEdit
-language: 'en-US'
+language: en
 timezone: 'UTC'
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
 url: https://ipe-plugins.js.org
 root: /
-permalink: :year/:month/:day/:title/
+permalink: post/:title/
 permalink_defaults:
 pretty_urls:
   trailing_index: false # Set to false to remove trailing 'index.html' from permalinks
@@ -57,12 +57,17 @@ marked:
 relative_link: false
 future: true
 highlight:
-  enable: true
+  enable: false
   line_number: true
   auto_detect: false
   tab_replace: '  '
   wrap: true
   hljs: false
+prismjs:
+  enable: true
+  preprocess: true
+  line_number: true
+  tab_replace: ''
 
 # Home page setting
 # path: Root path for your blogs index page. (default = '')
@@ -108,4 +113,4 @@ ignore:
 ## Plugins: https://hexo.io/plugins/
 # plugins:
 ## Themes: https://hexo.io/themes/
-theme: landscape
+theme: next

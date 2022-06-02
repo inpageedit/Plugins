@@ -1,4 +1,15 @@
-# Home
+---
+layout: page
+title: Home
+date: 2022-05-30 21:52:03
+tags:
+---
+
+<div id="custom-header" style="text-align: center;">
+
+<img src="https://ipe.js.org/images/logo/InPageEdit-v2.png" style="max-width: 100%; width: 460px; height: auto;">
+
+</div>
 
 [InPageEdit](https://ipe.js.org) is a powerful frontend JavaScript Plugin for MediaWiki written with jQuery.
 
@@ -26,7 +37,7 @@ InPageEdit = window.InPageEdit || {} // Keep these line
 InPageEdit.myPreference = {
   // ...
   plugins: [
-    /* pluginKey here */
+    /* Plugin ID here */
   ],
   // ...
 }
@@ -34,6 +45,9 @@ InPageEdit.myPreference = {
 
 ## Plugins list
 
-<div id="pluginsList">Loading...</div>
+<div id="plugins-list">
+<div class="placeholder" style="text-align: center"><i class="fa fa-spinner fa-pulse fa-5x"></i><br>Loading</div>
+</div>
 
-<script src="assets/js/index.js"></script>
+<script src="assets/js/initPluginsList.js"></script>
+
