@@ -664,6 +664,12 @@
   z-index: 199;
 }
 
+@media print {
+  #ipe-edit-toolbox {
+    display: none;
+  }
+}
+
 #ipe-edit-toolbox .ipe-toolbox-btn {
   color: white;
   background: #bebebe;
