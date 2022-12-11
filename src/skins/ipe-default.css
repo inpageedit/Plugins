@@ -24,6 +24,7 @@
 .in-page-edit .ssi-modalWindow {
   padding: 0;
   border-radius: 0;
+  line-height: normal;
 }
 
 .in-page-edit .ssi-overflow {
