@@ -55,15 +55,6 @@ jobs:
         run: |
           ossutil64 cp -r -u dist/ oss://inpageedit-prod/plugins/
 
-      - name: Publish GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
-          publish_branch: ghpage
-          force_orphan: true
-          cname: ipe-plugins.js.org
-
       - name: Notify that the build was successful
         uses: hasura/comment-progress@v2.2.0
         with:
