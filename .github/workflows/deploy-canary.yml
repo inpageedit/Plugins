@@ -1,0 +1,90 @@
+name: Deploy Aliyun oss
+
+# Controls when the workflow will run
+on:
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+    inputs:
+      number:
+        description: 'Related pull request number'
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify the build step is starting
+        uses: hasura/comment-progress@v2.2.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          number: ${{ github.event.inputs.number || github.event.number }}
+          id: comment-progress
+          recreate: true
+          message: 'Starting deployment of this pull request...'
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@master
+        with:
+          node-version: 16
+          registry-url: https://registry.npmjs.org/
+
+      - name: Resolve Dependencies
+        run: |
+          npm i -g pnpm
+          pnpm i
+
+      # https://help.aliyun.com/document_detail/120072.htm
+      - name: Setup Aliyun OSS CLI
+        run: |
+          wget https://gosspublic.alicdn.com/ossutil/1.7.11/ossutil64
+          chmod 755 ossutil64
+          cp ./ossutil64 /usr/local/bin/
+          ossutil64 config -e https://oss-cn-hongkong.aliyuncs.com -i ${{ secrets.ALIYUN_ACCESS_KEY_ID }} -k ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
+
+      - name: Build Hexo Site
+        run: |
+          pnpm build
+
+      - name: Upload Canary
+        run: |
+          ossutil64 cp -r -u dist/ oss://inpageedit-dev/plugins/${{ github.ref_name }}/
+
+      - name: Notify that the build was successful
+        if: ${{ github.ref != 'refs/heads/master' }}
+        uses: hasura/comment-progress@v2.2.0
+        env:
+          dist_path: plugins/${{ github.ref_name }}/
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          number: ${{ github.event.inputs.number || github.event.number }}
+          id: comment-progress
+          recreate: true
+          message: |
+            Successfully deployed to the following URLs:
+
+            ## Live Preview
+
+            - https://canary.ipe.wiki/${{ env.dist_path }}
+            - https://dev.ipe.wiki/${{ env.dist_path }}
+
+            ## OSS Management Panel
+
+            - https://oss.console.aliyun.com/bucket/oss-cn-hongkong/inpageedit-dev/object?path=${{ env.dist_path }}
+
+      - name: Notify that the build was failed
+        if: ${{ failure() }}
+        uses: hasura/comment-progress@v2.2.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          number: ${{ github.event.inputs.number || github.event.number }}
+          id: comment-progress
+          message: ':x: Some errors occurred during the build process'
+          append: true

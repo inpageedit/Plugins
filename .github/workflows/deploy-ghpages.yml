@@ -1,0 +1,40 @@
+name: Deploy GitHub Pages
+
+# Controls when the workflow will run
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@master
+        with:
+          node-version: 16
+          registry-url: https://registry.npmjs.org/
+
+      - name: Resolve Dependencies
+        run: |
+          npm i -g pnpm
+          pnpm i
+
+      - name: Build Hexo Site
+        run: |
+          pnpm build
+
+      - name: Publish GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: ghpages
+          force_orphan: true
+          cname: ipe-plugins.js.org
