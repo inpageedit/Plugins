@@ -156,6 +156,7 @@
       if (this.options.closeIcon) {
         this.options.iconButtons.push({
           className: 'ssi-closeIcon',
+          keyPress: 'escape',
           method: function () {
             modalObj.close()
           },
@@ -385,9 +386,10 @@
    * Initialize the buttons element if it is necessary and registers tha buttons.
    * @param {object[]} buttons -The buttons that will be added to the element.
    * @param {string} area -The area that we'll append the buttons.
+   * @param {jQuery<HTMLElement>} $modalWindow -the modalWindow element where buttons are appended to
    * @returns {*}
    */
-  Ssi_modal.prototype.setButtons = function (buttons, area) {
+  Ssi_modal.prototype.setButtons = function (buttons, area, $modalWindow) {
     var $buttonsArea,
       fixHeight = false
     buttons = toArray(buttons)
@@ -414,7 +416,7 @@
     var leftAreaArray = []
     var rightAreaArray = []
     for (var i = 0, $btn; i < length; i++) {
-      $btn = this.generateButton(buttons[i])
+      $btn = this.generateButton(buttons[i], $modalWindow)
       if (buttons[i].side === 'left') {
         leftAreaArray.push($btn)
       } else {
@@ -646,7 +648,7 @@
    * @param {object[]} icons -The icons that will  append to the icons element.
    * @returns {jQuery}
    */
-  Ssi_modal.prototype.setIcons = function (icons) {
+  Ssi_modal.prototype.setIcons = function (icons, $modalWindow) {
     var $icons,
       iconArray = []
     if (this.options.iconButtons !== true) {
@@ -660,14 +662,41 @@
     for (var i = 0, icon; i < iconsLength; i++) {
       icon = icons[i]
       ;(function (icon) {
-        iconArray.push(
-          $('<a class="' + icon.className + '"></a>').on('click', function (e) {
+        var $icon = $('<a class="' + icon.className + '"></a>').on(
+          'click',
+          function (e) {
             e.preventDefault()
             if (typeof icon.method === 'function') {
               $.proxy(icon.method, this)(e, modalObj)
             }
-          })
+          }
         )
+        iconArray.push($icon)
+        if (icon.keyPress) {
+          if ($modalWindow && !icon.keyPressBody) {
+            $modalWindow.prop('tabindex', -1)
+          }
+          icon.keyPress = icon.keyPress
+            .replace(/(ctrl|shift|alt)[-+]/gi, function (_, p1) {
+              icon[p1.toLowerCase()] = true
+              return ''
+            })
+            .toLowerCase()
+          ;(icon.keyPressBody || $modalWindow === undefined
+            ? $(document.body)
+            : $modalWindow
+          ).on('keydown.ssi_modal', function (e) {
+            if (
+              (e.ctrlKey || e.metaKey) == !!icon.ctrl &&
+              e.shiftKey == !!icon.shift &&
+              e.altKey == !!icon.alt &&
+              e.key.toLowerCase() == icon.keyPress
+            ) {
+              e.preventDefault()
+              $icon.trigger('click')
+            }
+          })
+        }
       })(icon)
     }
 
@@ -708,14 +737,18 @@
       })
     }
     if (modalObj.options.iconButtons.length > 0) {
-      windowContent.push(modalObj.setIcons(modalObj.options.iconButtons, true))
+      windowContent.push(
+        modalObj.setIcons(modalObj.options.iconButtons, $modalWindow)
+      )
     }
     windowContent.push($modalContent)
     if (
       typeof modalObj.options.buttons !== 'undefined' &&
       !$.isEmptyObject(modalObj.options.buttons)
     ) {
-      windowContent.push(modalObj.setButtons(modalObj.options.buttons, false))
+      windowContent.push(
+        modalObj.setButtons(modalObj.options.buttons, false, $modalWindow)
+      )
     }
     $modalWindow.append(windowContent)
     return $modalWindow
@@ -724,11 +757,12 @@
   /**
    *Generates a button according to the options.
    * @param {object} buttonOptions -The button options.
+   * @param {jQuery<HTMLElement>} $modalWindow -the modalWindow element where the button is appended to
    * @constructor
    * @returns {jQuery}
    */
 
-  Ssi_modal.prototype.generateButton = function (buttonOptions) {
+  Ssi_modal.prototype.generateButton = function (buttonOptions, $modalWindow) {
     var defaults = {
       className: '',
       enableAfter: false,
@@ -777,8 +811,27 @@
     }
     //append button to selected object and set click event
     if (buttonOptions.keyPress) {
-      $('body').on('keydown.ssi_modal', function (e) {
-        if (e.keyCode == buttonOptions.keyPress && !$btn.is(':disabled')) {
+      if ($modalWindow && !buttonOptions.keyPressBody) {
+        $modalWindow.prop('tabindex', -1)
+      }
+      buttonOptions.keyPress = buttonOptions.keyPress
+        .replace(/(ctrl|shift|alt)[-+]/gi, function (_, p1) {
+          buttonOptions[p1.toLowerCase()] = true
+          return ''
+        })
+        .toLowerCase()
+      ;(buttonOptions.keyPressBody || $modalWindow === undefined
+        ? $(document.body)
+        : $modalWindow
+      ).on('keydown.ssi_modal', function (e) {
+        if (
+          (e.ctrlKey || e.metaKey) == !!buttonOptions.ctrl &&
+          e.shiftKey == !!buttonOptions.shift &&
+          e.altKey == !!buttonOptions.alt &&
+          e.key.toLowerCase() == buttonOptions.keyPress &&
+          !$btn.is(':disabled')
+        ) {
+          e.preventDefault()
           $btn.trigger('click')
         }
       })
@@ -851,12 +904,12 @@
             var outSide = false
             $modal
               .on('mousedown', function (e) {
-                if (!e.target.closest('#ssi-modalWindow')) {
+                if (e.which === 1 && !e.target.closest('#ssi-modalWindow')) {
                   outSide = true
                 }
               })
-              .on('mouseup', function (e) {
-                if (outSide && !e.target.closest('#ssi-modalWindow')) {
+              .on('click', function (e) {
+                if (outSide && e.which === 1 && !e.target.closest('#ssi-modalWindow')) {
                   modalObj.close()
                 } else {
                   outSide = false
@@ -982,6 +1035,8 @@
     ) {
       this.showBackdrop()
     }
+
+    document.activeElement.blur()
 
     return this
   }
@@ -1364,6 +1419,8 @@
     var defaults = {
       okBtn: {
         className: '',
+        keyPress: 'Enter',
+        keyPressBody: true,
         label: 'Ok',
       },
       cancelBtn: {

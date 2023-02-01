@@ -60,7 +60,8 @@ mw.hook('InPageEdit').add(({ _msg }) => {
                 {
                   label: _msg('ok'),
                   className: 'btn btn-primary IPE-anypage-ok',
-                  keyPress: 13, // Enter
+                  keyPress: 'Enter',
+                  keyPressBody: true,
                   method: function (a, modal) {
                     var page = $('#which-page').val()
                     if (page === '' || page === undefined) {
@@ -77,7 +78,8 @@ mw.hook('InPageEdit').add(({ _msg }) => {
                 {
                   label: _msg('cancel'),
                   className: 'btn btn-secondary IPE-anypage-cancel',
-                  keyPress: 27, // Esc
+                  keyPress: 'Escape',
+                  keyPressBody: true,
                   method: function (a, modal) {
                     modal.close()
                   },
