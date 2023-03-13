@@ -78,7 +78,6 @@ mw.hook('InPageEdit').add(({ _msg }) => {
                 {
                   label: _msg('cancel'),
                   className: 'btn btn-secondary IPE-anypage-cancel',
-                  keyPress: 'Escape',
                   keyPressBody: true,
                   method: function (a, modal) {
                     modal.close()
