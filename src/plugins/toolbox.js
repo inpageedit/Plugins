@@ -4,8 +4,20 @@
 mw.hook('InPageEdit').add(({ _analysis, _msg, InPageEdit }) => {
   var config = mw.config.get()
   // 检测是否为文章页
-  if (!config.wgIsArticle || $('#ipe-edit-toolbox').length > 0) {
-    console.warn('[InPageEdit] 未载入 Toolbox')
+  if ($('#ipe-edit-toolbox').length > 0) {
+    console.warn('[InPageEdit] Toolbox 已经加载过了')
+    return
+  }
+
+  if (!config.wgIsArticle) {
+    console.warn('[InPageEdit] 不是文章页面')
+    $('<div>', { id: 'ipe-edit-toolbox' }).append(
+      $('<div>', {
+        id: 'ipe-toolbox-placeholder',
+        style:
+          'width:0.5rem;height:0.5rem;border-radius:50%;background:#3f51b5;pointer-events:none',
+      })
+    )
     return
   }
 
@@ -125,8 +137,10 @@ mw.hook('InPageEdit').add(({ _analysis, _msg, InPageEdit }) => {
   mw.hook('InPageEdit.toolbox').fire({
     $toolbox,
   })
+})
 
-  // 2023愚人节彩蛋
+// 2023愚人节彩蛋
+;(() => {
   const now = Date.now()
   const startTime = new Date('2023-04-01T00:00:00+08:00')
   const endTime = new Date('2023-04-02T23:59:59+08:00')
@@ -137,4 +151,4 @@ mw.hook('InPageEdit').add(({ _analysis, _msg, InPageEdit }) => {
       'text/css'
     )
   }
-})
+})()
