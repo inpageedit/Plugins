@@ -72,12 +72,12 @@
 
       // Random topics
       ;(async function randomTalk() {
-        if (dialog.data('show') !== true) {
+        if (Date.now() >= this.dialogEndTime) {
           self.say({
             content: pick(self.dialogList),
           })
         }
-        await sleep(randomNum(12 * 1000, 24 * 1000))
+        await sleep(randomNum(15 * 1000, 25 * 1000))
         randomTalk()
       })()
 
@@ -200,7 +200,14 @@
       return self
     }
 
-    addDialog({ type = 'random', target = '', event = 'click', content = '' }) {
+    addDialog({
+      type = 'random',
+      target = '',
+      event = 'click',
+      content = '',
+      duration = 5000,
+      raw = false,
+    }) {
       if (!content) return this
 
       if (type === 'random') {
@@ -210,7 +217,7 @@
 
       const el = $(target || this.role.find('pet-body'))
       el.on(event, () => {
-        this.say({ content })
+        this.say({ content, duration, raw })
       })
 
       return this
@@ -218,22 +225,23 @@
   }
 
   const chan = new LittlePet({
-    name: 'My little IPE',
+    name: 'Little IPE',
     chatInterval: [15 * 1000, 30 * 1000],
   })
 
   // 开场白
-  const start = Date.now()
   chan
     .say({
       content:
-        '呦吼~我是由 InPageEdit Technology 开发的全新 AI 助理，你可以叫我【IPE酱】。我专门为帮助用户进行 MediaWiki 的日常维护而设计，能够让您轻松地管理和编辑您的 Wiki 网站。希望IPE酱能成为您维护 Wiki 网站的得力助手~',
-      duration: 5500,
+        '呦吼~我是由 InPageEdit Technology 开发的全新 AI 助理，你可以叫我【<b style="display:inline;font-weight:700;font-size:1.2em">IPE酱</b>】。我专门为帮助用户进行 MediaWiki 的日常维护而设计，能够让您轻松地管理和编辑您的 Wiki 网站。希望IPE酱能成为您维护 Wiki 网站的得力助手~',
+      duration: 10000,
+      raw: true,
     })
     .then(() => {
       if (Date.now() >= chan.dialogEndTime) {
         chan.say({
-          content: '（提示）如果想让我离开的话，双击我就可以了哦~',
+          content:
+            '（提示）双击对话框可以隐藏它，要让我暂时离开的话，只需要双击我就可以了哦~',
         })
       }
     })
@@ -362,7 +370,9 @@
       target: $('#ipe-edit-toolbox #edit-btn, a[href*="action=edit"]'),
       event: 'mouseenter',
       content:
-        '编辑按钮？你不再需要它了！现在，你只需要站起身，闭上眼睛，将双手举过头顶，大喊：“IPE酱赛高！”条目便会在顷刻间自动完成~',
+        '编辑按钮？你不再需要它了！现在，你只需要站起身，闭上眼睛，将双手举过头顶并高呼：“<b style="display:inline;font-weight:700;font-size:1.2em">IPE酱赛高！</b>”我便会在顷刻间为您改好它~',
+      duration: 6500,
+      raw: true,
     })
     .addDialog({
       type: 'event',
