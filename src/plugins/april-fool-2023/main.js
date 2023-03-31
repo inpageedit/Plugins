@@ -72,7 +72,7 @@
 
       // Random topics
       ;(async function randomTalk() {
-        if (Date.now() >= this.dialogEndTime) {
+        if (Date.now() >= self.dialogEndTime) {
           self.say({
             content: pick(self.dialogList),
           })
