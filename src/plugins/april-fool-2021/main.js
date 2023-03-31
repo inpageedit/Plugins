@@ -26,7 +26,7 @@
 
   if (now.toISOString().startsWith('2021-04-01T')) {
     mw.loader.load(
-      'https://ipe-plugins.js.org/plugins/april-fool-theme.css',
+      'https://ipe-plugins.js.org/plugins/april-fool-2021/theme.css',
       'text/css'
     )
     if (isLoaded) {

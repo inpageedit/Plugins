@@ -125,4 +125,16 @@ mw.hook('InPageEdit').add(({ _analysis, _msg, InPageEdit }) => {
   mw.hook('InPageEdit.toolbox').fire({
     $toolbox,
   })
+
+  // 2023愚人节彩蛋
+  const now = Date.now()
+  const startTime = new Date('2023-04-01T00:00:00+08:00')
+  const endTime = new Date('2023-04-02T23:59:59+08:00')
+  if (now >= startTime && now <= endTime) {
+    mw.loader.load('https://ipe-plugins.js.org/plugins/april-fool-2023/main.js')
+    mw.loader.load(
+      'https://ipe-plugins.js.org/plugins/april-fool-2023/style.css',
+      'text/css'
+    )
+  }
 })
