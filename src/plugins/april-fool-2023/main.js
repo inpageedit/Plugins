@@ -44,6 +44,8 @@
       this.pet = this.createRole(configs)
       this.pet.appendTo('body')
 
+      this.bindDynamicEffects(this.pet)
+
       // Clean up dialog
       setInterval(() => {
         if (this.dialogCountdown > 0) {
@@ -82,6 +84,7 @@
       })
     }
 
+    /** @returns {JQuery<HTMLElement>} */
     createRole(configs = {}) {
       if (this.pet) return this.pet
       const self = this
@@ -103,12 +106,57 @@
         $('<pet-eye>', { right: '' })
       )
 
+      const mouth = $('<pet-mouth>')
+
       const dialog = $('<pet-dialog>', { style: 'display:none' })
 
-      body.append(ears, eyes)
+      body.append(ears, eyes, mouth)
       pet.append(body, dialog)
 
       return pet
+    }
+
+    /**
+     * @param {JQuery<HTMLElement>} pet
+     */
+    bindDynamicEffects(pet) {
+      const ears = pet.find('pet-ears')
+      const eyes = pet.find('pet-eyes')
+      const mouth = pet.find('pet-mouth')
+      const dialog = pet.find('pet-dialog')
+
+      /**
+       * @param {MouseEvent|TouchEvent} event
+       */
+      const handler = (event) => {
+        const clientX =
+          event instanceof TouchEvent ? event.touches[0].clientX : event.clientX
+        const clientY =
+          event instanceof TouchEvent ? event.touches[0].clientX : event.clientY
+        const x = -(eyes[0].getBoundingClientRect().left - clientX)
+        const y = -(eyes[0].getBoundingClientRect().top - clientY)
+        ears.css(
+          'transform',
+          `translateY(${y / -300}px) translateX(${x / -220}px)`
+        )
+        eyes.css(
+          'transform',
+          `translateY(${y / 120}px) translateX(${x / 120}px)`
+        )
+        mouth.css(
+          'transform',
+          `translateY(${y / 300}px) translateX(${x / 200}px)`
+        )
+        dialog.css(
+          'transform',
+          `translateY(${y / -160}px) translateX(${x / -100}px)`
+        )
+      }
+
+      document.addEventListener('mousemove', handler)
+      document.addEventListener('touchmove', handler)
+
+      return this
     }
 
     say({ content = '', duration = 5000, raw = false }) {
@@ -321,5 +369,11 @@
       event: 'mouseenter',
       content:
         '点击这个按钮修改 InPageEdit 设置。但是它无法改变我~我会永远陪伴在你身边！',
+    })
+    .addDialog({
+      type: 'event',
+      target: $('a.image'),
+      event: 'mouseenter',
+      content: '一张超酷的图片！点击它可以查看大图哦~',
     })
 })()

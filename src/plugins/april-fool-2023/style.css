@@ -22,7 +22,7 @@ pet-body {
   width: 6em;
   height: 4.5em;
   background-color: #2584ff;
-  background-image: radial-gradient(farthest-corner at 3.5em 0.4em, #49adfe, #0165ff 60%, #0165ff);
+  background-image: radial-gradient(farthest-corner at 3.5em 0.4em, #6bbdff, #0165ff 60%, #0165ff);
   border-radius: 5em 5em 2.5em 2.5em;
   animation: pet-breathe 6s ease infinite;
   cursor: grab;
@@ -40,20 +40,26 @@ pet-body::after {
   border-radius: 50%;
   left: -10%;
   bottom: -20%;
-  background-color: rgba(0, 0, 0, 0.25);
+  background-color: rgba(0, 0, 0, 0.35);
   filter: blur(5px);
+  z-index: -1;
+}
+
+pet-ears {
+  position: absolute;
+  top: -0.4em;
+  width: 100%;
   z-index: -1;
 }
 
 pet-ear {
   position: absolute;
-  top: -0.4em;
   width: 1.8em;
   height: 2em;
   background-color: #0165ff;
-  background-image: radial-gradient(farthest-corner at 1em 1.4em, #49adfe, #0165ff 60%, #0165ff);
-  border-top-left-radius: 3em 2em;
-  z-index: -1;
+  background-image: radial-gradient(farthest-corner at 1.6em 0em, #49adfe, #0f6efd 60%, #0f6efd);
+  border-top-left-radius: 3.34em 3em;
+  border-top-right-radius: 0.5em 0.75em;
 }
 
 pet-ear[left] {
@@ -80,6 +86,7 @@ pet-eye {
   height: 1.35em;
   border-radius: 100vw;
   background-color: #ffab00;
+  background-image: radial-gradient(farthest-corner at 0.35em 0.4em, #facc6f, #d79510 75%);
   transform: translateY(-50%);
   animation: pet-wink 3.2s ease infinite;
 }
@@ -92,10 +99,39 @@ pet-eye[right] {
   right: 25%;
 }
 
+pet-mouth {
+  position: absolute;
+  bottom: 25%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+pet-mouth::before,
+pet-mouth::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  display: block;
+  width: 0.7em;
+  height: 0.6em;
+  border: 1px solid transparent;
+  border-bottom: 1px solid #fff;
+  border-radius: 50%;
+}
+
+pet-mouth::before {
+  right: -1.5px;
+}
+
+pet-mouth::after {
+  left: -1.5px;
+}
+
 pet-dialog {
   position: absolute;
-  bottom: calc(100% - 0.6em);
-  background-color: rgba(255, 255, 255, 0.85);
+  left: 6em;
+  bottom: calc(100% - 1em);
+  background-color: rgba(255, 255, 255, 0.9);
   border: 0.2em solid #4d9fea;
   box-shadow: 0 0 1em rgba(0, 0, 0, 0.1);
   color: #252525;
@@ -103,7 +139,7 @@ pet-dialog {
   padding-bottom: 2em;
   border-radius: 0.5em;
   width: 20em;
-  max-width: 80vw;
+  max-width: calc(100vw - 10em);
   z-index: -2;
   font-size: 1.12em;
 }
