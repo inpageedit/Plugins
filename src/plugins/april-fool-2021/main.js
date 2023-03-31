@@ -13,7 +13,7 @@
     modal.setContent(
       $('<div>').append(
         $('<iframe>', {
-          src: 'https://ipe-plugins.js.org/public/AprilFool2021/index.html',
+          src: 'https://ipe-plugins.js.org/plugins/april-fool-2021/modal/index.html',
           scrolling: 'no',
         })
       )

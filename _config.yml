@@ -36,6 +36,7 @@ skip_render:
   # 静态文件
   - '**/**.js'
   - '**/**.css'
+  - 'plugins/**/**.html'
   # CMS
   - 'admin/**/*'
 

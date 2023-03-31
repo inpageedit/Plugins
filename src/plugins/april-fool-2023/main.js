@@ -1,6 +1,11 @@
-;(() => {
-  'strict mode'
+/**
+ * My Little IPE 小小IPE酱
+ * @author dragon-fish <xiaoyujundesu@outlook.com>
+ * @license MIT
+ */
 
+'strict mode'
+;(() => {
   if (window.__IPE_20230401__) return
   window.__IPE_20230401__ = true
 
@@ -25,14 +30,19 @@
     return this // 支持链式调用
   }
 
-  function sleep(duration = 0) {
-    return new Promise((n) => setTimeout(n, duration))
-  }
+  // Utils
+  /** @type {(duration: number) => Promise<unknown>} */
+  const sleep = (duration = 0) => new Promise((n) => setTimeout(n, duration))
+  /** @type {<T>(arr: T[]) => T} */
+  const pick = (arr = []) => arr[Math.floor(Math.random() * arr.length)]
+  /** @type {(min: number, max: number) => number} */
+  const randomNum = (min = 0, max = 0) =>
+    Math.floor(Math.random() * (max - min + 1) + min)
 
-  class GirlRole {
-    dialogCountdown = 0
+  class LittlePet {
     /** @type {(string)[]} */
-    randomTopics = []
+    dialogList = []
+    dialogEndTime = 0
 
     /**
      * @param {{name:string}} configs
@@ -41,53 +51,57 @@
       const self = this
       this.configs = configs
 
-      this.pet = this.createRole(configs)
-      this.pet.appendTo('body')
+      this.role = this.createRole()
+      this.role.appendTo('body')
 
-      this.bindDynamicEffects(this.pet)
+      this.bindDynamicEffects(this.role)
+
+      const dialog = this.role.find('pet-dialog')
+
+      dialog.doubleClick(() => {
+        this.dialogEndTime = Date.now()
+      })
 
       // Clean up dialog
       setInterval(() => {
-        if (this.dialogCountdown > 0) {
-          this.dialogCountdown -= 100
-        }
-        const dialog = this.pet.find('pet-dialog')
-        if (this.dialogCountdown <= 0 && dialog.data('show', true)) {
+        const now = Date.now()
+        if (now > this.dialogEndTime) {
           dialog.fadeOut(240)
-          dialog.data('show', false)
         }
-      }, 100)
+      }, 50)
 
       // Random topics
       ;(async function randomTalk() {
-        const dialog = self.pet.find('pet-dialog')
         if (dialog.data('show') !== true) {
-          console.info('randomTalk')
           self.say({
-            content: self.pick(self.randomTopics),
+            content: pick(self.dialogList),
           })
         }
-        await sleep(self.randomNum(12 * 1000, 24 * 1000))
+        await sleep(randomNum(12 * 1000, 24 * 1000))
         randomTalk()
       })()
 
       // Clicked topics
-      this.pet.find('pet-body').on('click', function () {
-        self.say({
-          content: self.pick(self.randomTopics),
+      this.role.find('pet-body').on('click', () => {
+        this.say({
+          content: pick(this.dialogList),
         })
       })
 
       // Close
-      this.pet.find('pet-body').doubleClick(function () {
-        self.pet.fadeOut(120)
+      this.role.find('pet-body').doubleClick(() => {
+        this.say({ content: '我不打扰，我先走了哈~', duration: 1500 })
+          .then(() => {
+            this.role.fadeOut(120)
+            return sleep(120)
+          })
+          .then(() => this.role.remove())
       })
     }
 
     /** @returns {JQuery<HTMLElement>} */
-    createRole(configs = {}) {
-      if (this.pet) return this.pet
-      const self = this
+    createRole() {
+      if (this.role) return this.role
 
       const pet = $('<pet>')
 
@@ -159,83 +173,73 @@
       return this
     }
 
-    say({ content = '', duration = 5000, raw = false }) {
+    async say({ content = '', duration = 5000, raw = false }) {
       if (!content) return this
+      const self = this
+      const now = Date.now()
+      const dialog = this.role.find('pet-dialog')
+      const endTimeOriginal = this.dialogEndTime
+      this.dialogEndTime = now + duration
 
-      const dialog = this.pet.find('pet-dialog')
-
-      if (dialog.data('show') === true) {
+      if (now <= endTimeOriginal + 240) {
         dialog.fadeOut(120)
+        await sleep(120)
       }
 
       const name = $('<div>')
         .css({ fontWeight: '700' })
         .text(this.configs.name + ': ')
+      dialog.empty()
+      raw
+        ? dialog.append(name, content)
+        : dialog.append(name, $('<div>', { text: content }))
+      dialog.fadeIn(240)
+      this.dialogShown = true
 
-      sleep(dialog.data('show') === true ? 120 : 0).then(() => {
-        dialog.empty()
-
-        raw ? dialog.append(name, content) : dialog.append(name, `${content}`)
-
-        this.dialogCountdown = duration
-        dialog.fadeIn(240)
-        dialog.data('show', true)
-      })
-
-      return this
+      await sleep(duration)
+      return self
     }
 
     addDialog({ type = 'random', target = '', event = 'click', content = '' }) {
       if (!content) return this
-      const self = this
 
       if (type === 'random') {
-        this.randomTopics.push(content)
+        this.dialogList.push(content)
         return this
       }
 
-      const el = $(target || this.pet.find('pet-body'))
-      el.on(event, function () {
-        self.say({ content })
+      const el = $(target || this.role.find('pet-body'))
+      el.on(event, () => {
+        this.say({ content })
       })
 
       return this
     }
-
-    /**
-     * @type {<T>(arr: T[]) => T}
-     */
-    pick(arr = []) {
-      return arr[Math.floor(Math.random() * arr.length)]
-    }
-    randomNum(min = 0, max = 0) {
-      return Math.floor(Math.random() * (max - min + 1) + min)
-    }
   }
 
-  const girl = new GirlRole({
-    name: 'IPE酱',
+  const chan = new LittlePet({
+    name: 'My little IPE',
     chatInterval: [15 * 1000, 30 * 1000],
   })
 
-  new Promise((n) => {
-    girl.say({
+  // 开场白
+  const start = Date.now()
+  chan
+    .say({
       content:
-        '呦吼——我是由 InPageEdit Technology 开发的全新 AI 助理，名字叫【IPE酱】。我专门为帮助用户进行 MediaWiki 的日常维护而设计，能够让您轻松地管理和编辑您的 Wiki 网站。希望IPE酱能成为您维护 Wiki 网站的得力助手~',
+        '呦吼~我是由 InPageEdit Technology 开发的全新 AI 助理，你可以叫我【IPE酱】。我专门为帮助用户进行 MediaWiki 的日常维护而设计，能够让您轻松地管理和编辑您的 Wiki 网站。希望IPE酱能成为您维护 Wiki 网站的得力助手~',
       duration: 5500,
     })
-    return n()
-  })
-    .then(() => sleep(6500))
     .then(() => {
-      if (girl.pet.find('pet-dialog').data('show') !== true) {
-        girl.say({
+      if (Date.now() >= chan.dialogEndTime) {
+        chan.say({
           content: '（提示）如果想让我离开的话，双击我就可以了哦~',
         })
       }
     })
 
-  girl
+  // 随机对话
+  chan
     .addDialog({
       type: 'random',
       content: '哇哇哇，别戳我',
@@ -350,6 +354,9 @@
       type: 'random',
       content: '（你知道吗）我的源代码有超过一半是由AI生成的……',
     })
+
+  // 特殊触发器
+  chan
     .addDialog({
       type: 'event',
       target: $('#ipe-edit-toolbox #edit-btn, a[href*="action=edit"]'),

@@ -138,10 +138,11 @@ pet-dialog {
   padding: 0.8em;
   padding-bottom: 2em;
   border-radius: 0.5em;
-  width: 20em;
+  width: 24em;
   max-width: calc(100vw - 10em);
-  z-index: -2;
   font-size: 1.12em;
+  line-height: 1.6;
+  z-index: -2;
 }
 
 @keyframes pet-breathe {
