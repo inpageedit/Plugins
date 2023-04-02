@@ -40,7 +40,7 @@
     "name": "Fix double entrance",
     "description": "Fix the bug that two Quick Edit link appear in section edit area when the Visual Editor is enabled"
   },
-  "april-fool-2023/main.js": {
+  "april-fool-2023/autoload.js": {
     "name": "My Little IPE",
     "author": "dragon-fish",
     "description": "IPE Chan - Your powerful MediaWiki AI assistant (Of course it's just a joke)"

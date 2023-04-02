@@ -11,13 +11,21 @@ mw.hook('InPageEdit').add(({ _analysis, _msg, InPageEdit }) => {
 
   if (!config.wgIsArticle) {
     console.warn('[InPageEdit] 不是文章页面')
-    $('<div>', { id: 'ipe-edit-toolbox' }).append(
-      $('<div>', {
-        id: 'ipe-toolbox-placeholder',
-        style:
-          'width:0.5rem;height:0.5rem;border-radius:50%;background:#3f51b5;pointer-events:none',
-      })
-    )
+    $('<div>', { id: 'ipe-edit-toolbox' })
+      .append(
+        $('<div>', {
+          id: 'ipe-toolbox-placeholder',
+          style:
+            'width:0.75rem;height:0.75rem;border-radius:50%;background:#3f51b5;line-height:1;pointer-events:none;',
+        }).append(
+          $('<i>', {
+            class: 'fa fa-check',
+            style:
+              'font-size:0.5em;color:#fff;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)',
+          })
+        )
+      )
+      .appendTo('body')
     return
   }
 
