@@ -144,9 +144,9 @@
        */
       const handler = (event) => {
         const clientX =
-          event instanceof TouchEvent ? event.touches[0].clientX : event.clientX
+          event instanceof MouseEvent ? event.clientX : event.touches[0].clientX
         const clientY =
-          event instanceof TouchEvent ? event.touches[0].clientX : event.clientY
+          event instanceof MouseEvent ? event.clientY : event.touches[0].clientY
         const x = -(eyes[0].getBoundingClientRect().left - clientX)
         const y = -(eyes[0].getBoundingClientRect().top - clientY)
         ears.css(

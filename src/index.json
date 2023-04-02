@@ -2,12 +2,12 @@
   "toolbox.js": {
     "_force": true,
     "name": "InPageEdit Toolbox",
-    "author": "Dragon-Fish",
+    "author": "dragon-fish",
     "description": "Adds a toolbox in the bottom-right corner of your screen. Lets you quickly access frequently used IPE functions."
   },
   "edit-any-page.js": {
     "name": "Edit any page",
-    "author": "Dragon-Fish",
+    "author": "dragon-fish",
     "description": "Adds a button into IPE Toolbox that lets you edit any page anywhere",
     "dependency": [
       "toolbox.js"
@@ -16,7 +16,7 @@
   "wiki-editor.js": {
     "name": "WikiEditor",
     "description": "Make InPageEdit use native WikiEditor (2010 editor) instead of IPE's custom editTools.",
-    "author": "Dragon-Fish"
+    "author": "dragon-fish"
   },
   "code-mirror/script.js": {
     "name": "[BETA] Code Mirror",
@@ -25,7 +25,7 @@
   },
   "color-preview.js": {
     "name": "Color preview",
-    "author": "Dragon-Fish",
+    "author": "dragon-fish",
     "description": "Adds a box above the edit textarea to quickly preview the hexadecimal color"
   },
   "quick-thank.js": {
@@ -40,12 +40,9 @@
     "name": "Fix double entrance",
     "description": "Fix the bug that two Quick Edit link appear in section edit area when the Visual Editor is enabled"
   },
-  "demo.js": {
-    "name": "Plugin Demo",
-    "description": "An InPageEdit Plugin Demo"
-  },
-  "language-pack_demo.js": {
-    "name": "Language pack demo",
-    "description": "A language pack demo"
+  "april-fool-2023/main.js": {
+    "name": "My Little IPE",
+    "author": "dragon-fish",
+    "description": "IPE Chan - Your powerful MediaWiki AI assistant (Of course it's just a joke)"
   }
 }
