@@ -9,7 +9,7 @@ mw.hook('InPageEdit').add(({ InPageEdit }) =>
     const CM_CDN = 'https://fastly.jsdelivr.net/npm/codemirror@5.65.1'
     const WMGH_CDN =
       'https://fastly.jsdelivr.net/gh/wikimedia/mediawiki-extensions-CodeMirror@REL1_37'
-    const PLUGIN_CDN = InPageEdit.api.pluginCDN
+    const PLUGIN_CDN = (InPageEdit.endponts || InPageEdit.api).pluginCDN
     const USING_LOCAL = mw.loader.getState('ext.CodeMirror') !== null
     const THEME =
       InPageEdit.preference.get('codeMirrorTheme') || 'solarized light'
