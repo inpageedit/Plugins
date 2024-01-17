@@ -24,7 +24,7 @@ mw.hook('InPageEdit').add(() =>
      */
     function getPageMode(page) {
       const {namespace, title} = page
-      const ext = page.ext.toLowerCase()
+      const ext = page.ext?.toLowerCase()
       const isSubject = namespace % 2 === 0
       if (ext === 'css' && isSubject) {
         return 'css'
