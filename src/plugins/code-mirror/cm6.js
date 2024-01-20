@@ -68,12 +68,11 @@ mw.hook('InPageEdit').add(() =>
         cm.prefer([
           'highlightSpecialChars',
           'highlightActiveLine',
-          'highlightWhitespace',
           'bracketMatching',
           'closeBrackets',
         ])
 
-        cm.defaultLint(true, mode === 'mediawiki' ? {include: page.namespace === 10} : undefined)
+        cm.defaultLint(true, mode === 'mediawiki' ? {include: [2, 10, 828].includes(page.namespace)} : undefined)
         return cm
       }
     }
