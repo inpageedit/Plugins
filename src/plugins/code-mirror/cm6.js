@@ -15,7 +15,7 @@ mw.hook('InPageEdit').add(() =>
 
     await Promise.all([
       mw.loader.using('mediawiki.Title'),
-      window.CodeMirror6 || import(`${CM_CDN}/mw/dist/base.min.js`),
+      window.CodeMirror6 || import(`${CM_CDN}/dist/mw.min.js`),
     ])
 
     /**
@@ -64,16 +64,7 @@ mw.hook('InPageEdit').add(() =>
           })
         }
 
-        const cm = await CodeMirror6.fromTextArea(target[0], mode)
-        cm.prefer([
-          'highlightSpecialChars',
-          'highlightActiveLine',
-          'bracketMatching',
-          'closeBrackets',
-        ])
-
-        cm.defaultLint(true, mode === 'mediawiki' ? {include: [2, 10, 828].includes(page.namespace)} : undefined)
-        return cm
+        return await CodeMirror6.fromTextArea(target[0], mode, page.namespace)
       }
     }
 
