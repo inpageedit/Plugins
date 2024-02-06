@@ -11,7 +11,7 @@ mw.hook('InPageEdit').add(() =>
     // Constants
     const CM_CDN = 'https://testingcf.jsdelivr.net/npm/@bhsd/codemirror-mediawiki'
 
-    mw.loader.addStyleTag('.in-page-edit .cm-editor{min-height:400px!important}')
+    mw.loader.addStyleTag('.in-page-edit .cm-editor{min-height:350px!important;border:1px solid #c8ccd1}')
 
     await Promise.all([
       mw.loader.using('mediawiki.Title'),
