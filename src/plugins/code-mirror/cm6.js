@@ -10,6 +10,9 @@ mw.hook('InPageEdit').add(() =>
   (async () => {
     // Constants
     const CM_CDN = 'https://testingcf.jsdelivr.net/npm/@bhsd/codemirror-mediawiki'
+    const PLUGIN_CDN = (InPageEdit.endpoints || InPageEdit.api).pluginCDN
+
+    mw.loader.load(`${PLUGIN_CDN}/plugins/code-mirror/style.css`, 'text/css')
 
     await Promise.all([
       mw.loader.using('mediawiki.Title'),
