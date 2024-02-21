@@ -10,12 +10,13 @@ mw.hook('InPageEdit').add(() =>
   (async () => {
     // Constants
     const CM_CDN = 'https://testingcf.jsdelivr.net/npm/@bhsd/codemirror-mediawiki'
+    const PLUGIN_CDN = (InPageEdit.endpoints || InPageEdit.api).pluginCDN
 
-    mw.loader.addStyleTag('.in-page-edit .cm-editor{min-height:400px!important}')
+    mw.loader.load(`${PLUGIN_CDN}/plugins/code-mirror/style.css`, 'text/css')
 
     await Promise.all([
       mw.loader.using('mediawiki.Title'),
-      window.CodeMirror6 || import(`${CM_CDN}/mw/dist/base.min.js`),
+      window.CodeMirror6 || import(`${CM_CDN}/dist/mw.min.js`),
     ])
 
     /**
@@ -64,16 +65,7 @@ mw.hook('InPageEdit').add(() =>
           })
         }
 
-        const cm = await CodeMirror6.fromTextArea(target[0], mode)
-        cm.prefer([
-          'highlightSpecialChars',
-          'highlightActiveLine',
-          'bracketMatching',
-          'closeBrackets',
-        ])
-
-        cm.defaultLint(true, mode === 'mediawiki' ? {include: [2, 10, 828].includes(page.namespace)} : undefined)
-        return cm
+        return await CodeMirror6.fromTextArea(target[0], mode, page.namespace)
       }
     }
 
