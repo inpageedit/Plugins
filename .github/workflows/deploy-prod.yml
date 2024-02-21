@@ -2,14 +2,10 @@ name: Deploy Aliyun oss
 
 # Controls when the workflow will run
 on:
+  # TODO: Temporarily disable the pull_request trigger
   push:
-    branches:
-      - master
+    branches: []
   workflow_dispatch:
-    inputs:
-      number:
-        description: 'Related pull request number'
-        required: true
 
 jobs:
   build:
