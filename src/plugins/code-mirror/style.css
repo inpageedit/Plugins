@@ -5,14 +5,11 @@
 
 /* Minor fix */
 .in-page-edit .CodeMirror,
-.in-page-edit .cm-content {
+.in-page-edit .cm-editor {
   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro',
     monospace;
   min-height: 400px;
   font-size: 14px;
-}
-
-.in-page-edit .cm-editor {
   border: 1px solid #c8ccd1;
 }
 
