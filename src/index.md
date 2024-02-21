@@ -19,9 +19,9 @@ It also has many plugins that make it more powerful.
 
 ### Via InPageEdit preference
 
-1. Locate the "InPageEdit Toolbox™" in the lower right corner
-2. Click the "preference" button ("gear" button)
-3. Switch to the "plugin" tab
+1. Locate the `InPageEdit Toolbox™` in the lower right corner
+2. Click the `preference` button (`gear` button)
+3. Switch to the `plugin` tab
 4. Check mark the plugins you want
 5. Click save button
 6. Refresh the web page
@@ -53,5 +53,5 @@ InPageEdit.myPreference = {
 
 ## ✨ Special products
 
-- [2021 April Fools' Day (IPE-1977)](./plugins/april-fool-2021/)
-- [2023 April Fools' Day (My little IPE)](./plugins/april-fool-2023/)
+- [2021 April Fools\' Day (IPE-1977)](./plugins/april-fool-2021/)
+- [2023 April Fools\' Day (My little IPE)](./plugins/april-fool-2023/)

@@ -52,20 +52,16 @@ external_link:
 filename_case: 0
 render_drafts: false
 post_asset_folder: true
-marked:
-  prependRoot: true
-  postAsset: true
 relative_link: false
 future: true
+syntax_highlighter: highlight.js
 highlight:
-  enable: false
   line_number: true
   auto_detect: false
-  tab_replace: '  '
+  tab_replace: ''
   wrap: true
   hljs: false
 prismjs:
-  enable: true
   preprocess: true
   line_number: true
   tab_replace: ''
