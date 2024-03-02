@@ -84,7 +84,6 @@ importScripts('${MONACO_CDN_BASE}/vs/${path}')
          */
         const monaco = window.monaco
         mw.hook('InPageEdit.monaco').fire(monaco)
-        console.info('[MONACO] Loaded', monaco)
 
         const container = document.createElement('div')
         container.classList.add('inpageedit-monaco')
@@ -112,7 +111,6 @@ importScripts('${MONACO_CDN_BASE}/vs/${path}')
               editor.updateOptions({ readOnly: false })
               model.setValue(textarea.value)
               contentInitialized = true
-              console.info('[MONACO] Content initialized', textarea.value)
             }
           }, 50)
         }
@@ -120,7 +118,6 @@ importScripts('${MONACO_CDN_BASE}/vs/${path}')
           textarea.value = model.getValue()
         })
 
-        console.info('[MONACO] Rendered', editor, model)
         mw.hook('InPageEdit.monaco.editor').fire({
           container,
           editor,
