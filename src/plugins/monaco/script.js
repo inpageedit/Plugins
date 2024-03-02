@@ -116,6 +116,8 @@ importScripts('${MONACO_CDN_BASE}/vs/${path}')
         }
         model.onDidChangeContent(() => {
           textarea.value = model.getValue()
+          textarea.dispatchEvent(new Event('input'))
+          textarea.dispatchEvent(new Event('change'))
         })
 
         mw.hook('InPageEdit.monaco.editor').fire({
