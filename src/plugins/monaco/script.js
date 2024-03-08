@@ -32,11 +32,11 @@ mw.hook('InPageEdit.quickEdit').add(
           'MediaWiki.d.ts',
         ],
         [
-          'https://cdn.jsdelivr.net/npm/@types/jquery/JQuery.d.ts',
+          'https://cdn.jsdelivr.net/npm/@types/jquery@3.5.29/JQuery.d.ts',
           'jquery/JQuery.d.ts',
         ],
         [
-          'https://cdn.jsdelivr.net/npm/@types/jquery/JQueryStatic.d.ts',
+          'https://cdn.jsdelivr.net/npm/@types/jquery@3.5.29/JQueryStatic.d.ts',
           'jquery/JQueryStatic.d.ts',
         ],
         ['declare const $: JQueryStatic', 'jquery/JQueryGlobal.d.ts'],
@@ -102,6 +102,13 @@ importScripts('${MONACO_CDN_BASE}/vs/${path}')
 
         // Initialize content from textarea
         let contentInitialized = !!initialValue
+        const attachContentChangeListener = () => {
+          model.onDidChangeContent(() => {
+            textarea.value = model.getValue()
+            textarea.dispatchEvent(new Event('input'))
+            textarea.dispatchEvent(new Event('change'))
+          })
+        }
         if (!contentInitialized) {
           editor.updateOptions({ readOnly: true })
           const waitUntil = Date.now() + 10 * 1000
@@ -110,15 +117,13 @@ importScripts('${MONACO_CDN_BASE}/vs/${path}')
               clearInterval(timer)
               editor.updateOptions({ readOnly: false })
               model.setValue(textarea.value)
+              attachContentChangeListener()
               contentInitialized = true
             }
           }, 50)
+        } else {
+          attachContentChangeListener()
         }
-        model.onDidChangeContent(() => {
-          textarea.value = model.getValue()
-          textarea.dispatchEvent(new Event('input'))
-          textarea.dispatchEvent(new Event('change'))
-        })
 
         mw.hook('InPageEdit.monaco.editor').fire({
           container,

@@ -12,7 +12,7 @@ This plugin adds a Monaco Editor to the InPageEdit.
 
 ## Compatibility
 
-Don't use this plugin with the `CodeEditor` extension, as it may cause conflicts.
+Don't use this plugin with the `CodeMirror` extension, as it may cause conflicts.
 
 ## Hooks
 
