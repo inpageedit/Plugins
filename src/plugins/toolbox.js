@@ -1,7 +1,7 @@
 /**
  * @module toolbox 工具盒模块
  */
-mw.hook('InPageEdit').add(({ _analysis, _msg, InPageEdit }) => {
+mw.hook('InPageEdit').add(({ _analytics, _msg, InPageEdit }) => {
   var config = mw.config.get()
   // 检测是否为文章页
   if ($('#ipe-edit-toolbox').length > 0) {
@@ -110,7 +110,7 @@ mw.hook('InPageEdit').add(({ _analysis, _msg, InPageEdit }) => {
   $toolbox.appendTo('body')
 
   $toolbox.find('.btn-group button').click(function () {
-    _analysis('tool_box')
+    _analytics('tool_box')
   })
 
   // 设置开关等
