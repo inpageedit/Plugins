@@ -4,11 +4,14 @@
  * @license MIT
  */
 mw.hook('InPageEdit.quickEdit').add(
+  /**
+   * hook payload
+   * @param {{ $editArea: JQuery<HTMLTextAreaElement>; $modalContent: JQuery<HTMLElement>; $modalTitle: JQuery<HTMLElement> }} param0
+   */
   ({ $editArea, $modalContent, $modalTitle }) => {
     ;(async () => {
       await mw.loader.using(['mediawiki.Title', 'mediawiki.util'])
 
-      /** @type {HTMLTextAreaElement} */
       const textarea = $editArea.get(0)
       const language = getLangFromContentModel(
         $modalTitle.find('.editPage').text()
@@ -79,9 +82,6 @@ importScripts('${MONACO_CDN_BASE}/vs/${path}')
         },
       })
       require(['vs/editor/editor.main'], () => {
-        /**
-         * @type {import('monaco-editor')}
-         */
         const monaco = window.monaco
         mw.hook('InPageEdit.monaco').fire(monaco)
 

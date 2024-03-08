@@ -1,8 +1,10 @@
-import monaco from 'monaco-editor'
-
-// declare const monaco: typeof monaco
+import MonacoEditor from 'monaco-editor'
 
 declare global {
-  const monaco: typeof monaco
-  const MonacoEnvironment: monaco.Environment
+  const monaco: typeof MonacoEditor
+  let MonacoEnvironment: MonacoEditor.Environment
+  interface Window {
+    monaco: typeof MonacoEditor
+    MonacoEditor: typeof MonacoEditor
+  }
 }
