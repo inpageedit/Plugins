@@ -65,7 +65,14 @@ mw.hook('InPageEdit').add(() =>
           })
         }
 
-        return await CodeMirror6.fromTextArea(target[0], mode, page.namespace)
+        const cm = await CodeMirror6.fromTextArea(target[0], mode, page.namespace)
+        if (mode === 'mediawiki') {
+          const config = mw.config.get('extCodeMirrorConfig')
+          if (config.urlProtocols.includes('\\:')) {
+            config.urlProtocols = config.urlProtocols.replace(/\\:/g, ':')
+            cm.setLanguage('mediawiki', config)
+          }
+        }
       }
     }
 
