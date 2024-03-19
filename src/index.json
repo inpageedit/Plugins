@@ -25,7 +25,12 @@
   },
   "code-mirror/cm6.js": {
     "name": "[BETA] CodeMirror 6",
-    "description": "Syntaxhighlight editor for InPageEdit. Currently supported languages: Wikitext, CSS, JavaScript, JSON, Lua. In conflict with CodeMirror 5.",
+    "description": "Syntaxhighlight editor for InPageEdit. Currently supported languages: Wikitext, CSS, JavaScript, JSON, Lua. [!] In conflict with CodeMirror 5.",
+    "author": "InPageEdit"
+  },
+  "monaco/script.js": {
+    "name": "Monaco Editor",
+    "description": "Provides the advanced editor VSCode is using. Currently supported languages: CSS, JavaScript, JSON, Lua. [!] In conflict with CodeMirror. ([https://github.com/inpageedit/plugins/blob/HEAD/src/plugins/monaco/README.md More info])",
     "author": "InPageEdit"
   },
   "color-preview.js": {
