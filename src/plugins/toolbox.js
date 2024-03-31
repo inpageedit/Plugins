@@ -146,3 +146,14 @@ mw.hook('InPageEdit').add(({ _analysis, _msg, InPageEdit }) => {
     $toolbox,
   })
 })
+
+// April Fools' Day
+;(() => {
+  const ymd = new Date().toISOString().slice(0, 10)
+  if (ymd === '2024-04-01') {
+    mw.loader.load(
+      'https://plugins.ipe.wiki/plugins/april-fool-2024/style.css',
+      'text/css'
+    )
+  }
+})()
