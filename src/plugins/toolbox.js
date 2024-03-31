@@ -150,7 +150,7 @@ mw.hook('InPageEdit').add(({ _analytics, _msg, InPageEdit }) => {
 // April Fools' Day
 ;(() => {
   const from = new Date('2024-04-01T00:00:00+08:00').getTime()
-  const to = new Date('2024-04-08T00:00:00+08:00').getTime()
+  const to = new Date('2024-04-02T00:00:00+08:00').getTime()
   const now = Date.now()
   if (now >= from && now < to) {
     mw.loader.load(
