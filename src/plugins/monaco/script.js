@@ -3,6 +3,7 @@
  * @author Dragon-Fish <dragon-fish@qq.com>
  * @license MIT
  */
+mw.loader.addStyleTag('.monaco-hover-content code{color:inherit}')
 mw.hook('InPageEdit.quickEdit').add(
   /**
    * hook payload
