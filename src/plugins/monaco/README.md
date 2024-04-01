@@ -4,6 +4,7 @@ This plugin adds a Monaco Editor to the InPageEdit.
 
 ## Supported content models
 
+- Wikitext
 - CSS
 - JavaScript
 - JSON
