@@ -1,8 +1,10 @@
 /**
  * MediaWiki Gadget MonacoEditor
  * @author Dragon-Fish <dragon-fish@qq.com>
+ * @author Bhsd <https://github.com/bhsd-harry>
  * @license MIT
  */
+mw.loader.addStyleTag('.monaco-hover-content code{color:inherit}')
 mw.hook('InPageEdit.quickEdit').add(
   /**
    * hook payload
@@ -16,9 +18,9 @@ mw.hook('InPageEdit.quickEdit').add(
       const language = getLangFromContentModel(
         $modalTitle.find('.editPage').text()
       )
-      if (!textarea || !language) {
+      if (!textarea) {
         return console.warn(
-          'Missing textarea or language not supported yet.',
+          'Missing textarea.',
           textarea,
           language
         )
@@ -81,9 +83,14 @@ importScripts('${MONACO_CDN_BASE}/vs/${path}')
           vs: `${MONACO_CDN_BASE}/vs`,
         },
       })
-      require(['vs/editor/editor.main'], () => {
+      require(['vs/editor/editor.main'], async () => {
         const monaco = window.monaco
         mw.hook('InPageEdit.monaco').fire(monaco)
+
+        if (language === 'wikitext' && !monaco.languages.getEncodedLanguageId('wikitext')) {
+          const { default: registerWiki } = await import(`${MONACO_CDN_BASE.split('/monaco-editor', 1)[0]}/monaco-wiki`)
+          registerWiki(monaco)
+        }
 
         const container = document.createElement('div')
         container.classList.add('inpageedit-monaco')
@@ -93,12 +100,18 @@ importScripts('${MONACO_CDN_BASE}/vs/${path}')
         $modalContent.hide()
 
         const model = monaco.editor.createModel(initialValue, language)
-        const editor = monaco.editor.create(container, {
+        const opt = {
           model,
           automaticLayout: true,
           theme: 'vs-dark',
           tabSize: 2,
-        })
+        }
+        if (language === 'wikitext') {
+          opt.unicodeHighlight = {
+            ambiguousCharacters: false
+          }
+        }
+        const editor = monaco.editor.create(container, opt)
 
         // Initialize content from textarea
         let contentInitialized = !!initialValue
@@ -169,7 +182,7 @@ importScripts('${MONACO_CDN_BASE}/vs/${path}')
         } else if (ext === 'json') {
           return 'json'
         }
-        return null
+        return 'wikitext'
       }
 
       /**
