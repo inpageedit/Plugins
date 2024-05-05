@@ -107,10 +107,15 @@ mw.hook('InPageEdit.quickEdit').add(
       }
 
       async function loadScript(src) {
-        return (
-          'monaco' in window ||
-          $.ajax(src, { dataType: 'script', scriptAttrs: { type: 'module' } })
-        )
+        return 'monaco' in window ||
+          new Promise((resolve, reject) => {
+            const s = document.createElement('script')
+            s.type = 'module'
+            s.src = src
+            document.body.appendChild(s)
+            s.addEventListener('load', resolve)
+            s.addEventListener('error', reject)
+          })
       }
 
       function getLangFromContentModel(given = '') {
