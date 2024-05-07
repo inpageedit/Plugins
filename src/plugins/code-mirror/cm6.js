@@ -25,7 +25,7 @@ mw.hook('InPageEdit').add(() =>
      */
     function getPageMode(page) {
       const {namespace, title} = page
-      const ext = page.ext?.toLowerCase()
+      const ext = page.getExtension()?.toLowerCase()
       const isSubject = namespace % 2 === 0
       if (ext === 'css' && isSubject) {
         return 'css'
@@ -68,7 +68,7 @@ mw.hook('InPageEdit').add(() =>
         const cm = await CodeMirror6.fromTextArea(target[0], mode, page.namespace)
         if (mode === 'mediawiki') {
           const config = mw.config.get('extCodeMirrorConfig')
-          if (config.urlProtocols.includes('\\:')) {
+          if (config?.urlProtocols.includes('\\:')) {
             config.urlProtocols = config.urlProtocols.replace(/\\:/g, ':')
             cm.setLanguage('mediawiki', config)
           }
