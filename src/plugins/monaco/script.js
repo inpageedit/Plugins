@@ -4,7 +4,6 @@
  * @author Bhsd <https://github.com/bhsd-harry>
  * @license MIT
  */
-mw.loader.addStyleTag('.monaco-hover-content code{color:inherit}')
 mw.hook('InPageEdit.quickEdit').add(
   /**
    * hook payload
@@ -19,17 +18,10 @@ mw.hook('InPageEdit.quickEdit').add(
         $modalTitle.find('.editPage').text()
       )
       if (!textarea) {
-        return console.warn(
-          'Missing textarea.',
-          textarea,
-          language
-        )
+        return console.warn('Missing textarea.', textarea, language)
       }
 
       const initialValue = textarea.value
-      const MONACO_CDN_BASE =
-        window.MONACO_CDN_BASE ||
-        'https://cdn.jsdelivr.net/npm/monaco-editor@0.44.0/min'
       const MONACO_EXTRA_LIBS = [
         ...[window.MONACO_EXTRA_LIBS || []],
         [
@@ -47,118 +39,75 @@ mw.hook('InPageEdit.quickEdit').add(
         ['declare const $: JQueryStatic', 'jquery/JQueryGlobal.d.ts'],
       ]
 
-      window.MonacoEnvironment = {
-        ...window.MonacoEnvironment,
-        baseUrl: MONACO_CDN_BASE,
-        getWorkerUrl(workerId, label) {
-          let path = 'base/worker/workerMain.js'
+      await loadScript(
+        'https://cdn.jsdelivr.net/npm/monaco-wiki/dist/all.min.js'
+      )
+      const monaco = await window.monaco
+      mw.hook('InPageEdit.monaco').fire(monaco)
 
-          if (label === 'json') {
-            path = 'language/json/jsonWorker.js'
-          } else if (label === 'css' || label === 'scss' || label === 'less') {
-            path = 'language/css/cssWorker.js'
-          } else if (
-            label === 'html' ||
-            label === 'handlebars' ||
-            label === 'razor'
-          ) {
-            path = 'language/html/htmlWorker.js'
-          } else if (label === 'typescript' || label === 'javascript') {
-            path = 'language/typescript/tsWorker.js'
+      const container = document.createElement('div')
+      container.classList.add('inpageedit-monaco')
+      container.style.width = '100%'
+      container.style.height = '70vh'
+      $modalContent.after(container)
+      $modalContent.hide()
+
+      const model = monaco.editor.createModel(initialValue, language)
+      const opt = {
+        model,
+        automaticLayout: true,
+        theme: 'vs-dark',
+        tabSize: 2,
+        glyphMargin: true,
+      }
+      if (language === 'wikitext') {
+        opt.wordWrap = 'on'
+        opt.wordBreak = 'keepAll'
+        opt.unicodeHighlight = {
+          ambiguousCharacters: false,
+        }
+      }
+      const editor = monaco.editor.create(container, opt)
+
+      // Initialize content from textarea
+      let contentInitialized = !!initialValue
+      const attachContentChangeListener = () => {
+        model.onDidChangeContent(() => {
+          textarea.value = model.getValue()
+          textarea.dispatchEvent(new Event('input'))
+          textarea.dispatchEvent(new Event('change'))
+        })
+      }
+      if (!contentInitialized) {
+        editor.updateOptions({ readOnly: true })
+        const waitUntil = Date.now() + 10 * 1000
+        const timer = setInterval(() => {
+          if (Date.now() > waitUntil || textarea.value.trim()) {
+            clearInterval(timer)
+            editor.updateOptions({ readOnly: false })
+            model.setValue(textarea.value)
+            attachContentChangeListener()
+            contentInitialized = true
           }
-
-          return `data:text/javascript;charset=utf-8,${encodeURIComponent(`
-self.MonacoEnvironment = {
-    baseUrl: '${MONACO_CDN_BASE}'
-}
-importScripts('${MONACO_CDN_BASE}/vs/${path}')
-        `)}`
-        },
+        }, 50)
+      } else {
+        attachContentChangeListener()
       }
 
-      await loadScript(`${MONACO_CDN_BASE}/vs/loader.js`)
-      const require = window.require
-      require.config({
-        paths: {
-          vs: `${MONACO_CDN_BASE}/vs`,
-        },
-      })
-      require(['vs/editor/editor.main'], async () => {
-        const monaco = window.monaco
-        mw.hook('InPageEdit.monaco').fire(monaco)
-
-        if (language === 'wikitext' && !monaco.languages.getEncodedLanguageId('wikitext')) {
-          const { default: registerWiki } = await import(`${MONACO_CDN_BASE.split('/monaco-editor', 1)[0]}/monaco-wiki`)
-          registerWiki(monaco)
-        }
-
-        const container = document.createElement('div')
-        container.classList.add('inpageedit-monaco')
-        container.style.width = '100%'
-        container.style.height = '70vh'
-        $modalContent.after(container)
-        $modalContent.hide()
-
-        const model = monaco.editor.createModel(initialValue, language)
-        const opt = {
-          model,
-          automaticLayout: true,
-          theme: 'vs-dark',
-          tabSize: 2,
-        }
-        if (language === 'wikitext') {
-          opt.unicodeHighlight = {
-            ambiguousCharacters: false
-          }
-        }
-        const editor = monaco.editor.create(container, opt)
-
-        // Initialize content from textarea
-        let contentInitialized = !!initialValue
-        const attachContentChangeListener = () => {
-          model.onDidChangeContent(() => {
-            textarea.value = model.getValue()
-            textarea.dispatchEvent(new Event('input'))
-            textarea.dispatchEvent(new Event('change'))
-          })
-        }
-        if (!contentInitialized) {
-          editor.updateOptions({ readOnly: true })
-          const waitUntil = Date.now() + 10 * 1000
-          const timer = setInterval(() => {
-            if (Date.now() > waitUntil || textarea.value.trim()) {
-              clearInterval(timer)
-              editor.updateOptions({ readOnly: false })
-              model.setValue(textarea.value)
-              attachContentChangeListener()
-              contentInitialized = true
-            }
-          }, 50)
-        } else {
-          attachContentChangeListener()
-        }
-
-        mw.hook('InPageEdit.monaco.editor').fire({
-          container,
-          editor,
-          model,
-          addExtraLib,
-          addExternalExtraLib,
-        })
-
-        if (language === 'javascript') {
-          addBatchExtraLibs(monaco, model, MONACO_EXTRA_LIBS)
-        }
+      mw.hook('InPageEdit.monaco.editor').fire({
+        container,
+        editor,
+        model,
+        addExtraLib,
+        addExternalExtraLib,
       })
 
-      async function loadScript(src = '') {
-        return new Promise((resolve, reject) => {
-          const s = document.createElement('script')
-          s.src = src
-          document.body.appendChild(s)
-          s.addEventListener('load', resolve)
-          s.addEventListener('error', reject)
-        })
+      if (language === 'javascript') {
+        addBatchExtraLibs(monaco, model, MONACO_EXTRA_LIBS)
+      }
+
+      async function loadScript(src) {
+        return 'monaco' in window || $.ajax(src, { dataType: 'script', cache: true });
       }
 
       function getLangFromContentModel(given = '') {
