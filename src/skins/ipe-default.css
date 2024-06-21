@@ -216,7 +216,8 @@
   margin-bottom: 0;
 }
 
-.in-page-edit .editSummary, .in-page-edit .newSectionTitleInput {
+.in-page-edit .editSummary,
+.in-page-edit .newSectionTitleInput {
   width: 98%;
   margin: 4px auto 8px 0.5em;
 }
@@ -638,6 +639,12 @@
 .in-page-edit label input[type='radio'] {
   position: absolute;
   clip: rect(0, 0, 0, 0);
+}
+
+.in-page-edit .cm-panel label input[type='checkbox'],
+.in-page-edit .cm-panel label input[type='radio'] {
+  position: initial;
+  clip: initial;
 }
 
 .in-page-edit label input[type='checkbox']:disabled + span::before {
