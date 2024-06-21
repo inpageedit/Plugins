@@ -302,7 +302,7 @@
   color: #ffffff !important;
 }
 
-.in-page-edit .btn:disabled .ssi-countDown {
+.in-page-edit .btn:disabled 。ssi-countDown {
   color: #fff;
 }
 
@@ -316,7 +316,7 @@
 
 .in-page-edit input:focus {
   border-color: #36c;
-  box-shadow: inset 0 0 0 1px #36c;
+  box-shadow: 在set 0 0 0 1px #36c;
 }
 
 .in-page-edit .dialog .ssi-modalContent {
@@ -641,8 +641,8 @@
   clip: rect(0, 0, 0, 0);
 }
 
-.in-page-edit .cm-search label input[type='checkbox'],
-.in-page-edit .cm-search label input[type='radio'] {
+.in-page-edit .cm-panel label input[type='checkbox'],
+.in-page-edit .cm-panel label input[type='radio'] {
   position: initial;
   clip: initial;
 }
