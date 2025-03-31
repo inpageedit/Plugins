@@ -53,6 +53,11 @@
   "april-fool-2023/autoload.js": {
     "name": "My Little IPE",
     "author": "dragon-fish",
-    "description": "IPE Chan - Your powerful MediaWiki AI assistant (Of course it's just a joke)"
+    "description": "IPE Chan - Your powerful MediaWiki AI assistant (April Fool's Day 2023)"
+  },
+  "april-fool-2025/main.js": {
+    "name": "IPE Captcha",
+    "author": "dragon-fish",
+    "description": "IPE Captcha - We suspect you are human (April Fool's Day 2025)"
   }
 }

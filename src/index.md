@@ -55,3 +55,4 @@ InPageEdit.myPreference = {
 
 - [2021 April Fools' Day (IPE-1977)](./plugins/april-fool-2021/)
 - [2023 April Fools' Day (My little IPE)](./plugins/april-fool-2023/)
+- [2025 April Fools' Day (IPE Captcha)](./plugins/april-fool-2025/)

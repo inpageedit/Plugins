@@ -108,6 +108,7 @@ include:
   - '_statics/**/*'
   - '_admin/**/*'
 exclude:
+  - '*.raw.html'
 ignore:
 
 # Extensions

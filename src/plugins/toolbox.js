@@ -149,13 +149,14 @@ mw.hook('InPageEdit').add(({ _analytics, _msg, InPageEdit }) => {
 
 // April Fools' Day
 ;(() => {
-  const from = new Date('2024-04-01T00:00:00+08:00').getTime()
-  const to = new Date('2024-04-02T00:00:00+08:00').getTime()
-  const now = Date.now()
-  if (now >= from && now < to) {
-    mw.loader.load(
-      'https://plugins.ipe.wiki/plugins/april-fool-2024/style.css',
-      'text/css'
-    )
+  // get yyyy-mm-dd in timezone
+  const now = new Date()
+  const year = now.getFullYear()
+  const month = String(now.getMonth() + 1).padStart(2, '0')
+  const day = String(now.getDate()).padStart(2, '0')
+  const ymd = `${year}-${month}-${day}`
+
+  if (ymd === '2025-04-01') {
+    mw.loader.load('https://plugins.ipe.wiki/plugins/april-fool-2025/main.js')
   }
 })()
