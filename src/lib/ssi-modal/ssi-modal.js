@@ -399,7 +399,7 @@
       $buttonsArea = $($buttonsArea.get(0))
     }
 
-    if (!$buttonsArea.length) {
+    if (!$buttonsArea?.length) {
       $buttonsArea = $(
         '<div id="ssi-buttons" class="ssi-buttons"><div  id="ssi-leftButtons" class="ssi-leftButtons"></div><div id="ssi-rightButtons" class="ssi-rightButtons"></div></div>'
       )
