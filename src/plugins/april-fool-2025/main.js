@@ -6,7 +6,7 @@
   }
   window[__loaded] = true
 
-  const IPE_PROGRESS_TARGETS = ['.ipe-progress']
+  const IPE_PROGRESS_TARGETS = ['.ipe-progress', '.ipe-progress-overlay']
 
   /**
    * 绘制一个假的 CAPTCHA 进度条

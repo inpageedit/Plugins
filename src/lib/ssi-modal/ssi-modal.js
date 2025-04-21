@@ -396,10 +396,10 @@
     if (area !== false) {
       area = typeof area !== 'undefined' ? $(area) : this.get$window()
       $buttonsArea = area.find('#ssi-buttons')
-      $buttonsArea = $buttonsArea[0]
+      $buttonsArea = $($buttonsArea.get(0))
     }
 
-    if (!$buttonsArea) {
+    if (!$buttonsArea.length) {
       $buttonsArea = $(
         '<div id="ssi-buttons" class="ssi-buttons"><div  id="ssi-leftButtons" class="ssi-leftButtons"></div><div id="ssi-rightButtons" class="ssi-rightButtons"></div></div>'
       )
@@ -407,12 +407,26 @@
         fixHeight = true
         area.append($buttonsArea)
       }
-
-      this.options.buttons = true
     }
+    if (!Array.isArray(this.options.buttons)) {
+      this.options.buttons = []
+    }
+    this.options.buttons = this.options.buttons.concat(buttons)
     var length = buttons.length
     var $leftArea = $buttonsArea.find('#ssi-leftButtons')
     var $rightArea = $buttonsArea.find('#ssi-rightButtons')
+    if (!$leftArea.length) {
+      $leftArea = $('<div>', {
+        class: 'ssi-leftButtons',
+        id: 'ssi-leftButtons',
+      })
+    }
+    if (!$rightArea.length) {
+      $rightArea = $('<div>', {
+        class: 'ssi-rightButtons',
+        id: 'ssi-rightButtons',
+      })
+    }
     var leftAreaArray = []
     var rightAreaArray = []
     for (var i = 0, $btn; i < length; i++) {
@@ -909,7 +923,11 @@
                 }
               })
               .on('click', function (e) {
-                if (outSide && e.which === 1 && !e.target.closest('#ssi-modalWindow')) {
+                if (
+                  outSide &&
+                  e.which === 1 &&
+                  !e.target.closest('#ssi-modalWindow')
+                ) {
                   modalObj.close()
                 } else {
                   outSide = false
