@@ -28,7 +28,7 @@ mw.hook('InPageEdit').add(() =>
       const ext = page.getExtension()?.toLowerCase()
       const isSubject = namespace % 2 === 0
       if (ext === 'css' && isSubject) {
-        return 'css'
+        return [2, 8, 2300].includes(namespace) ? 'css' : 'sanitized-css'
       } else if (ext === 'js' && isSubject) {
         return 'javascript'
       } else if (ext === 'json' && isSubject) {
