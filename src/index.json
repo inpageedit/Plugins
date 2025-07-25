@@ -19,12 +19,12 @@
     "author": "dragon-fish"
   },
   "code-mirror/script.js": {
-    "name": "CodeMirror 5",
+    "name": "[DEPRECATED] CodeMirror 5",
     "description": "Syntaxhighlight editor for InPageEdit. Currently supported languages: Wikitext, CSS, JavaScript, JSON, Lua. In conflict with CodeMirror 6.",
     "author": "InPageEdit"
   },
   "code-mirror/cm6.js": {
-    "name": "[BETA] CodeMirror 6",
+    "name": "CodeMirror 6",
     "description": "Syntaxhighlight editor for InPageEdit. Currently supported languages: Wikitext, CSS, JavaScript, JSON, Lua. [!] In conflict with CodeMirror 5.",
     "author": "InPageEdit"
   },
