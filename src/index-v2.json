@@ -42,7 +42,7 @@
   {
     "_id": "code-mirror-6",
     "title": "CodeMirror 6",
-    "description": "Syntaxhighlight editor for InPageEdit. Currently supported languages: Wikitext, CSS, JavaScript, JSON, Lua. [!] In conflict with CodeMirror 5.",
+    "description": "Syntaxhighlight editor for InPageEdit. Currently supported languages: Wikitext, CSS, JavaScript, JSON, Lua, Vue. [!] In conflict with CodeMirror 5.",
     "author": "InPageEdit",
     "scripts": [
       "code-mirror/cm6.js"
