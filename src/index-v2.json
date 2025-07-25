@@ -32,7 +32,7 @@
   },
   {
     "_id": "code-mirror-5",
-    "title": "CodeMirror 5",
+    "title": "[DEPRECATED] CodeMirror 5",
     "description": "Syntaxhighlight editor for InPageEdit. Currently supported languages: Wikitext, CSS, JavaScript, JSON, Lua. In conflict with CodeMirror 6.",
     "author": "InPageEdit",
     "scripts": [
@@ -41,7 +41,7 @@
   },
   {
     "_id": "code-mirror-6",
-    "title": "[BETA] CodeMirror 6",
+    "title": "CodeMirror 6",
     "description": "Syntaxhighlight editor for InPageEdit. Currently supported languages: Wikitext, CSS, JavaScript, JSON, Lua. [!] In conflict with CodeMirror 5.",
     "author": "InPageEdit",
     "scripts": [
