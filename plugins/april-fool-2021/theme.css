@@ -1,0 +1,403 @@
+/**
+ * @author @leranjun
+ */
+
+/* 土味广告 */
+.ipe-af-2021 {
+  background: rgba(0, 0, 0, 0.8);
+}
+.ipe-af-2021 iframe {
+  width: 100%;
+  height: 420px;
+  border: 0;
+}
+.ipe-af-2021 .ssi-modalWindow {
+  padding: 0;
+}
+.ipe-af-2021 .ssi-modalContent {
+  margin: 0;
+  padding: 0;
+}
+
+/**
+ * InPageEdit theme AprilFool2021
+ */
+.in-page-edit.ipe-editor,
+.in-page-edit.ipe-editor input,
+.in-page-edit.ipe-editor button,
+.in-page-edit.ipe-editor select,
+.in-page-edit.ipe-editor textarea,
+.in-page-edit.ipe-editor .cm-s-inpageedit pre,
+.in-page-edit.ipe-editor .ssi-modalTitle {
+  font-family: 'Comic Sans', 'Comic Sans MS', 'Chalkboard',
+    'ChalkboardSE-Regular', 'Marker Felt', 'Purisa', 'URW Chancery L', cursive,
+    sans-serif !important;
+}
+
+.in-page-edit.ipe-editor .fa {
+  font-family: FontAwesome !important;
+}
+
+.in-page-edit.ipe-editor,
+.in-page-edit.ipe-editor .ssi-buttons {
+  color: #ff0;
+}
+
+.in-page-edit.ipe-editor .ssi-modalTitle {
+  color: #f00;
+  background: #000
+    url('https://cdn.jsdelivr.net/gh/divshot/geo-bootstrap@master/img/microfab.gif')
+    top left;
+}
+
+.in-page-edit.ipe-editor .ssi-closeIcon {
+  color: #f00;
+}
+
+.in-page-edit.ipe-editor .ssi-modalWindow {
+  background: #000
+    url('https://cdn.jsdelivr.net/gh/divshot/geo-bootstrap@master/img/stars.gif')
+    top left;
+}
+
+.in-page-edit.ipe-editor .ssi-buttons {
+  background: transparent;
+}
+
+.in-page-edit.ipe-editor a {
+  text-decoration: underline;
+  color: #00eeee;
+}
+
+.in-page-edit.ipe-editor a:focus {
+  outline: thin dotted #333;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+
+.in-page-edit.ipe-editor a:hover,
+.in-page-edit.ipe-editor a:active {
+  outline: 0;
+}
+
+.in-page-edit.ipe-editor a:hover,
+.in-page-edit.ipe-editor a:focus {
+  color: #00eeee;
+  text-decoration: underline;
+}
+
+.in-page-edit.ipe-editor a:hover {
+  text-decoration: underline !important;
+}
+
+.in-page-edit.ipe-editor .btn {
+  display: inline-block;
+  *display: inline;
+  padding: 4px 12px;
+  margin-bottom: 0;
+  *margin-left: 0.3em;
+  color: #333333;
+  text-align: center;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+  vertical-align: middle;
+  cursor: pointer;
+  background-color: #e6e6e6;
+  *background-color: #e6e6e6;
+  background-image: -moz-linear-gradient(top, #e6e6e6, #e6e6e6);
+  background-image: -webkit-gradient(
+    linear,
+    0 0,
+    0 100%,
+    from(#e6e6e6),
+    to(#e6e6e6)
+  );
+  background-image: -webkit-linear-gradient(top, #e6e6e6, #e6e6e6);
+  background-image: -o-linear-gradient(top, #e6e6e6, #e6e6e6);
+  background-image: linear-gradient(to bottom, #e6e6e6, #e6e6e6);
+  background-repeat: repeat-x;
+  border: 1px solid #bbbbbb;
+  *border: 0;
+  border-color: #e6e6e6 #e6e6e6 #bfbfbf;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  border-bottom-color: #a2a2a2;
+  -webkit-border-radius: none;
+  -moz-border-radius: none;
+  border-radius: none;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffe6e6e6', endColorstr='#ffe6e6e6', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+  *zoom: 1;
+  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 1px 2px rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.in-page-edit.ipe-editor .btn:hover,
+.in-page-edit.ipe-editor .btn:focus,
+.in-page-edit.ipe-editor .btn:active,
+.in-page-edit.ipe-editor .btn.active,
+.in-page-edit.ipe-editor .btn.disabled,
+.in-page-edit.ipe-editor .btn[disabled] {
+  color: #333333;
+  background-color: #e6e6e6;
+  *background-color: #d9d9d9;
+}
+
+.in-page-edit.ipe-editor .btn:active,
+.in-page-edit.ipe-editor .btn.active {
+  background-color: #cccccc \9;
+}
+
+.in-page-edit.ipe-editor .btn:first-child {
+  *margin-left: 0;
+}
+
+.in-page-edit.ipe-editor .btn:hover,
+.in-page-edit.ipe-editor .btn:focus {
+  color: #333333;
+  text-decoration: none;
+  background-position: 0 -15px;
+  -webkit-transition: background-position 0.1s linear;
+  -moz-transition: background-position 0.1s linear;
+  -o-transition: background-position 0.1s linear;
+  transition: background-position 0.1s linear;
+}
+
+.in-page-edit.ipe-editor .btn:focus {
+  outline: thin dotted #333;
+  outline-offset: -2px;
+}
+
+.in-page-edit.ipe-editor .btn.active,
+.in-page-edit.ipe-editor .btn:active {
+  background-image: none;
+  outline: 0;
+  -webkit-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15),
+    0 1px 2px rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15),
+    0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.in-page-edit.ipe-editor .btn.disabled,
+.in-page-edit.ipe-editor .btn[disabled] {
+  cursor: default;
+  background-image: none;
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+.in-page-edit.ipe-editor .btn-primary.active,
+.in-page-edit.ipe-editor .btn-danger.active {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.in-page-edit.ipe-editor .btn-primary {
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color: #00eeee;
+  *background-color: #00eeee;
+  background-image: -moz-linear-gradient(top, #00eeee, #00eeee);
+  background-image: -webkit-gradient(
+    linear,
+    0 0,
+    0 100%,
+    from(#00eeee),
+    to(#00eeee)
+  );
+  background-image: -webkit-linear-gradient(top, #00eeee, #00eeee);
+  background-image: -o-linear-gradient(top, #00eeee, #00eeee);
+  background-image: linear-gradient(to bottom, #00eeee, #00eeee);
+  background-repeat: repeat-x;
+  border-color: #00eeee #00eeee #00a1a2;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff00eeee', endColorstr='#ff00eeee', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+}
+
+.in-page-edit.ipe-editor .btn-primary:hover,
+.in-page-edit.ipe-editor .btn-primary:focus,
+.in-page-edit.ipe-editor .btn-primary:active,
+.in-page-edit.ipe-editor .btn-primary.active,
+.in-page-edit.ipe-editor .btn-primary.disabled,
+.in-page-edit.ipe-editor .btn-primary[disabled] {
+  color: #ffffff;
+  background-color: #00eeee;
+  *background-color: #00d4d5;
+}
+
+.in-page-edit.ipe-editor .btn-primary:active,
+.in-page-edit.ipe-editor .btn-primary.active {
+  background-color: #00bbbb \9;
+}
+
+.in-page-edit.ipe-editor .btn-danger {
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color: #ff0000;
+  *background-color: #ff0000;
+  background-image: -moz-linear-gradient(top, #ff0000, #ff0000);
+  background-image: -webkit-gradient(
+    linear,
+    0 0,
+    0 100%,
+    from(#ff0000),
+    to(#ff0000)
+  );
+  background-image: -webkit-linear-gradient(top, #ff0000, #ff0000);
+  background-image: -o-linear-gradient(top, #ff0000, #ff0000);
+  background-image: linear-gradient(to bottom, #ff0000, #ff0000);
+  background-repeat: repeat-x;
+  border-color: #ff0000 #ff0000 #b30000;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffff0000', endColorstr='#ffff0000', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+}
+
+.in-page-edit.ipe-editor .btn-danger:hover,
+.in-page-edit.ipe-editor .btn-danger:focus,
+.in-page-edit.ipe-editor .btn-danger:active,
+.in-page-edit.ipe-editor .btn-danger.active,
+.in-page-edit.ipe-editor .btn-danger.disabled,
+.in-page-edit.ipe-editor .btn-danger[disabled] {
+  color: #ffffff;
+  background-color: #ff0000;
+  *background-color: #e60000;
+}
+
+.in-page-edit.ipe-editor .btn-danger:active,
+.in-page-edit.ipe-editor .btn-danger.active {
+  background-color: #cc0000 \9;
+}
+
+.in-page-edit.ipe-editor button.btn::-moz-focus-inner {
+  padding: 0;
+  border: 0;
+}
+
+.in-page-edit.ipe-editor .btn,
+.in-page-edit.ipe-editor .btn:active {
+  border: 6px ridge #bbbbbb;
+}
+
+.in-page-edit.ipe-editor .btn-primary {
+  background: #000000
+    url('https://cdn.jsdelivr.net/gh/divshot/geo-bootstrap@master/img/rainbow.gif')
+    top left;
+}
+
+.in-page-edit.ipe-editor input {
+  display: inline-block;
+  padding: 4px 6px;
+  margin-bottom: 10px;
+  color: #ffffff;
+  vertical-align: middle;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  background-color: #000000;
+  border: 1px solid #00ff00;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border linear 0.2s, box-shadow linear 0.2s;
+  -moz-transition: border linear 0.2s, box-shadow linear 0.2s;
+  -o-transition: border linear 0.2s, box-shadow linear 0.2s;
+  transition: border linear 0.2s, box-shadow linear 0.2s;
+}
+
+.in-page-edit.ipe-editor input:focus {
+  border-color: rgba(82, 168, 236, 0.8);
+  outline: 0;
+  outline: thin dotted \9;
+  /* IE6-9 */
+
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+    0 0 8px rgba(82, 168, 236, 0.6);
+  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+    0 0 8px rgba(82, 168, 236, 0.6);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+    0 0 8px rgba(82, 168, 236, 0.6);
+}
+
+.in-page-edit.ipe-editor label input[type='checkbox'] + span::before {
+  background-color: #000;
+  border: 1px solid #00ff00;
+}
+
+.in-page-edit.ipe-editor label input[type='checkbox']:checked + span::before {
+  content: '✔';
+  text-align: center;
+  color: #000;
+  background: #00ff00;
+}
+
+.ipe-progress {
+  height: 20px;
+  margin-bottom: 20px;
+  overflow: hidden;
+  background-color: #f7f7f7;
+  background-image: -moz-linear-gradient(top, #f5f5f5, #f9f9f9);
+  background-image: -webkit-gradient(
+    linear,
+    0 0,
+    0 100%,
+    from(#f5f5f5),
+    to(#f9f9f9)
+  );
+  background-image: -webkit-linear-gradient(top, #f5f5f5, #f9f9f9);
+  background-image: -o-linear-gradient(top, #f5f5f5, #f9f9f9);
+  background-image: linear-gradient(to bottom, #f5f5f5, #f9f9f9);
+  background-repeat: repeat-x;
+  -webkit-border-radius: none;
+  -moz-border-radius: none;
+  border-radius: none;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff5f5f5',endColorstr='#fff9f9f9',GradientType=0);
+  -webkit-box-shadow: inset 0 1px 2px rgb(0 0 0 / 10%);
+  -moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 1px 2px rgb(0 0 0 / 10%);
+}
+
+.ipe-progress .ipe-progress-bar {
+  float: left;
+  width: 0;
+  height: 100%;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 -1px 0 rgb(0 0 0 / 25%);
+  background-color: #0e90d2;
+  background-image: -moz-linear-gradient(top, #149bdf, #0480be);
+  background-image: -webkit-gradient(
+    linear,
+    0 0,
+    0 100%,
+    from(#149bdf),
+    to(#0480be)
+  );
+  background-image: -webkit-linear-gradient(top, #149bdf, #0480be);
+  background-image: -o-linear-gradient(top, #149bdf, #0480be);
+  background-image: linear-gradient(to bottom, #149bdf, #0480be);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff149bdf',endColorstr='#ff0480be',GradientType=0);
+  -webkit-box-shadow: inset 0 -1px 0 rgb(0 0 0 / 15%);
+  -moz-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: inset 0 -1px 0 rgb(0 0 0 / 15%);
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-transition: width 0.6s ease;
+  -moz-transition: width 0.6s ease;
+  -o-transition: width 0.6s ease;
+  transition: width 0.6s ease;
+  background: #c0c0c0
+    url(https://cdn.jsdelivr.net/gh/divshot/geo-bootstrap@master/img/progress.gif)
+    top left repeat-x !important;
+  border: 1px solid #fff;
+  border-top: 1px solid #808080;
+  border-left: 1px solid #808080;
+  width: 50%;
+}
