@@ -14,11 +14,6 @@ mw.hook('InPageEdit').add(() =>
 
     mw.loader.load(`${PLUGIN_CDN}/plugins/code-mirror/style.css`, 'text/css')
 
-    await Promise.all([
-      mw.loader.using('mediawiki.Title'),
-      window.CodeMirror6 || import(`${CM_CDN}/dist/mw.min.js`),
-    ])
-
     /**
      * 检查页面语言类型
      * @param page Page title
@@ -81,6 +76,11 @@ mw.hook('InPageEdit').add(() =>
      */
     mw.hook('InPageEdit.quickEdit').add(({ $editArea, $modalTitle }) =>
       (async () => {
+        await Promise.all([
+          mw.loader.using('mediawiki.Title'),
+          window.CodeMirror6 || import(`${CM_CDN}/dist/mw.min.js`),
+        ])
+
         const page = new mw.Title($modalTitle.find('.editPage').text())
         const cm = await renderEditor($editArea, page)
         mw.hook('InPageEdit.quickEdit.codemirror6').fire({ $editArea, cm })
