@@ -4,6 +4,176 @@
  * InPageEdit default skin
  * @author 机智的小鱼君
  */
+/**
+ * 颜色变量
+ * ------------------------------------------------------------------
+ * 所有色值都写成 `var(--ipe-*, 原值)` 的形式，:root 里是亮色默认值。
+ * 想改主题只要覆写这些变量即可，比如：
+ *
+ *   .in-page-edit { --ipe-progressive: #e91e63; }
+ *
+ * 夜间模式由站点皮肤自动触发，目前适配：
+ * - Vector 2022 / Minerva：html.skin-theme-clientpref-night
+ *   （自动档 html.skin-theme-clientpref-os + prefers-color-scheme）
+ * - MoeSkin：html.dark
+ * 注意：下面两份深色色板必须保持一致，改一处记得同步另一处。
+ */
+:root {
+  /* 文本 */
+  --ipe-text: #252525;
+  --ipe-text-emphasis: #222222;
+  --ipe-text-subtle: #47494d;
+  --ipe-text-muted: #888888;
+  /* 背景 */
+  --ipe-bg: #ffffff;
+  --ipe-bg-subtle: #f8f9fa;
+  --ipe-bg-neutral: #eaecf0;
+  --ipe-bg-hover: #eaf3ff;
+  --ipe-bg-hover-neutral: #efefef;
+  --ipe-bg-dialog-hover: #f8f8f8;
+  --ipe-input-bg: #f8f8f8;
+  /* 边框 */
+  --ipe-border: #c8ccd1;
+  --ipe-border-subtle: #cccccc;
+  --ipe-border-strong: #72777d;
+  /* 主色 */
+  --ipe-progressive: #3366cc;
+  --ipe-progressive-hover: #447ff5;
+  --ipe-progressive-active: #2a4b8d;
+  --ipe-on-progressive: #ffffff;
+  /* 危险色 */
+  --ipe-danger: #dd3333;
+  --ipe-danger-strong: #ff4242;
+  --ipe-danger-hover: #ff2222;
+  --ipe-danger-active: #dd0000;
+  --ipe-on-danger: #ffffff;
+  /* 链接 */
+  --ipe-link: #0088dd;
+  --ipe-link-shadow: rgba(0, 136, 221, 0.25);
+  /* 其他 */
+  --ipe-disabled-bg: #c8ccd1;
+  --ipe-disabled-text: #ffffff;
+  --ipe-progress: #3360c3;
+  --ipe-backdrop: rgba(255, 255, 255, 0.5);
+  --ipe-scroll-shadow: rgba(26, 26, 26, 0.12);
+}
+
+/* Vector 2022 / Minerva 深色 */
+html.skin-theme-clientpref-night {
+  --ipe-text: #eaecf0;
+  --ipe-text-emphasis: #f8f9fa;
+  --ipe-text-subtle: #c8ccd1;
+  --ipe-text-muted: #a2a9b1;
+  --ipe-bg: #101418;
+  --ipe-bg-subtle: #27292d;
+  --ipe-bg-neutral: #27292d;
+  --ipe-bg-hover: #2d3444;
+  --ipe-bg-hover-neutral: #27292d;
+  --ipe-bg-dialog-hover: #27292d;
+  --ipe-input-bg: #27292d;
+  --ipe-border: #54595d;
+  --ipe-border-subtle: #404244;
+  --ipe-border-strong: #72777d;
+  --ipe-progressive: #88a3e8;
+  --ipe-progressive-hover: #b0c1f0;
+  --ipe-progressive-active: #cbd6f6;
+  --ipe-on-progressive: #101418;
+  --ipe-danger: #ff8080;
+  --ipe-danger-strong: #ffa0a0;
+  --ipe-danger-hover: #ffb0b0;
+  --ipe-danger-active: #ffc0c0;
+  --ipe-on-danger: #101418;
+  --ipe-link: #88a3e8;
+  --ipe-link-shadow: rgba(136, 163, 232, 0.25);
+  --ipe-disabled-bg: #404244;
+  --ipe-disabled-text: #72777d;
+  --ipe-progress: #88a3e8;
+  --ipe-backdrop: rgba(0, 0, 0, 0.6);
+  --ipe-scroll-shadow: rgba(255, 255, 255, 0.12);
+}
+
+/* Vector 2022 / Minerva 自动档：跟随系统 */
+@media screen and (prefers-color-scheme: dark) {
+  html.skin-theme-clientpref-os {
+    --ipe-text: #eaecf0;
+    --ipe-text-emphasis: #f8f9fa;
+    --ipe-text-subtle: #c8ccd1;
+    --ipe-text-muted: #a2a9b1;
+    --ipe-bg: #101418;
+    --ipe-bg-subtle: #27292d;
+    --ipe-bg-neutral: #27292d;
+    --ipe-bg-hover: #2d3444;
+    --ipe-bg-hover-neutral: #27292d;
+    --ipe-bg-dialog-hover: #27292d;
+    --ipe-input-bg: #27292d;
+    --ipe-border: #54595d;
+    --ipe-border-subtle: #404244;
+    --ipe-border-strong: #72777d;
+    --ipe-progressive: #88a3e8;
+    --ipe-progressive-hover: #b0c1f0;
+    --ipe-progressive-active: #cbd6f6;
+    --ipe-on-progressive: #101418;
+    --ipe-danger: #ff8080;
+    --ipe-danger-strong: #ffa0a0;
+    --ipe-danger-hover: #ffb0b0;
+    --ipe-danger-active: #ffc0c0;
+    --ipe-on-danger: #101418;
+    --ipe-link: #88a3e8;
+    --ipe-link-shadow: rgba(136, 163, 232, 0.25);
+    --ipe-disabled-bg: #404244;
+    --ipe-disabled-text: #72777d;
+    --ipe-progress: #88a3e8;
+    --ipe-backdrop: rgba(0, 0, 0, 0.6);
+    --ipe-scroll-shadow: rgba(255, 255, 255, 0.12);
+  }
+}
+
+/* MoeSkin 深色 */
+html.dark {
+  --ipe-text: #eaecf0;
+  --ipe-text-emphasis: #f8f9fa;
+  --ipe-text-subtle: #c8ccd1;
+  --ipe-text-muted: #a2a9b1;
+  --ipe-bg: #23272e;
+  --ipe-bg-subtle: #27292d;
+  --ipe-bg-neutral: #27292d;
+  --ipe-bg-hover: #2d3444;
+  --ipe-bg-hover-neutral: #27292d;
+  --ipe-bg-dialog-hover: #27292d;
+  --ipe-input-bg: #1d1f23;
+  --ipe-border: #3e4452;
+  --ipe-border-subtle: #3e4452;
+  --ipe-border-strong: #54595d;
+  --ipe-progressive: #88a3e8;
+  --ipe-progressive-hover: #b0c1f0;
+  --ipe-progressive-active: #cbd6f6;
+  --ipe-on-progressive: #101418;
+  --ipe-danger: #e88080;
+  --ipe-danger-strong: #ffa0a0;
+  --ipe-danger-hover: #ffb0b0;
+  --ipe-danger-active: #ffc0c0;
+  --ipe-on-danger: #101418;
+  --ipe-link: #5cd08c;
+  --ipe-link-shadow: rgba(92, 208, 140, 0.25);
+  --ipe-disabled-bg: #3e4452;
+  --ipe-disabled-text: #72777d;
+  --ipe-progress: #88a3e8;
+  --ipe-backdrop: rgba(0, 0, 0, 0.6);
+  --ipe-scroll-shadow: rgba(255, 255, 255, 0.12);
+}
+
+/* 深色下让原生控件（滚动条、输入框、下拉箭头）跟着变深 */
+html.skin-theme-clientpref-night .in-page-edit,
+html.dark .in-page-edit {
+  color-scheme: dark;
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  html.skin-theme-clientpref-os .in-page-edit {
+    color-scheme: dark;
+  }
+}
+
 /* 编辑器 */
 .in-page-edit .mw-editsection,
 .in-page-edit .hide-for-ipe {
@@ -11,7 +181,7 @@
 }
 
 .in-page-edit {
-  color: #252525;
+  color: var(--ipe-text, #252525);
   font-size: 16px;
 }
 
@@ -21,21 +191,38 @@
   z-index: 800;
 }
 
+/* ssi-modal.css 里的写死色值在这里覆盖，别去动那个第三方文件 */
 .in-page-edit .ssi-modalWindow {
   padding: 0;
   border-radius: 0;
   line-height: normal;
+  background: var(--ipe-bg, #ffffff);
+  border-color: var(--ipe-border, #c8ccd1);
+  color: var(--ipe-text, #252525);
+}
+
+.in-page-edit .ssi-modalTitle,
+.in-page-edit .ssi-buttons {
+  border-color: var(--ipe-border-subtle, #dddddd);
+}
+
+.in-page-edit .ssi-modalContent::-webkit-scrollbar-thumb {
+  border-color: var(--ipe-bg, #ffffff);
+}
+
+.in-page-edit .ssi-modalContent::-webkit-scrollbar-track {
+  background-color: var(--ipe-bg, #ffffff);
 }
 
 .in-page-edit .ssi-overflow {
   background-image: radial-gradient(
       farthest-side at 50% 0,
-      rgba(26, 26, 26, 0.12),
+      var(--ipe-scroll-shadow, rgba(26, 26, 26, 0.12)),
       transparent
     ),
     radial-gradient(
       farthest-side at 50% 100%,
-      rgba(26, 26, 26, 0.12),
+      var(--ipe-scroll-shadow, rgba(26, 26, 26, 0.12)),
       transparent
     );
   background-position: 0 0, 0 100%;
@@ -51,7 +238,7 @@
 .in-page-edit .ssi-overflow:after {
   content: '';
   display: block;
-  background-color: #fff;
+  background-color: var(--ipe-bg, #fff);
   height: 30px;
   position: relative;
   z-index: -1;
@@ -74,14 +261,14 @@
 
 .in-page-edit .ssi-topIcons .ssi-closeIcon {
   background: 0 0;
-  color: #d33;
+  color: var(--ipe-danger, #d33);
   font-size: 20px;
   margin: 0;
   padding: 8px 12px;
 }
 
 .in-page-edit .ssi-topIcons .ssi-closeIcon:hover {
-  color: #f22;
+  color: var(--ipe-danger-hover, #f22);
 }
 
 .in-page-edit .ssi-closeIcon:before {
@@ -93,16 +280,16 @@
   font-style: normal;
   font-family: sans-serif;
   font-weight: bold;
-  background: #ffffff;
-  color: #252525;
+  background: var(--ipe-bg, #ffffff);
+  color: var(--ipe-text, #252525);
   font-size: 1.1em;
   line-height: 1.8em;
   text-align: center;
 }
 
 .ipe-editor .editTools {
-  background: #eaf3ff;
-  border: 1px solid #c8ccd1;
+  background: var(--ipe-bg-hover, #eaf3ff);
+  border: 1px solid var(--ipe-border, #c8ccd1);
   border-bottom: none;
   float: left;
   width: calc(100% - 1px);
@@ -111,7 +298,7 @@
 .ipe-editor .editTools .btnGroup {
   float: left;
   padding-right: 6px;
-  border-right: 1px solid #c8ccd1;
+  border-right: 1px solid var(--ipe-border, #c8ccd1);
   margin: 3px;
 }
 
@@ -123,19 +310,19 @@
 
 .ipe-editor .editTools .btnGroup.special-tools {
   border-right: none;
-  border-left: 1px solid #c8ccd1;
+  border-left: 1px solid var(--ipe-border, #c8ccd1);
   padding-right: 3px;
   padding-left: 6px;
 }
 
 .ipe-editor .editTools .label {
-  color: #888;
+  color: var(--ipe-text-muted, #888);
   padding-right: 6px;
   cursor: default;
 }
 
 .ipe-editor .editTools .btn {
-  color: #47494d;
+  color: var(--ipe-text-subtle, #47494d);
   font-size: 14px;
   background: none;
   box-shadow: none;
@@ -150,14 +337,14 @@
 }
 
 .in-page-edit.ipe-editor .toolSelect .label {
-  color: #222222;
-  background-color: #ffffff;
+  color: var(--ipe-text-emphasis, #222222);
+  background-color: var(--ipe-bg, #ffffff);
   background-image: linear-gradient(transparent, transparent),
     url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+PHBhdGggZD0iTTEzLjAwMiA2LjAwMWwtNSA1LjAwMS01LTUuMDAxeiIgZmlsbD0iIzc5Nzk3OSIvPjwvc3ZnPg==');
   background-repeat: no-repeat;
   background-position: calc(100% - 2px);
   padding: 2px 20px 2px 4px;
-  border: 1px solid #c8ccd1;
+  border: 1px solid var(--ipe-border, #c8ccd1);
   cursor: default;
 }
 
@@ -165,8 +352,8 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  background: #ffffff;
-  border: 1px solid #c8ccd1;
+  background: var(--ipe-bg, #ffffff);
+  border: 1px solid var(--ipe-border, #c8ccd1);
   position: absolute;
   z-index: 50;
   width: 100%;
@@ -179,7 +366,7 @@
 }
 
 .in-page-edit.ipe-editor .toolSelect .ul-list .editToolBtn:hover {
-  background-color: #eaf3ff;
+  background-color: var(--ipe-bg-hover, #eaf3ff);
 }
 
 .in-page-edit.ipe-editor .toolSelect:hover .ul-list {
@@ -187,13 +374,15 @@
 }
 
 .ipe-editor .editArea {
-  border: 1px solid #c8ccd1;
+  border: 1px solid var(--ipe-border, #c8ccd1);
   border-top: none;
   border-radius: 0;
   max-width: 100%;
   min-width: 100%;
   min-height: 350px;
   margin: 0;
+  background: var(--ipe-bg, #ffffff);
+  color: var(--ipe-text, #252525);
 }
 
 .notify .ssi-modalTitle {
@@ -208,8 +397,8 @@
 }
 
 .in-page-edit.ipe-editor .ssi-buttons {
-  background-color: #eaecf0;
-  color: #222;
+  background-color: var(--ipe-bg-neutral, #eaecf0);
+  color: var(--ipe-text-emphasis, #222);
   /* border: 1px solid #c8ccd1; */
   border-top: 0;
   padding: 1em 1em 0.5em 1em;
@@ -234,7 +423,7 @@
   font-size: 16px;
   font-weight: bold;
   text-transform: uppercase;
-  color: #222;
+  color: var(--ipe-text-emphasis, #222);
   border: 1px solid transparent;
   border-radius: 2px;
   padding: 0.25em 0.8em;
@@ -242,81 +431,81 @@
 }
 
 .in-page-edit .btn:focus {
-  box-shadow: inset 0 0 0 1px #36c;
+  box-shadow: inset 0 0 0 1px var(--ipe-progressive, #36c);
 }
 
 .in-page-edit .btn.btn-primary {
-  color: #fff;
-  background-color: #36c;
-  border-color: #36c;
+  color: var(--ipe-on-progressive, #fff);
+  background-color: var(--ipe-progressive, #36c);
+  border-color: var(--ipe-progressive, #36c);
 }
 
 .in-page-edit .btn.btn-primary:hover {
-  background-color: #447ff5;
-  border-color: #447ff5;
+  background-color: var(--ipe-progressive-hover, #447ff5);
+  border-color: var(--ipe-progressive-hover, #447ff5);
 }
 
 .in-page-edit .btn.btn-primary:active {
-  background-color: #2a4b8d;
+  background-color: var(--ipe-progressive-active, #2a4b8d);
 }
 
 .in-page-edit .btn.btn-secondary {
-  color: #252525;
-  border-color: #c8ccd1;
-  background-color: #f8f9fa;
+  color: var(--ipe-text, #252525);
+  border-color: var(--ipe-border, #c8ccd1);
+  background-color: var(--ipe-bg-subtle, #f8f9fa);
 }
 
 .in-page-edit .btn.btn-secondary:hover {
-  background-color: #ffffff;
-  color: #454545;
+  background-color: var(--ipe-bg, #ffffff);
+  color: var(--ipe-text, #454545);
 }
 
 .in-page-edit .btn.btn-secondary:active {
-  border: 1px solid #36c;
+  border: 1px solid var(--ipe-progressive, #36c);
 }
 
 .in-page-edit .btn.btn-danger {
   background: transparent;
-  color: #d33;
-  background-color: #f4f4f4;
+  color: var(--ipe-danger, #d33);
+  background-color: var(--ipe-bg-subtle, #f4f4f4);
 }
 
 .in-page-edit .btn.btn-danger:hover {
-  color: #ff4242;
-  background-color: #fafafa;
+  color: var(--ipe-danger-strong, #ff4242);
+  background-color: var(--ipe-bg-subtle, #fafafa);
 }
 
 .in-page-edit .btn.btn-danger:active {
-  color: #d00;
-  border: 1px solid #36c;
+  color: var(--ipe-danger-active, #d00);
+  border: 1px solid var(--ipe-progressive, #36c);
 }
 
 .in-page-edit .btn:disabled {
-  background-color: #c8ccd1 !important;
-  color: #ffffff !important;
+  background-color: var(--ipe-disabled-bg, #c8ccd1) !important;
+  color: var(--ipe-disabled-text, #ffffff) !important;
   cursor: not-allowed;
 }
 
 .in-page-edit .btn:disabled:hover {
-  background-color: #c8ccd1 !important;
-  color: #ffffff !important;
+  background-color: var(--ipe-disabled-bg, #c8ccd1) !important;
+  color: var(--ipe-disabled-text, #ffffff) !important;
 }
 
 .in-page-edit .btn:disabled .ssi-countDown {
-  color: #fff;
+  color: var(--ipe-disabled-text, #fff);
 }
 
 .in-page-edit input {
   padding: 0.25em 0.35em;
-  border: 1px solid #ccc;
+  border: 1px solid var(--ipe-border-subtle, #ccc);
   border-radius: 2px;
   transition: all 0.2s;
   line-height: 1.5em;
 }
 
 .in-page-edit input:focus {
-  border-color: #36c;
-  box-shadow: inset 0 0 0 1px #36c;
+  border-color: var(--ipe-progressive, #36c);
+  box-shadow: inset 0 0 0 1px var(--ipe-progressive, #36c);
 }
 
 .in-page-edit .dialog .ssi-modalContent {
@@ -328,14 +517,14 @@
   margin: 0;
   padding: 0.5em;
   background: transparent;
-  color: #252525;
-  border: 1px solid #efefef;
+  color: var(--ipe-text, #252525);
+  border: 1px solid var(--ipe-border-subtle, #efefef);
   border-radius: 0;
   width: 50%;
 }
 
 .in-page-edit .dialog .ssi-buttons .btn:hover {
-  background: #f8f8f8 !important;
+  background: var(--ipe-bg-dialog-hover, #f8f8f8) !important;
 }
 
 .in-page-edit .btn.btn-single {
@@ -343,23 +532,23 @@
 }
 
 .in-page-edit .dialog .ssi-buttons .btn.btn-danger {
-  color: #c33;
+  color: var(--ipe-danger, #c33);
 }
 
 .in-page-edit .btn.btn-primary.btn-danger {
-  background: #d33;
-  border-color: #d33;
-  color: #ffffff;
+  background: var(--ipe-danger, #d33);
+  border-color: var(--ipe-danger, #d33);
+  color: var(--ipe-on-danger, #ffffff);
 }
 
 .in-page-edit .btn.btn-primary.btn-danger:hover {
-  background: #f33;
+  background: var(--ipe-danger-hover, #f33);
 }
 
 .in-page-edit .btn.btn-primary.btn-danger:focus {
-  background: #c22;
-  border-color: #c22;
-  box-shadow: inset 0 0 0 1px #fff;
+  background: var(--ipe-danger-active, #c22);
+  border-color: var(--ipe-danger-active, #c22);
+  box-shadow: inset 0 0 0 1px var(--ipe-on-danger, #fff);
 }
 
 .in-page-edit .dialog .ssi-buttons {
@@ -396,7 +585,7 @@
 
 /** 快速差异 **/
 .quick-diff .diff-hidden-history {
-  color: #a8a8a8;
+  color: var(--ipe-text-muted, #a8a8a8);
   text-decoration: line-through;
 }
 
@@ -421,16 +610,16 @@
 .ipe-preference .preference-tabber .tab-list li a {
   display: block;
   padding: 4px 8px;
-  color: #08d;
+  color: var(--ipe-link, #08d);
   text-decoration: none;
 }
 
 .ipe-preference .preference-tabber .tab-list li:hover a {
-  box-shadow: 0 -2px 0 rgba(0, 136, 221, 0.25) inset;
+  box-shadow: 0 -2px 0 var(--ipe-link-shadow, rgba(0, 136, 221, 0.25)) inset;
 }
 
 .ipe-preference .preference-tabber .tab-list li a.active {
-  box-shadow: 0 -2px 0 #08d inset;
+  box-shadow: 0 -2px 0 var(--ipe-link, #08d) inset;
 }
 
 .ipe-preference .preference-tabber .tab-content {
@@ -453,11 +642,11 @@
 .ipe-preference #plugin-container ul {
   margin: 0;
   list-style: none;
-  border: 1px solid #ccc;
+  border: 1px solid var(--ipe-border-subtle, #ccc);
 }
 
 .ipe-preference #plugin-container li:not(:last-of-type) {
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid var(--ipe-border-subtle, #ccc);
 }
 
 .ipe-preference #plugin-container li {
@@ -465,7 +654,7 @@
 }
 
 .ipe-preference #plugin-container li:hover {
-  background-color: #efefef;
+  background-color: var(--ipe-bg-hover-neutral, #efefef);
 }
 
 .ipe-preference #plugin-container li label {
@@ -525,22 +714,22 @@
 /** 进度条 **/
 .ipe-progress {
   height: 1em;
-  border: 1px solid #c5c5c5;
+  border: 1px solid var(--ipe-border, #c5c5c5);
   border-radius: 2px;
-  background: white;
+  background: var(--ipe-bg, white);
   overflow: hidden;
 }
 
 .ipe-progress .ipe-progress-bar {
   height: 100%;
   width: auto;
-  background: #3360c3;
+  background: var(--ipe-progress, #3360c3);
   animation: progress 2s linear infinite;
   opacity: 1;
 }
 
 .ipe-progress.done {
-  background: #3360c3;
+  background: var(--ipe-progress, #3360c3);
   transition: all 0.8s;
 }
 
@@ -577,7 +766,7 @@
 
 /** 背景颜色 **/
 .ssi-backdrop {
-  background: rgba(255, 255, 255, 0.5);
+  background: var(--ipe-backdrop, rgba(255, 255, 255, 0.5));
 }
 
 /** 修改checkbox样式 **/
@@ -597,8 +786,8 @@
   margin-top: 0.15em;
   margin-right: 0.375em;
   border-radius: 2px;
-  background-color: #f8f8f8;
-  border: 1px solid #72777d;
+  background-color: var(--ipe-input-bg, #f8f8f8);
+  border: 1px solid var(--ipe-border-strong, #72777d);
   cursor: pointer;
   transition: all 0.12s;
 }
@@ -611,28 +800,28 @@
 
 .in-page-edit label input[type='checkbox']:checked + span::before {
   content: '\a0';
-  background-color: #36c;
+  background-color: var(--ipe-progressive, #36c);
   background-image: url(data:image/svg+xml;base64,PHN2ZyBzdHlsZT0iZmlsbC1ydWxlOmV2ZW5vZGQ7Y2xpcC1ydWxlOmV2ZW5vZGQ7c3Ryb2tlLWxpbmVjYXA6cm91bmQ7c3Ryb2tlLWxpbmVqb2luOnJvdW5kOyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgMTYgMTYiPjxnIGlkPSJjaGVja21hcmsiPjxwYXRoIGQ9Ik0xMy43NDkyKzMuNDkwOTVMNS44NjMxMisxMS42MzM3TDIuMjUwNzcrNy45NjA4MkwxLjQ4NzYrOC43NTc3OEw1Ljg2MzEyKzEzLjE5M0wxNC41MTI0KzQuMjg3OUwxMy43NDkyKzMuNDkwOTVaIiBvcGFjaXR5PSIxIiBmaWxsPSIjZmZmZmZmIi8+PC9nPjwvc3ZnPg==);
   background-repeat: no-repeat;
 }
 
 .in-page-edit label input[type='radio']:checked + span::before {
-  border-color: #36c;
+  border-color: var(--ipe-progressive, #36c);
   border-width: 6px;
 }
 
 .in-page-edit label input[type='checkbox']:checked + span:hover::before {
-  background-color: #447ff5;
+  background-color: var(--ipe-progressive-hover, #447ff5);
 }
 
 .in-page-edit label input[type='radio']:checked + span:hover::before {
-  border-color: #447ff5;
+  border-color: var(--ipe-progressive-hover, #447ff5);
 }
 
 .in-page-edit label input[type='checkbox']:active + span::before,
 .in-page-edit label input[type='checkbox']:focus + span::before {
-  box-shadow: inset 0 0px 0px 1px rgb(255, 255, 255);
-  border-color: #3366cc;
+  box-shadow: inset 0 0px 0px 1px var(--ipe-bg, rgb(255, 255, 255));
+  border-color: var(--ipe-progressive, #3366cc);
 }
 
 .in-page-edit label input[type='checkbox'],
@@ -648,20 +837,20 @@
 }
 
 .in-page-edit label input[type='checkbox']:disabled + span::before {
-  border-color: #d6d6d6;
+  border-color: var(--ipe-border, #d6d6d6);
 }
 
 .in-page-edit label input[type='radio']:disabled + span::before {
-  background-color: #c8ccd1;
-  border-color: #c8ccd1;
+  background-color: var(--ipe-disabled-bg, #c8ccd1);
+  border-color: var(--ipe-disabled-bg, #c8ccd1);
 }
 
 .in-page-edit label input[type='checkbox']:disabled:checked + span::before {
-  background-color: #a0a0a0;
+  background-color: var(--ipe-disabled-bg, #a0a0a0);
 }
 
 .in-page-edit label input[type='radio']:disabled:checked + span::before {
-  background-color: #fff;
+  background-color: var(--ipe-bg, #fff);
 }
 
 /** 右下角小工具箱 **/
@@ -831,7 +1020,8 @@
   width: 6em;
   right: -20px;
   top: -2.1em;
-  background: white;
+  background: var(--ipe-bg, white);
+  color: var(--ipe-text, #252525);
   padding: 0px 4px;
   box-shadow: 0 0 4px gray;
   pointer-events: none;
@@ -846,8 +1036,8 @@
   content: '';
   display: block;
   border: 5px solid transparent;
-  border-right-color: #fff;
-  border-bottom-color: #fff;
+  border-right-color: var(--ipe-bg, #fff);
+  border-bottom-color: var(--ipe-bg, #fff);
   position: absolute;
   bottom: -4px;
   left: calc(50% - 2.5px);
