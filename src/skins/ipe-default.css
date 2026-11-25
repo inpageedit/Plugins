@@ -16,7 +16,8 @@
  * - Vector 2022 / Minerva：html.skin-theme-clientpref-night
  *   （自动档 html.skin-theme-clientpref-os + prefers-color-scheme）
  * - MoeSkin：html.dark
- * 注意：下面两份深色色板必须保持一致，改一处记得同步另一处。
+ * 注意：前两份深色色板（Vector 2022 手动档与自动档）内容必须保持一致，
+ * 改一处记得同步另一处；MoeSkin 那份是独立色板，不要一起改。
  */
 :root {
   /* 文本 */
@@ -31,7 +32,9 @@
   --ipe-bg-hover: #eaf3ff;
   --ipe-bg-hover-neutral: #efefef;
   --ipe-bg-dialog-hover: #f8f8f8;
-  --ipe-input-bg: #f8f8f8;
+  --ipe-input-bg: #ffffff;
+  --ipe-checkbox-bg: #f8f8f8;
+  --ipe-bg-subtle-hover: #fafafa;
   /* 边框 */
   --ipe-border: #c8ccd1;
   --ipe-border-subtle: #cccccc;
@@ -43,6 +46,9 @@
   --ipe-on-progressive: #ffffff;
   /* 危险色 */
   --ipe-danger: #dd3333;
+  --ipe-danger-quiet: #cc3333;
+  --ipe-danger-fill-hover: #ff3333;
+  --ipe-danger-fill-active: #cc2222;
   --ipe-danger-strong: #ff4242;
   --ipe-danger-hover: #ff2222;
   --ipe-danger-active: #dd0000;
@@ -56,6 +62,18 @@
   --ipe-progress: #3360c3;
   --ipe-backdrop: rgba(255, 255, 255, 0.5);
   --ipe-scroll-shadow: rgba(26, 26, 26, 0.12);
+  --ipe-shadow: rgba(0, 0, 0, 0.25);
+  /* 细节色：和上面语义相近但不能合并，合并会改变亮色下的实际观感 */
+  --ipe-text-hover: #454545;
+  --ipe-text-faint: #a8a8a8;
+  --ipe-bg-danger-subtle: #f4f4f4;
+  --ipe-border-faint: #efefef;
+  --ipe-border-progress: #c5c5c5;
+  --ipe-border-disabled: #d6d6d6;
+  --ipe-disabled-bg-strong: #a0a0a0;
+  /* 内联 SVG：复选框对勾 / 下拉箭头，深色下换成深色对勾、浅色箭头 */
+  --ipe-checkbox-check: url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2016%2016%22%3E%3Cpath%20d=%22M13.749%203.491%205.863%2011.634%202.25%207.96l-.762.797%204.375%204.435%208.65-8.905z%22%20fill=%22%23ffffff%22/%3E%3C/svg%3E");
+  --ipe-select-arrow: url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20width=%2216%22%20height=%2216%22%3E%3Cpath%20d=%22M13.002%206.001l-5%205.001-5-5.001z%22%20fill=%22%23797979%22/%3E%3C/svg%3E");
 }
 
 /* Vector 2022 / Minerva 深色 */
@@ -71,6 +89,8 @@ html.skin-theme-clientpref-night {
   --ipe-bg-hover-neutral: #27292d;
   --ipe-bg-dialog-hover: #27292d;
   --ipe-input-bg: #27292d;
+  --ipe-checkbox-bg: #27292d;
+  --ipe-bg-subtle-hover: #32363d;
   --ipe-border: #54595d;
   --ipe-border-subtle: #404244;
   --ipe-border-strong: #72777d;
@@ -79,6 +99,9 @@ html.skin-theme-clientpref-night {
   --ipe-progressive-active: #cbd6f6;
   --ipe-on-progressive: #101418;
   --ipe-danger: #ff8080;
+  --ipe-danger-quiet: #ff8080;
+  --ipe-danger-fill-hover: #ff3333;
+  --ipe-danger-fill-active: #cc2222;
   --ipe-danger-strong: #ffa0a0;
   --ipe-danger-hover: #ffb0b0;
   --ipe-danger-active: #ffc0c0;
@@ -90,6 +113,16 @@ html.skin-theme-clientpref-night {
   --ipe-progress: #88a3e8;
   --ipe-backdrop: rgba(0, 0, 0, 0.6);
   --ipe-scroll-shadow: rgba(255, 255, 255, 0.12);
+  --ipe-shadow: rgba(0, 0, 0, 0.6);
+  --ipe-text-hover: #f8f9fa;
+  --ipe-text-faint: #72777d;
+  --ipe-bg-danger-subtle: #32363d;
+  --ipe-border-faint: #3e4452;
+  --ipe-border-progress: #54595d;
+  --ipe-border-disabled: #54595d;
+  --ipe-disabled-bg-strong: #54595d;
+  --ipe-checkbox-check: url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2016%2016%22%3E%3Cpath%20d=%22M13.749%203.491%205.863%2011.634%202.25%207.96l-.762.797%204.375%204.435%208.65-8.905z%22%20fill=%22%23101418%22/%3E%3C/svg%3E");
+  --ipe-select-arrow: url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20width=%2216%22%20height=%2216%22%3E%3Cpath%20d=%22M13.002%206.001l-5%205.001-5-5.001z%22%20fill=%22%23c8ccd1%22/%3E%3C/svg%3E");
 }
 
 /* Vector 2022 / Minerva 自动档：跟随系统 */
@@ -106,6 +139,8 @@ html.skin-theme-clientpref-night {
     --ipe-bg-hover-neutral: #27292d;
     --ipe-bg-dialog-hover: #27292d;
     --ipe-input-bg: #27292d;
+    --ipe-checkbox-bg: #27292d;
+    --ipe-bg-subtle-hover: #32363d;
     --ipe-border: #54595d;
     --ipe-border-subtle: #404244;
     --ipe-border-strong: #72777d;
@@ -114,6 +149,9 @@ html.skin-theme-clientpref-night {
     --ipe-progressive-active: #cbd6f6;
     --ipe-on-progressive: #101418;
     --ipe-danger: #ff8080;
+  --ipe-danger-quiet: #ff8080;
+  --ipe-danger-fill-hover: #ff3333;
+  --ipe-danger-fill-active: #cc2222;
     --ipe-danger-strong: #ffa0a0;
     --ipe-danger-hover: #ffb0b0;
     --ipe-danger-active: #ffc0c0;
@@ -125,6 +163,16 @@ html.skin-theme-clientpref-night {
     --ipe-progress: #88a3e8;
     --ipe-backdrop: rgba(0, 0, 0, 0.6);
     --ipe-scroll-shadow: rgba(255, 255, 255, 0.12);
+    --ipe-shadow: rgba(0, 0, 0, 0.6);
+    --ipe-text-hover: #f8f9fa;
+    --ipe-text-faint: #72777d;
+    --ipe-bg-danger-subtle: #32363d;
+    --ipe-border-faint: #3e4452;
+    --ipe-border-progress: #54595d;
+    --ipe-border-disabled: #54595d;
+    --ipe-disabled-bg-strong: #54595d;
+    --ipe-checkbox-check: url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2016%2016%22%3E%3Cpath%20d=%22M13.749%203.491%205.863%2011.634%202.25%207.96l-.762.797%204.375%204.435%208.65-8.905z%22%20fill=%22%23101418%22/%3E%3C/svg%3E");
+    --ipe-select-arrow: url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20width=%2216%22%20height=%2216%22%3E%3Cpath%20d=%22M13.002%206.001l-5%205.001-5-5.001z%22%20fill=%22%23c8ccd1%22/%3E%3C/svg%3E");
   }
 }
 
@@ -141,6 +189,8 @@ html.dark {
   --ipe-bg-hover-neutral: #27292d;
   --ipe-bg-dialog-hover: #27292d;
   --ipe-input-bg: #1d1f23;
+  --ipe-checkbox-bg: #1d1f23;
+  --ipe-bg-subtle-hover: #2b303a;
   --ipe-border: #3e4452;
   --ipe-border-subtle: #3e4452;
   --ipe-border-strong: #54595d;
@@ -149,6 +199,9 @@ html.dark {
   --ipe-progressive-active: #cbd6f6;
   --ipe-on-progressive: #101418;
   --ipe-danger: #e88080;
+  --ipe-danger-quiet: #e88080;
+  --ipe-danger-fill-hover: #ff3333;
+  --ipe-danger-fill-active: #cc2222;
   --ipe-danger-strong: #ffa0a0;
   --ipe-danger-hover: #ffb0b0;
   --ipe-danger-active: #ffc0c0;
@@ -160,6 +213,16 @@ html.dark {
   --ipe-progress: #88a3e8;
   --ipe-backdrop: rgba(0, 0, 0, 0.6);
   --ipe-scroll-shadow: rgba(255, 255, 255, 0.12);
+  --ipe-shadow: rgba(0, 0, 0, 0.6);
+  --ipe-text-hover: #f8f9fa;
+  --ipe-text-faint: #72777d;
+  --ipe-bg-danger-subtle: #32363d;
+  --ipe-border-faint: #3e4452;
+  --ipe-border-progress: #54595d;
+  --ipe-border-disabled: #54595d;
+  --ipe-disabled-bg-strong: #54595d;
+  --ipe-checkbox-check: url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2016%2016%22%3E%3Cpath%20d=%22M13.749%203.491%205.863%2011.634%202.25%207.96l-.762.797%204.375%204.435%208.65-8.905z%22%20fill=%22%23101418%22/%3E%3C/svg%3E");
+  --ipe-select-arrow: url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20width=%2216%22%20height=%2216%22%3E%3Cpath%20d=%22M13.002%206.001l-5%205.001-5-5.001z%22%20fill=%22%23c8ccd1%22/%3E%3C/svg%3E");
 }
 
 /* 深色下让原生控件（滚动条、输入框、下拉箭头）跟着变深 */
@@ -340,7 +403,7 @@ html.dark .in-page-edit {
   color: var(--ipe-text-emphasis, #222222);
   background-color: var(--ipe-bg, #ffffff);
   background-image: linear-gradient(transparent, transparent),
-    url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+PHBhdGggZD0iTTEzLjAwMiA2LjAwMWwtNSA1LjAwMS01LTUuMDAxeiIgZmlsbD0iIzc5Nzk3OSIvPjwvc3ZnPg==');
+    var(--ipe-select-arrow, none);
   background-repeat: no-repeat;
   background-position: calc(100% - 2px);
   padding: 2px 20px 2px 4px;
@@ -457,7 +520,7 @@ html.dark .in-page-edit {
 
 .in-page-edit .btn.btn-secondary:hover {
   background-color: var(--ipe-bg, #ffffff);
-  color: var(--ipe-text, #454545);
+  color: var(--ipe-text-hover, #454545);
 }
 
 .in-page-edit .btn.btn-secondary:active {
@@ -467,12 +530,12 @@ html.dark .in-page-edit {
 .in-page-edit .btn.btn-danger {
   background: transparent;
   color: var(--ipe-danger, #d33);
-  background-color: var(--ipe-bg-subtle, #f4f4f4);
+  background-color: var(--ipe-bg-danger-subtle, #f4f4f4);
 }
 
 .in-page-edit .btn.btn-danger:hover {
   color: var(--ipe-danger-strong, #ff4242);
-  background-color: var(--ipe-bg-subtle, #fafafa);
+  background-color: var(--ipe-bg-subtle-hover, #fafafa);
 }
 
 .in-page-edit .btn.btn-danger:active {
@@ -499,6 +562,8 @@ html.dark .in-page-edit {
   padding: 0.25em 0.35em;
   border: 1px solid var(--ipe-border-subtle, #ccc);
   border-radius: 2px;
+  background-color: var(--ipe-input-bg, #ffffff);
+  color: var(--ipe-text, #252525);
   transition: all 0.2s;
   line-height: 1.5em;
 }
@@ -518,7 +583,7 @@ html.dark .in-page-edit {
   padding: 0.5em;
   background: transparent;
   color: var(--ipe-text, #252525);
-  border: 1px solid var(--ipe-border-subtle, #efefef);
+  border: 1px solid var(--ipe-border-faint, #efefef);
   border-radius: 0;
   width: 50%;
 }
@@ -532,7 +597,7 @@ html.dark .in-page-edit {
 }
 
 .in-page-edit .dialog .ssi-buttons .btn.btn-danger {
-  color: var(--ipe-danger, #c33);
+  color: var(--ipe-danger-quiet, #c33);
 }
 
 .in-page-edit .btn.btn-primary.btn-danger {
@@ -542,12 +607,12 @@ html.dark .in-page-edit {
 }
 
 .in-page-edit .btn.btn-primary.btn-danger:hover {
-  background: var(--ipe-danger-hover, #f33);
+  background: var(--ipe-danger-fill-hover, #f33);
 }
 
 .in-page-edit .btn.btn-primary.btn-danger:focus {
-  background: var(--ipe-danger-active, #c22);
-  border-color: var(--ipe-danger-active, #c22);
+  background: var(--ipe-danger-fill-active, #c22);
+  border-color: var(--ipe-danger-fill-active, #c22);
   box-shadow: inset 0 0 0 1px var(--ipe-on-danger, #fff);
 }
 
@@ -585,7 +650,7 @@ html.dark .in-page-edit {
 
 /** 快速差异 **/
 .quick-diff .diff-hidden-history {
-  color: var(--ipe-text-muted, #a8a8a8);
+  color: var(--ipe-text-faint, #a8a8a8);
   text-decoration: line-through;
 }
 
@@ -714,7 +779,7 @@ html.dark .in-page-edit {
 /** 进度条 **/
 .ipe-progress {
   height: 1em;
-  border: 1px solid var(--ipe-border, #c5c5c5);
+  border: 1px solid var(--ipe-border-progress, #c5c5c5);
   border-radius: 2px;
   background: var(--ipe-bg, white);
   overflow: hidden;
@@ -786,7 +851,7 @@ html.dark .in-page-edit {
   margin-top: 0.15em;
   margin-right: 0.375em;
   border-radius: 2px;
-  background-color: var(--ipe-input-bg, #f8f8f8);
+  background-color: var(--ipe-checkbox-bg, #f8f8f8);
   border: 1px solid var(--ipe-border-strong, #72777d);
   cursor: pointer;
   transition: all 0.12s;
@@ -801,7 +866,7 @@ html.dark .in-page-edit {
 .in-page-edit label input[type='checkbox']:checked + span::before {
   content: '\a0';
   background-color: var(--ipe-progressive, #36c);
-  background-image: url(data:image/svg+xml;base64,PHN2ZyBzdHlsZT0iZmlsbC1ydWxlOmV2ZW5vZGQ7Y2xpcC1ydWxlOmV2ZW5vZGQ7c3Ryb2tlLWxpbmVjYXA6cm91bmQ7c3Ryb2tlLWxpbmVqb2luOnJvdW5kOyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgMTYgMTYiPjxnIGlkPSJjaGVja21hcmsiPjxwYXRoIGQ9Ik0xMy43NDkyKzMuNDkwOTVMNS44NjMxMisxMS42MzM3TDIuMjUwNzcrNy45NjA4MkwxLjQ4NzYrOC43NTc3OEw1Ljg2MzEyKzEzLjE5M0wxNC41MTI0KzQuMjg3OUwxMy43NDkyKzMuNDkwOTVaIiBvcGFjaXR5PSIxIiBmaWxsPSIjZmZmZmZmIi8+PC9nPjwvc3ZnPg==);
+  background-image: var(--ipe-checkbox-check, none);
   background-repeat: no-repeat;
 }
 
@@ -837,7 +902,7 @@ html.dark .in-page-edit {
 }
 
 .in-page-edit label input[type='checkbox']:disabled + span::before {
-  border-color: var(--ipe-border, #d6d6d6);
+  border-color: var(--ipe-border-disabled, #d6d6d6);
 }
 
 .in-page-edit label input[type='radio']:disabled + span::before {
@@ -846,7 +911,7 @@ html.dark .in-page-edit {
 }
 
 .in-page-edit label input[type='checkbox']:disabled:checked + span::before {
-  background-color: var(--ipe-disabled-bg, #a0a0a0);
+  background-color: var(--ipe-disabled-bg-strong, #a0a0a0);
 }
 
 .in-page-edit label input[type='radio']:disabled:checked + span::before {
@@ -1023,7 +1088,7 @@ html.dark .in-page-edit {
   background: var(--ipe-bg, white);
   color: var(--ipe-text, #252525);
   padding: 0px 4px;
-  box-shadow: 0 0 4px gray;
+  box-shadow: 0 0 4px var(--ipe-shadow, gray);
   pointer-events: none;
   display: none;
 }
