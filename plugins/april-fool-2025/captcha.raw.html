@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      body {
+        background: #f0f0f0;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      class="moe-captcha"
+      style="
+        font-size: 14px;
+        width: 320px;
+        border: 1px solid #aaa;
+        background: #f8f8f8;
+        color: #222;
+        border-radius: 0.5em;
+        display: inline-flex;
+        gap: 1em;
+        align-items: center;
+        padding: 0.5em;
+      "
+    >
+      <div class="moe-captcha-spin">
+        <span class="loader"></span>
+        <style>
+          .loader {
+            width: 42px;
+            height: 42px;
+            border: 5px dotted #02a54d;
+            border-radius: 50%;
+            display: inline-block;
+            position: relative;
+            box-sizing: border-box;
+            animation: rotation 3.6s linear infinite;
+          }
+
+          @keyframes rotation {
+            0% {
+              transform: rotate(0deg);
+            }
+
+            100% {
+              transform: rotate(360deg);
+            }
+          }
+        </style>
+      </div>
+      <div class="moe-captcha-text" style="flex: 1">
+        <div style="margin: 0 0 0.5em 0; font-size: 1.25em; font-weight: 700">
+          我们怀疑你是人类
+        </div>
+        <div>请完成验证🐴后继续</div>
+      </div>
+      <div class="moe-captcha-image">
+        <img
+          src="https://r2.epb.wiki/-/2025/03/31/5d97bb8c0b7563552b0c178a800c1b358e3a8ab9.png"
+          alt="CAPTCHA"
+          style="width: 72px"
+        />
+      </div>
+    </div>
+  </body>
+</html>

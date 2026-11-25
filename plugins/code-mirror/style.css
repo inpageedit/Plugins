@@ -1,0 +1,50 @@
+/* Disable editTools */
+.in-page-edit.ipe-editor .editTools {
+  display: none;
+}
+
+/* Minor fix */
+.in-page-edit .CodeMirror,
+.in-page-edit .cm-editor {
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro',
+    monospace;
+  min-height: 400px;
+  font-size: 14px;
+  border: 1px solid #c8ccd1;
+}
+
+/* Dialog */
+.in-page-edit .CodeMirror-dialog {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background: inherit;
+  z-index: 15;
+  padding: 0.1em 0.8em;
+  overflow: hidden;
+  color: inherit;
+}
+.in-page-edit .CodeMirror-dialog-top {
+  border-bottom: 1px solid #eee;
+  top: 0;
+}
+.in-page-edit .CodeMirror-dialog-bottom {
+  border-top: 1px solid #eee;
+  bottom: 0;
+}
+.in-page-edit .CodeMirror-dialog input {
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 20em;
+  color: inherit;
+  font-family: monospace;
+}
+.in-page-edit .CodeMirror-dialog button {
+  font-size: 70%;
+}
+
+/* Fix WikiEditor popup */
+.wikiEditor-ui-toolbar {
+  z-index: 10;
+}

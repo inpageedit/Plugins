@@ -1,0 +1,40 @@
+/**
+ * InPlusEdit
+ * @author dragon-fish <xiaoyujundesu@outlook.com>
+ * @license MIT
+ */
+
+.ssi-modalWindow,
+.in-page-edit:not(.notify) .ssi-modalTitle,
+.in-page-edit.ipe-editor .ssi-buttons {
+  background-color: #edf9f7;
+}
+
+.in-page-edit:not(.notify) .ssi-modalTitle {
+  text-align: left;
+}
+
+.ssi-modalTitle {
+  border-bottom: 1px #6cf solid;
+}
+
+.in-page-edit.ipe-editor .ssi-buttons button {
+  all: revert;
+}
+
+.in-page-edit .ssi-topIcons .ssi-closeIcon {
+  font-size: 12px;
+  color: rgb(44, 62, 80);
+  padding: 4px;
+}
+
+.in-page-edit label input[type='checkbox']+span::before,
+.in-page-edit label input[type='radio']+span::before {
+  display: none;
+}
+
+.in-page-edit label input[type='checkbox'],
+.in-page-edit label input[type='radio'] {
+  position: unset;
+  clip: unset;
+}
