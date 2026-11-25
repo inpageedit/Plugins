@@ -7,7 +7,9 @@
 /**
  * 颜色变量
  * ------------------------------------------------------------------
- * 所有色值都写成 `var(--ipe-*, 原值)` 的形式，:root 里是亮色默认值。
+ * 所有色值都写成 `var(--ipe-*, 原值)` 的形式。亮色不定义任何变量，直接走
+ * fallback，也就是改动前的原值；不要再加 :root 亮色色板，那会让 fallback 失效，
+ * 一旦两处的值对不上，亮色观感就变了。
  * 想改主题只要覆写这些变量即可，比如：
  *
  *   .in-page-edit { --ipe-progressive: #e91e63; }
@@ -19,63 +21,6 @@
  * 注意：前两份深色色板（Vector 2022 手动档与自动档）内容必须保持一致，
  * 改一处记得同步另一处；MoeSkin 那份是独立色板，不要一起改。
  */
-:root {
-  /* 文本 */
-  --ipe-text: #252525;
-  --ipe-text-emphasis: #222222;
-  --ipe-text-subtle: #47494d;
-  --ipe-text-muted: #888888;
-  /* 背景 */
-  --ipe-bg: #ffffff;
-  --ipe-bg-subtle: #f8f9fa;
-  --ipe-bg-neutral: #eaecf0;
-  --ipe-bg-hover: #eaf3ff;
-  --ipe-bg-hover-neutral: #efefef;
-  --ipe-bg-dialog-hover: #f8f8f8;
-  --ipe-input-bg: #ffffff;
-  --ipe-checkbox-bg: #f8f8f8;
-  --ipe-bg-subtle-hover: #fafafa;
-  /* 边框 */
-  --ipe-border: #c8ccd1;
-  --ipe-border-subtle: #cccccc;
-  --ipe-border-strong: #72777d;
-  /* 主色 */
-  --ipe-progressive: #3366cc;
-  --ipe-progressive-hover: #447ff5;
-  --ipe-progressive-active: #2a4b8d;
-  --ipe-on-progressive: #ffffff;
-  /* 危险色 */
-  --ipe-danger: #dd3333;
-  --ipe-danger-quiet: #cc3333;
-  --ipe-danger-fill-hover: #ff3333;
-  --ipe-danger-fill-active: #cc2222;
-  --ipe-danger-strong: #ff4242;
-  --ipe-danger-hover: #ff2222;
-  --ipe-danger-active: #dd0000;
-  --ipe-on-danger: #ffffff;
-  /* 链接 */
-  --ipe-link: #0088dd;
-  --ipe-link-shadow: rgba(0, 136, 221, 0.25);
-  /* 其他 */
-  --ipe-disabled-bg: #c8ccd1;
-  --ipe-disabled-text: #ffffff;
-  --ipe-progress: #3360c3;
-  --ipe-backdrop: rgba(255, 255, 255, 0.5);
-  --ipe-scroll-shadow: rgba(26, 26, 26, 0.12);
-  --ipe-shadow: rgba(0, 0, 0, 0.25);
-  /* 细节色：和上面语义相近但不能合并，合并会改变亮色下的实际观感 */
-  --ipe-text-hover: #454545;
-  --ipe-text-faint: #a8a8a8;
-  --ipe-bg-danger-subtle: #f4f4f4;
-  --ipe-border-faint: #efefef;
-  --ipe-border-progress: #c5c5c5;
-  --ipe-border-disabled: #d6d6d6;
-  --ipe-disabled-bg-strong: #a0a0a0;
-  /* 内联 SVG：复选框对勾 / 下拉箭头，深色下换成深色对勾、浅色箭头 */
-  --ipe-checkbox-check: url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2016%2016%22%3E%3Cpath%20d=%22M13.749%203.491%205.863%2011.634%202.25%207.96l-.762.797%204.375%204.435%208.65-8.905z%22%20fill=%22%23ffffff%22/%3E%3C/svg%3E");
-  --ipe-select-arrow: url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20width=%2216%22%20height=%2216%22%3E%3Cpath%20d=%22M13.002%206.001l-5%205.001-5-5.001z%22%20fill=%22%23797979%22/%3E%3C/svg%3E");
-}
-
 /* Vector 2022 / Minerva 深色 */
 html.skin-theme-clientpref-night {
   --ipe-text: #eaecf0;
@@ -149,9 +94,9 @@ html.skin-theme-clientpref-night {
     --ipe-progressive-active: #cbd6f6;
     --ipe-on-progressive: #101418;
     --ipe-danger: #ff8080;
-  --ipe-danger-quiet: #ff8080;
-  --ipe-danger-fill-hover: #ff3333;
-  --ipe-danger-fill-active: #cc2222;
+    --ipe-danger-quiet: #ff8080;
+    --ipe-danger-fill-hover: #ff3333;
+    --ipe-danger-fill-active: #cc2222;
     --ipe-danger-strong: #ffa0a0;
     --ipe-danger-hover: #ffb0b0;
     --ipe-danger-active: #ffc0c0;
@@ -237,6 +182,75 @@ html.dark .in-page-edit {
   }
 }
 
+/*
+ * 原样式没有设置、只在深色下才需要的属性（ssi-modal.css 的写死色值、编辑框、
+ * 输入框、工具箱提示）。不要挪到上面的通用规则里：亮色下它们会盖掉站点和
+ * ssi-modal 自己的样式。
+ * 弹窗的 in-page-edit 类有时挂在外层，有时挂在 .ssi-modalWindow 自身（通知框），
+ * 两种选择器都要写。
+ */
+:is(html.skin-theme-clientpref-night, html.dark) .in-page-edit .ssi-modalWindow,
+:is(html.skin-theme-clientpref-night, html.dark) .ssi-modalWindow.in-page-edit {
+  background: var(--ipe-bg);
+  border-color: var(--ipe-border);
+  color: var(--ipe-text);
+}
+
+:is(html.skin-theme-clientpref-night, html.dark) .in-page-edit .ssi-modalTitle,
+:is(html.skin-theme-clientpref-night, html.dark) .in-page-edit .ssi-buttons {
+  border-color: var(--ipe-border-subtle);
+}
+
+:is(html.skin-theme-clientpref-night, html.dark) .in-page-edit .ssi-modalContent::-webkit-scrollbar-thumb {
+  border-color: var(--ipe-bg);
+}
+
+:is(html.skin-theme-clientpref-night, html.dark) .in-page-edit .ssi-modalContent::-webkit-scrollbar-track {
+  background-color: var(--ipe-bg);
+}
+
+:is(html.skin-theme-clientpref-night, html.dark) .ipe-editor .editArea,
+:is(html.skin-theme-clientpref-night, html.dark) .in-page-edit input {
+  background-color: var(--ipe-input-bg);
+  color: var(--ipe-text);
+}
+
+:is(html.skin-theme-clientpref-night, html.dark) #ipe-edit-toolbox .btn-tip-group .btn-tip {
+  color: var(--ipe-text);
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  html.skin-theme-clientpref-os .in-page-edit .ssi-modalWindow,
+  html.skin-theme-clientpref-os .ssi-modalWindow.in-page-edit {
+    background: var(--ipe-bg);
+    border-color: var(--ipe-border);
+    color: var(--ipe-text);
+  }
+
+  html.skin-theme-clientpref-os .in-page-edit .ssi-modalTitle,
+  html.skin-theme-clientpref-os .in-page-edit .ssi-buttons {
+    border-color: var(--ipe-border-subtle);
+  }
+
+  html.skin-theme-clientpref-os .in-page-edit .ssi-modalContent::-webkit-scrollbar-thumb {
+    border-color: var(--ipe-bg);
+  }
+
+  html.skin-theme-clientpref-os .in-page-edit .ssi-modalContent::-webkit-scrollbar-track {
+    background-color: var(--ipe-bg);
+  }
+
+  html.skin-theme-clientpref-os .ipe-editor .editArea,
+  html.skin-theme-clientpref-os .in-page-edit input {
+    background-color: var(--ipe-input-bg);
+    color: var(--ipe-text);
+  }
+
+  html.skin-theme-clientpref-os #ipe-edit-toolbox .btn-tip-group .btn-tip {
+    color: var(--ipe-text);
+  }
+}
+
 /* 编辑器 */
 .in-page-edit .mw-editsection,
 .in-page-edit .hide-for-ipe {
@@ -254,27 +268,10 @@ html.dark .in-page-edit {
   z-index: 800;
 }
 
-/* ssi-modal.css 里的写死色值在这里覆盖，别去动那个第三方文件 */
 .in-page-edit .ssi-modalWindow {
   padding: 0;
   border-radius: 0;
   line-height: normal;
-  background: var(--ipe-bg, #ffffff);
-  border-color: var(--ipe-border, #c8ccd1);
-  color: var(--ipe-text, #252525);
-}
-
-.in-page-edit .ssi-modalTitle,
-.in-page-edit .ssi-buttons {
-  border-color: var(--ipe-border-subtle, #dddddd);
-}
-
-.in-page-edit .ssi-modalContent::-webkit-scrollbar-thumb {
-  border-color: var(--ipe-bg, #ffffff);
-}
-
-.in-page-edit .ssi-modalContent::-webkit-scrollbar-track {
-  background-color: var(--ipe-bg, #ffffff);
 }
 
 .in-page-edit .ssi-overflow {
@@ -403,7 +400,7 @@ html.dark .in-page-edit {
   color: var(--ipe-text-emphasis, #222222);
   background-color: var(--ipe-bg, #ffffff);
   background-image: linear-gradient(transparent, transparent),
-    var(--ipe-select-arrow, none);
+    var(--ipe-select-arrow, url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+PHBhdGggZD0iTTEzLjAwMiA2LjAwMWwtNSA1LjAwMS01LTUuMDAxeiIgZmlsbD0iIzc5Nzk3OSIvPjwvc3ZnPg=='));
   background-repeat: no-repeat;
   background-position: calc(100% - 2px);
   padding: 2px 20px 2px 4px;
@@ -444,8 +441,6 @@ html.dark .in-page-edit {
   min-width: 100%;
   min-height: 350px;
   margin: 0;
-  background: var(--ipe-bg, #ffffff);
-  color: var(--ipe-text, #252525);
 }
 
 .notify .ssi-modalTitle {
@@ -562,8 +557,6 @@ html.dark .in-page-edit {
   padding: 0.25em 0.35em;
   border: 1px solid var(--ipe-border-subtle, #ccc);
   border-radius: 2px;
-  background-color: var(--ipe-input-bg, #ffffff);
-  color: var(--ipe-text, #252525);
   transition: all 0.2s;
   line-height: 1.5em;
 }
@@ -866,7 +859,7 @@ html.dark .in-page-edit {
 .in-page-edit label input[type='checkbox']:checked + span::before {
   content: '\a0';
   background-color: var(--ipe-progressive, #36c);
-  background-image: var(--ipe-checkbox-check, none);
+  background-image: var(--ipe-checkbox-check, url(data:image/svg+xml;base64,PHN2ZyBzdHlsZT0iZmlsbC1ydWxlOmV2ZW5vZGQ7Y2xpcC1ydWxlOmV2ZW5vZGQ7c3Ryb2tlLWxpbmVjYXA6cm91bmQ7c3Ryb2tlLWxpbmVqb2luOnJvdW5kOyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgMTYgMTYiPjxnIGlkPSJjaGVja21hcmsiPjxwYXRoIGQ9Ik0xMy43NDkyKzMuNDkwOTVMNS44NjMxMisxMS42MzM3TDIuMjUwNzcrNy45NjA4MkwxLjQ4NzYrOC43NTc3OEw1Ljg2MzEyKzEzLjE5M0wxNC41MTI0KzQuMjg3OUwxMy43NDkyKzMuNDkwOTVaIiBvcGFjaXR5PSIxIiBmaWxsPSIjZmZmZmZmIi8+PC9nPjwvc3ZnPg==));
   background-repeat: no-repeat;
 }
 
@@ -1086,7 +1079,6 @@ html.dark .in-page-edit {
   right: -20px;
   top: -2.1em;
   background: var(--ipe-bg, white);
-  color: var(--ipe-text, #252525);
   padding: 0px 4px;
   box-shadow: 0 0 4px var(--ipe-shadow, gray);
   pointer-events: none;
